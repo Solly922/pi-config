@@ -14,7 +14,8 @@
     "npm:pi-paster",
     "npm:pi-zentui",
     "npm:pi-hermes-memory",
-    "npm:@zosmaai/pi-llm-wiki"
+    "npm:@zosmaai/pi-llm-wiki",
+    "npm:@tintinweb/pi-tasks"
   ],
   "hideThinkingBlock": false,
   "pi-fork": {
