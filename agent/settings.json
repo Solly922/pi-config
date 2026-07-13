@@ -15,7 +15,8 @@
     "npm:pi-zentui",
     "npm:pi-hermes-memory",
     "npm:@zosmaai/pi-llm-wiki",
-    "npm:@tintinweb/pi-tasks"
+    "npm:@tintinweb/pi-tasks",
+    "npm:pi-mcp-adapter"
   ],
   "hideThinkingBlock": false,
   "pi-fork": {
