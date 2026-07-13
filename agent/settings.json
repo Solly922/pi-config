@@ -8,7 +8,11 @@
     "git:github.com/DietrichGebert/ponytail",
     "git:github.com/elpapi42/pi-observational-memory",
     "npm:@tintinweb/pi-subagents",
-    "npm:pi-web-access"
+    "npm:pi-web-access",
+    "npm:@pi-lab/notify",
+    "npm:@pi-archimedes/core",
+    "npm:pi-paster",
+    "npm:pi-zentui"
   ],
   "hideThinkingBlock": false,
   "pi-fork": {

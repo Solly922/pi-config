@@ -1,0 +1,10 @@
+{
+  "colorSources": {
+    "starship": "theme",
+    "editor": "terminal",
+    "userMessages": "terminal"
+  },
+  "features": {
+    "copyFriendly": true
+  }
+}
