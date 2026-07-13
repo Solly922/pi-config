@@ -1,0 +1,45 @@
+{
+  "settings": {
+    "directTools": false,
+    "sampling": false,
+    "elicitation": false,
+    "outputGuard": true
+  },
+  "mcpServers": {
+    "context7": {
+      "url": "https://mcp.context7.com/mcp",
+      "lifecycle": "lazy",
+      "exposeResources": false,
+      "directTools": false
+    },
+    "gh_grep": {
+      "url": "https://mcp.grep.app",
+      "lifecycle": "lazy",
+      "exposeResources": false,
+      "directTools": false
+    },
+    "playwright": {
+      "command": "/home/solomonschuster/.pi/agent/bin/playwright-mcp",
+      "args": [
+        "--headless",
+        "--isolated",
+        "--sandbox",
+        "--block-service-workers",
+        "--image-responses",
+        "omit"
+      ],
+      "lifecycle": "lazy",
+      "exposeResources": false,
+      "directTools": false,
+      "excludeTools": [
+        "browser_run_code_unsafe",
+        "browser_run_code",
+        "browser_file_upload",
+        "browser_drop",
+        "browser_evaluate",
+        "browser_network_request",
+        "browser_network_requests"
+      ]
+    }
+  }
+}

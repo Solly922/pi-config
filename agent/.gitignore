@@ -1,1 +1,6 @@
 ayu/
+mcp-cache.json
+bin/
+pi-hermes-memory
+projects-memory
+.pi-hermes-locks.sql

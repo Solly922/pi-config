@@ -16,7 +16,9 @@
     "npm:pi-hermes-memory",
     "npm:@zosmaai/pi-llm-wiki",
     "npm:@tintinweb/pi-tasks",
-    "npm:pi-mcp-adapter"
+    "npm:pi-mcp-adapter",
+    "npm:pi-git-commands",
+    "npm:pi-show-diffs"
   ],
   "hideThinkingBlock": false,
   "pi-fork": {
