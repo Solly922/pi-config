@@ -20,6 +20,9 @@ Use these subagents as directed below; when no specific trigger applies, use the
 ## Plan Mode
 Use the architect skill when planning a bigger project, otherwise ignore. When planning new features, always ask clarifying questions and suggest improvements to the implementation.
 
+### TO DO List management
+You have access to a todo list. You need to make sure that you are keeping it up to date after each step. Before you finish any run, ensure that there are no in progress items. If the user rejected some changes, do not leave the task as in progress.
+
 ### File Organization
 
 MANY SMALL FILES > FEW LARGE FILES:
