@@ -7,7 +7,7 @@ extensions: false
 skills: security-review
 model: openai-codex/gpt-5.6-sol
 thinking: high
-max_turns: 10
+max_turns: 20
 prompt_mode: replace
 ---
 

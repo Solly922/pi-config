@@ -4,9 +4,9 @@ display_name: Frontend Builder
 tools: read, write, edit, bash, grep, find
 extensions: false
 skills: frontend-design, uncodexify
-model: openai-codex/gpt-5.6-terra
-thinking: high
-max_turns: 16
+model: openai-codex/gpt-5.6-sol
+thinking: medium
+max_turns: 20
 prompt_mode: replace
 ---
 
