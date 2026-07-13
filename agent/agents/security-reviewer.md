@@ -8,7 +8,7 @@ skills: security-review
 model: openai-codex/gpt-5.6-sol
 thinking: xhigh
 max_turns: 12
-prompt_mode: append
+prompt_mode: replace
 ---
 
 # Security Reviewer

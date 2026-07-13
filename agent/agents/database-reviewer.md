@@ -4,11 +4,11 @@ display_name: Database Reviewer
 tools: read, grep, find
 disallowed_tools: write, edit
 extensions: false
-skills: api-design, security-review, general-guidelines
+skills: security-review
 model: openai-codex/gpt-5.6-sol
 thinking: high
 max_turns: 10
-prompt_mode: append
+prompt_mode: replace
 ---
 
 # Database Reviewer

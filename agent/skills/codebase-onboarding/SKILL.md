@@ -12,23 +12,22 @@ Default to read-only analysis. Create or update `AGENTS.md` only when explicitly
 
 ## Reconnaissance
 
-1. Read the repository root, `README`, contributor docs, manifests, lockfiles, and existing agent instructions.
-2. Use `find` when available, or `rg --files`, to map the top-level structure without traversing generated dependencies.
-3. Use `grep` when available, or `rg`, to locate entry points, routes, tests, configuration, and major domain concepts.
-4. Inspect recent history and the current worktree without changing either.
+1. Read root instructions, documentation, manifests, lockfiles, and contributor guidance.
+2. Map the top-level structure without traversing generated dependencies.
+3. Locate entry points, tests, configuration, and major domain concepts.
+4. Inspect recent history and worktree state without modifying either.
 5. Read representative files rather than exhaustively loading the repository.
 
-## Produce
+## Report
 
-- Purpose and primary user-facing behavior.
+Include what the request needs from:
+
+- Purpose and user-facing behavior.
 - Runtime, frameworks, package manager, and major dependencies.
-- Architecture and data-flow summary.
-- Key entry points with paths.
-- Build, test, lint, and development commands confirmed from repository files.
+- Architecture, data flow, and key entry points with paths.
+- Repository-confirmed build, test, lint, and development commands.
 - Naming, formatting, testing, and error-handling conventions.
-- External services and required environment variable names without secret values.
-- Risk areas, unknowns, and suggested first task.
+- External services and environment variable names without secret values.
+- Risks and unresolved questions.
 
-## AGENTS.md Guidance
-
-When requested, write only repository-specific instructions that a coding agent cannot infer cheaply. Avoid duplicating generic language guidance or package documentation. After changing Pi configuration or instructions, use `/reload` before validating behavior.
+When writing `AGENTS.md`, include only repository-specific guidance an agent cannot infer cheaply. Do not duplicate generic language or package documentation. Reload Pi before validating changed Pi instructions.

@@ -8,21 +8,17 @@ metadata:
 
 # Architecture Decision Records
 
-Do not create an ADR for routine implementation choices. Propose one when a decision is costly to reverse, changes system boundaries, adopts infrastructure, or rejects a plausible alternative future maintainers may revisit.
-
-Ask for confirmation before writing files.
+Create an ADR only when requested or approved and the decision is costly to reverse, changes system boundaries, adopts infrastructure, or rejects a credible alternative maintainers may revisit.
 
 ## Workflow
 
-1. Inspect the repository for an existing ADR location, numbering scheme, and index.
-2. State the decision in one sentence and confirm it with the user.
-3. Record evidence from the actual repository and discussion.
-4. Describe realistic alternatives fairly, including keeping the current approach.
-5. Explain why the selected option best fits current constraints.
-6. Record positive and negative consequences, migration impact, and follow-up work.
-7. Update the existing ADR index if one exists.
+1. Find the repository's ADR location, format, numbering, and index.
+2. Confirm the decision in one sentence unless the user's request already establishes it.
+3. Record repository and discussion evidence, realistic alternatives including the status quo, and why the choice fits current constraints.
+4. State positive and negative consequences, migration impact, and known follow-up work.
+5. Update an existing ADR index.
 
-## Template
+Use the repository's format when present; otherwise use:
 
 ```markdown
 # ADR-NNN: Decision title
@@ -31,19 +27,10 @@ Date: YYYY-MM-DD
 Status: Proposed | Accepted | Superseded | Deprecated
 
 ## Context
-What forces and constraints require a decision?
-
 ## Decision
-What was chosen?
-
 ## Alternatives Considered
-What credible options were rejected, and why?
-
 ## Consequences
-What becomes easier, harder, or constrained?
-
 ## Verification
-How will we know the decision works as intended?
 ```
 
-Use the repository's format when it differs. Never invent consensus, benchmarks, or requirements that were not established.
+Include `Verification` only when the outcome has a meaningful observable check. Never invent consensus, benchmarks, or requirements.

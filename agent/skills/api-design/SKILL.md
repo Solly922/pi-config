@@ -1,6 +1,6 @@
 ---
 name: api-design
-description: Design or review production HTTP APIs for resource naming, methods, status codes, validation, pagination, errors, authorization, rate limits, and compatibility.
+description: Design or review production HTTP APIs for resource contracts, methods, responses, pagination, authorization, abuse controls, and compatibility.
 metadata:
   origin: ECC
   adapted-for: pi-0.80.6
@@ -8,41 +8,21 @@ metadata:
 
 # API Design
 
-Follow the existing API contract first. Introduce a new convention only when the project has none or the user requests a change.
+Follow the existing contract first. Introduce a convention only when the project has none or the user requests a change.
 
-## Resource Contract
+## Contract
 
-- Use nouns for resources and consistent casing.
-- Match HTTP methods to semantics: `GET`, `POST`, `PUT`, `PATCH`, and `DELETE`.
-- Preserve safe and idempotent behavior where the method promises it.
-- Use subresources for clear ownership; use action endpoints sparingly.
-
-## Responses
-
-- `200` for successful reads and updates with bodies.
-- `201` plus `Location` for created resources.
-- `204` for successful operations without a body.
-- `400` for malformed requests, `401` for missing/invalid authentication, `403` for denied authorization, `404` for absent resources, `409` for state conflicts, `422` for semantically invalid input when that distinction is established, and `429` for rate limits.
-- Never return internal errors, stack traces, SQL details, or secrets to clients.
-
-Use one stable error shape with a machine-readable code, safe message, and field details when useful.
+- Use consistently cased resource nouns and HTTP methods with their standard safety and idempotency semantics.
+- Prefer resources and clear subresources; use action endpoints only when resource semantics do not fit.
+- Use established success codes (`200`, `201` with `Location`, or `204`) and distinguish malformed, unauthenticated, unauthorized, missing, conflicting, invalid, and rate-limited requests when useful.
+- Return one stable error shape with a machine code, safe message, and optional field details. Never expose internal diagnostics or secrets.
 
 ## Collections
 
-- Paginate unbounded lists.
-- Prefer cursor pagination for large or frequently changing datasets; offset pagination is appropriate for small datasets and page-number UX.
-- Validate filter, sort, field, cursor, and limit parameters.
-- Set a bounded maximum page size.
+Paginate unbounded lists, validate collection parameters, and cap page size. Prefer cursors for large or changing datasets; use offsets when the dataset and UX justify them.
 
-## Security and Operations
+## Safety and Operations
 
-- Authenticate explicitly or document the endpoint as public.
-- Authorize access to the specific resource, not merely the route.
-- Validate all external input using the project's established validation mechanism.
-- Rate-limit sensitive or expensive operations.
-- Define timeouts, idempotency, and retry behavior for writes and external calls.
-- Update API documentation and compatibility tests when changing a public contract.
+Authenticate explicitly or document the endpoint as public. Authorize the specific resource and validate external input with the project's established mechanism. Apply rate limits, timeouts, retries, and idempotency controls when the endpoint's cost or side effects require them.
 
-## Review Checklist
-
-Confirm naming, method, status code, request schema, response schema, error shape, pagination, authentication, authorization, abuse controls, observability, and backwards compatibility.
+For public contract changes, update documentation and compatibility tests. Review only concerns relevant to the changed surface, including naming, schemas, errors, pagination, authorization, abuse resistance, observability, and backward compatibility.

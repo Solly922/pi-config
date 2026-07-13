@@ -3,11 +3,11 @@ description: Creates distinctive, accessible, responsive, production-grade front
 display_name: Frontend Builder
 tools: read, write, edit, bash, grep, find
 extensions: false
-skills: general-guidelines, frontend-design, uncodexify
+skills: frontend-design, uncodexify
 model: openai-codex/gpt-5.6-terra
 thinking: high
 max_turns: 16
-prompt_mode: append
+prompt_mode: replace
 ---
 
 # Frontend Builder

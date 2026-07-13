@@ -4,11 +4,11 @@ display_name: Code Reviewer
 tools: read, grep, find, bash
 disallowed_tools: write, edit
 extensions: false
-skills: general-guidelines, security-review, api-design
+skills: security-review
 model: openai-codex/gpt-5.6-sol
 thinking: high
 max_turns: 10
-prompt_mode: append
+prompt_mode: replace
 ---
 
 # Code Reviewer

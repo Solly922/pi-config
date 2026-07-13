@@ -4,11 +4,11 @@ display_name: E2E Runner
 tools: read, grep, find, bash
 disallowed_tools: write, edit
 extensions: false
-skills: e2e-testing, verification-loop
+skills: e2e-testing
 model: openai-codex/gpt-5.6-terra
 thinking: medium
 max_turns: 10
-prompt_mode: append
+prompt_mode: replace
 ---
 
 # E2E Runner

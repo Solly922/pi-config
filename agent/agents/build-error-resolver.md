@@ -3,11 +3,11 @@ description: Resolves build, compilation, type, module, and configuration errors
 display_name: Build Error Resolver
 tools: read, write, edit, bash, grep, find
 extensions: false
-skills: general-guidelines, verification-loop
+skills: verification-loop
 model: openai-codex/gpt-5.6-terra
 thinking: medium
 max_turns: 10
-prompt_mode: append
+prompt_mode: replace
 ---
 
 # Build Error Resolver
