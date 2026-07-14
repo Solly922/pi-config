@@ -17,6 +17,8 @@ Use these subagents as directed below; when no specific trigger applies, use the
 - @code-reviewer - Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use immediately after writing or modifying code. MUST BE USED for all code changes.
 - @frontend-builder - REQUIRED when drafting UI/UX or creating a brand new page. Also use proactively for substantial new UI implementation. Keep using the frontend-design skill alongside it for styling direction and visual quality.
 
+Whenever you finish building, always provide a summary of the changes made.
+
 ## Plan Mode
 Use the architect skill when planning a bigger project, otherwise ignore. When planning new features, always ask clarifying questions and suggest improvements to the implementation.
 
