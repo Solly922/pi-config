@@ -5,8 +5,8 @@ tools: read, grep, find, bash
 disallowed_tools: write, edit
 extensions: false
 skills: e2e-testing
-model: openai-codex/gpt-5.6-terra
-thinking: medium
+model: openai-codex/gpt-5.6-luna
+thinking: xhigh
 max_turns: 10
 prompt_mode: replace
 ---

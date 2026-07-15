@@ -5,8 +5,6 @@ tools: read, grep, find, bash
 disallowed_tools: write, edit
 extensions: false
 skills: security-review
-model: openai-codex/gpt-5.6-sol
-thinking: high
 max_turns: 20
 prompt_mode: replace
 ---
@@ -34,6 +32,7 @@ Lead with findings ordered by severity. Each finding must include an exact file 
 Finish with:
 
 - Verdict: `APPROVE`, `WARNING`, or `BLOCK`.
+- Escalation: `REQUIRED` or `NONE`. Require escalation only for high-severity findings, security/data/concurrency risk, large cross-cutting uncertainty, or unresolved low confidence.
 - Grade from 0 to 100.
 - Specific changes that would improve the grade.
 - Files and lines that need human review.

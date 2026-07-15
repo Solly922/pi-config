@@ -1,9 +1,13 @@
 {
-  "lastChangelogVersion": "0.80.6",
+  "lastChangelogVersion": "0.80.7",
   "theme": "dark",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "high",
+  "defaultModel": "gpt-5.6-luna",
+  "defaultThinkingLevel": "max",
+  "enabledModels": [
+    "openai-codex/gpt-5.6-luna",
+    "openai-codex/gpt-5.6-sol"
+  ],
   "packages": [
     "git:github.com/DietrichGebert/ponytail",
     "git:github.com/elpapi42/pi-observational-memory",
@@ -21,26 +25,6 @@
     "npm:pi-show-diffs"
   ],
   "hideThinkingBlock": false,
-  "pi-fork": {
-    "defaultEffort": "balanced",
-    "effortProfiles": {
-      "fast": {
-        "provider": "openai-codex",
-        "id": "gpt-5.6-luna",
-        "thinking": "max"
-      },
-      "balanced": {
-        "provider": "openai-codex",
-        "id": "gpt-5.6-sol",
-        "thinking": "medium"
-      },
-      "deep": {
-        "provider": "openai-codex",
-        "id": "gpt-5.6-sol",
-        "thinking": "high"
-      }
-    }
-  },
   "observational-memory": {
     "observeAfterTokens": 10000,
     "reflectAfterTokens": 20000,
@@ -52,8 +36,8 @@
     "agentMaxTurns": 16,
     "model": {
       "provider": "openai-codex",
-      "id": "gpt-5.6-sol",
-      "thinking": "low"
+      "id": "gpt-5.6-luna",
+      "thinking": "xhigh"
     },
     "passive": false,
     "debugLog": false

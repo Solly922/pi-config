@@ -4,23 +4,26 @@ If you are working in a git worktree, always commit once you've finished your wo
 When asked to review code, provide a grade; grade the code changes on a scale of 0-100 with 100 being perfect code and 0 being the worst thing ever written. Provide ways to improve the score. Also, provide files and line numbers that point to code that should be reviewed by a human
 ## Build Mode
 When using build mode follow these rules:
-- All changes require using the general-guidlines skill (use general-guidlines)
-- When making front design changes, always use the frontend-design skill
-- When drafting UI/UX or building a brand new page, always use the @frontend-builder agent
-- Always use the uncodexify skill (THIS IS VERY IMPORTANT)
-- If the change in a single is extrememly large, consider refactoring
-- Use general-guidlines skill
+- All code changes require using the general-guidelines skill.
+- When making frontend design changes, always use the frontend-design skill.
+- Use the @frontend-builder agent for brand-new pages or substantial UI/UX implementation; keep routine UI planning and small, bounded UI changes with the main agent.
+- Always use the uncodexify skill (THIS IS VERY IMPORTANT).
+- If the change in a single is extrememly large, consider refactoring.
 
-Use these subagents as directed below; when no specific trigger applies, use them if beneficial to parallize work:
-- @architect - Software architecture specialist for system design, scalability, and technical decision-making. Use PROACTIVELY when planning new features, refactoring large systems, or making architectural decisions.
-- @build-error-resolver - Build and error resolution specialist. Use PROACTIVELY when build fails or type errors occur. Fixes build/type errors only with minimal diffs, no architectural edits. Focuses on getting the build green quickly.
-- @code-reviewer - Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use immediately after writing or modifying code. MUST BE USED for all code changes.
-- @frontend-builder - REQUIRED when drafting UI/UX or creating a brand new page. Also use proactively for substantial new UI implementation. Keep using the frontend-design skill alongside it for styling direction and visual quality.
+Default to single-agent execution for small, bounded tasks. Before discretionary delegation, identify a concrete benefit from specialization, parallel execution, or context isolation that exceeds the coordination cost. Do not use discretionary delegation for work the main agent can complete directly, duplicate investigation across agents, or parallelize sequential dependencies. Required specialists and independent review are exceptions. Use at most one non-review subagent per task unless multiple tasks are genuinely independent.
+
+Model routing: use Luna max by default, Luna xhigh for bounded tool-heavy checks, Sol medium for ambiguous implementation, and Sol high for architecture, security, database, or difficult debugging. Never use Terra and never use Sol above high.
+
+Use these subagents only when their trigger applies:
+- @architect - Use only for consequential decisions involving system or module boundaries, data ownership, public contracts, security architecture, scalability, reliability, or deployment. Do not use for routine UI or bounded feature planning merely because the work is a new feature.
+- @build-error-resolver - Use for non-trivial build or type failures when focused diagnosis would materially help. Keep straightforward failures with the main agent. The resolver makes minimal fixes and does not perform architectural edits.
+- @code-reviewer - MUST BE USED once after implementing and running relevant checks for all code changes. Run it with `openai-codex/gpt-5.6-luna` and `thinking: max` by default. If it returns `Escalation: REQUIRED`, rerun only the affected findings or paths with `openai-codex/gpt-5.6-sol` and `thinking: high`. After fixing findings, request a targeted follow-up only when the fixes materially changed the risk surface or a high-severity finding remains. Do not repeat full reviews for mechanical fixes.
+- @frontend-builder - REQUIRED for brand-new pages and substantial UI implementation, but not for routine UI planning or small, bounded UI changes. Keep using the frontend-design skill alongside it for styling direction and visual quality.
 
 Whenever you finish building, always provide a summary of the changes made.
 
 ## Plan Mode
-Use the architect skill when planning a bigger project, otherwise ignore. When planning new features, always ask clarifying questions and suggest improvements to the implementation.
+Keep bounded feature planning with the main agent. Use the architect subagent only when planning requires a consequential architectural decision across system or module boundaries, data ownership, public contracts, security, scalability, reliability, or deployment. When planning new features, always ask clarifying questions and suggest improvements to the implementation.
 
 ### TO DO List management
 You have access to a todo list. You need to make sure that you are keeping it up to date after each step. Before you finish any run, ensure that there are no in progress items. If the user rejected some changes, do not leave the task as in progress.
