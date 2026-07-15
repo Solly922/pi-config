@@ -1,9 +1,9 @@
 {
   "lastChangelogVersion": "0.80.7",
   "theme": "dark",
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "high",
+  "defaultProvider": "github-copilot",
+  "defaultModel": "gpt-5.6-luna",
+  "defaultThinkingLevel": "max",
   "packages": [
     "git:github.com/DietrichGebert/ponytail",
     "git:github.com/elpapi42/pi-observational-memory",
@@ -14,12 +14,15 @@
     "npm:pi-paster",
     "npm:pi-zentui",
     "npm:pi-hermes-memory",
-    "npm:@zosmaai/pi-llm-wiki",
+    "[disabled]---npm:@zosmaai/pi-llm-wiki",
     "npm:@tintinweb/pi-tasks",
     "npm:pi-mcp-adapter",
     "npm:pi-git-commands",
     "npm:pi-show-diffs",
-    "npm:pi-ask-user"
+    "npm:pi-ask-user",
+    "npm:pi-rtk-optimizer",
+    "git:github.com/jonjonrankin/pi-caveman",
+    "git:https://github.com/elpapi42/pi-codemapper.git"
   ],
   "hideThinkingBlock": false,
   "observational-memory": {
