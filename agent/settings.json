@@ -18,7 +18,8 @@
     "npm:@tintinweb/pi-tasks",
     "npm:pi-mcp-adapter",
     "npm:pi-git-commands",
-    "npm:pi-show-diffs"
+    "npm:pi-show-diffs",
+    "npm:pi-ask-user"
   ],
   "hideThinkingBlock": false,
   "observational-memory": {
