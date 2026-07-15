@@ -13,7 +13,7 @@ When using build mode follow these rules:
 
 Default to single-agent execution for small, bounded tasks. Before discretionary delegation, identify a concrete benefit from specialization, parallel execution, or context isolation that exceeds the coordination cost. Do not use discretionary delegation for work the main agent can complete directly, duplicate investigation across agents, or parallelize sequential dependencies. Required specialists and independent review are exceptions. Use at most one non-review subagent per task unless multiple tasks are genuinely independent.
 
-Model routing: use Luna max by default, Luna xhigh for bounded tool-heavy checks, Sol medium for ambiguous implementation, and Sol high for architecture, security, database, or difficult debugging. Never use Terra and never use Sol above high.
+Model routing: use Luna max by default, Luna xhigh for bounded tool-heavy checks, Sol medium for ambiguous implementation, and Sol high for architecture, security, database, or difficult debugging. Never use Terra and never use Sol above high. Always check which gpt model you are using. If it's gpt-5.6-sol, the only acceptable reasoning levels are low, medium, high. If it's gpt-5.6-luna, the only acceptable reasoning levels are xhigh and max.
 
 Use these subagents only when their trigger applies:
 - @architect - Use only for consequential decisions involving system or module boundaries, data ownership, public contracts, security architecture, scalability, reliability, or deployment. Do not use for routine UI or bounded feature planning merely because the work is a new feature.
