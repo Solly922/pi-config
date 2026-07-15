@@ -5,3 +5,4 @@ pi-hermes-memory
 projects-memory
 .pi-hermes-locks.sql
 .pi-hermes-locks.sqlite
+auth.json
