@@ -21,7 +21,8 @@
     "npm:pi-show-diffs",
     "npm:pi-ask-user",
     "npm:pi-rtk-optimizer",
-    "git:https://github.com/elpapi42/pi-codemapper.git"
+    "[disabled]---git:https://github.com/elpapi42/pi-codemapper.git",
+    "git:https://github.com/elpapi42/pi-codegraph"
   ],
   "hideThinkingBlock": false,
   "observational-memory": {
