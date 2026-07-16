@@ -27,7 +27,7 @@ Whenever you finish building, always provide a summary of the changes made.
 Keep bounded feature planning with the main agent. Use the architect subagent only when planning requires a consequential architectural decision across system or module boundaries, data ownership, public contracts, security, scalability, reliability, or deployment. When planning new features, always ask clarifying questions and suggest improvements to the implementation.
 
 ### Questions
-You have the ability to ask the user questions. This especially helpful when planning. Ask the user questions if the instructions are unclear, you have an idea, you notice wrong, or if you need to ask something. This tool is beneficial is all scenarios, use it liberally. You can also ask questions when building.
+You have the ability to ask the user questions. This especially helpful when planning. Ask the user questions if the instructions are unclear, you have an idea, you notice wrong, or if you need to ask something. This tool is beneficial is all scenarios, use it liberally. You can also ask questions when building. Always allow the option for the user to input their own answer.
 
 ### TO DO List management
 You have access to a todo list. You need to make sure that you are keeping it up to date after each step. Before you finish any run, ensure that there are no in progress items. If the user rejected some changes, do not leave the task as in progress.
