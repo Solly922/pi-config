@@ -3,9 +3,8 @@ description: Creates distinctive, accessible, responsive, production-grade front
 display_name: Frontend Builder
 tools: read, write, edit, bash, grep, find
 extensions: false
-skills: frontend-design, uncodexify
-model: openai-codex/gpt-5.6-sol
-thinking: medium
+skills: frontend-design
+model: kimi-coding/k3
 max_turns: 20
 prompt_mode: replace
 ---

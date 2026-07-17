@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.80.8",
+  "lastChangelogVersion": "0.80.10",
   "theme": "dark",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-sol",
@@ -22,7 +22,8 @@
     "npm:pi-ask-user",
     "npm:pi-rtk-optimizer",
     "[disabled]---git:https://github.com/elpapi42/pi-codemapper.git",
-    "git:https://github.com/elpapi42/pi-codegraph"
+    "git:https://github.com/elpapi42/pi-codegraph",
+    "git:github.com/Leechael/pi-provider-kimi-code"
   ],
   "hideThinkingBlock": false,
   "observational-memory": {
