@@ -2,9 +2,10 @@
 description: Creates distinctive, accessible, responsive, production-grade frontend interfaces while respecting existing project conventions.
 display_name: Frontend Builder
 tools: read, write, edit, bash, grep, find
-extensions: false
+extensions: [pi-provider-kimi-code]
 skills: frontend-design
 model: kimi-coding/k3
+thinking: max
 max_turns: 20
 prompt_mode: replace
 ---
