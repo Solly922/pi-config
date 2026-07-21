@@ -23,7 +23,9 @@
     "npm:pi-rtk-optimizer",
     "[disabled]---git:https://github.com/elpapi42/pi-codemapper.git",
     "git:https://github.com/elpapi42/pi-codegraph",
-    "git:github.com/Leechael/pi-provider-kimi-code"
+    "git:github.com/Leechael/pi-provider-kimi-code",
+    "npm:pi-tool-display",
+    "npm:pi-agent-browser-native"
   ],
   "hideThinkingBlock": false,
   "observational-memory": {
