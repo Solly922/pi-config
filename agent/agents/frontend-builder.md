@@ -4,8 +4,8 @@ display_name: Frontend Builder
 tools: read, write, edit, bash, grep, find
 extensions: [pi-provider-kimi-code]
 skills: frontend-design
-model: kimi-coding/k3
-thinking: max
+model: github-copilot/claude-opus-4.8
+thinking: high
 max_turns: 20
 prompt_mode: replace
 ---
