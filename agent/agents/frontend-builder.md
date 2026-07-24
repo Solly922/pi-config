@@ -6,7 +6,7 @@ extensions: [pi-provider-kimi-code]
 skills: frontend-design
 model: github-copilot/claude-opus-4.8
 thinking: high
-max_turns: 20
+max_turns: 50
 prompt_mode: replace
 ---
 
