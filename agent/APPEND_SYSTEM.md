@@ -71,15 +71,15 @@ const validated = schema.parse(input)
 
 ### Code Comments
 
-Use comments often when they add information the code itself cannot express clearly.
+Use comments often to describe what the code does. Additionally, it should explain WHY the code is written and what it accomplishes. Especially, when it's not immediately clear.
 
 - Prefer self-explanatory names and structure over comments
 - Comment the why, tradeoff, constraint, or non-obvious behavior
-- Do not add comments that merely restate the code when the code is already clear
 - It is acceptable to comment what the code is doing when the behavior is not immediately clear
 - Add a short comment before complex logic that would otherwise take time to parse
 - Keep comments accurate when code changes; stale comments are bugs
 - Avoid noisy banner comments and large explanatory blocks unless they are genuinely needed
+- Use comments to explain one-liners, clunky logic, obfuscated logic
 
 ```typescript
 // GOOD: explains the constraint behind the logic
@@ -89,10 +89,6 @@ const delay = Math.min(baseDelay * 2 ** attempt, MAX_DELAY)
 // ALSO GOOD: clarifies non-obvious behavior
 // Walk backward to find the most recent committed snapshot for this item
 let current = node.previous
-
-// BAD: only restates the code when the code is already clear
-// Set delay to the minimum of baseDelay * 2 ** attempt and MAX_DELAY
-const delay = Math.min(baseDelay * 2 ** attempt, MAX_DELAY)
 ```
 
 ### Code Quality Checklist
@@ -105,7 +101,7 @@ Before marking work complete:
 - [ ] Proper error handling
 - [ ] No console.log statements
 - [ ] No hardcoded values
-- [ ] Comments explain why when possible, or clarify non-obvious behavior, and stay in sync with the code
+- [ ] Comments are well written, easy to understand, and stay in sync with the code
 
 ---
 
