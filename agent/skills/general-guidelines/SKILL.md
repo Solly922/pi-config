@@ -24,6 +24,27 @@ metadata:
 - Remove only artifacts made obsolete by the current change.
 - Never discard unrelated user changes in a dirty worktree.
 
+## Write for the Reader
+
+- Optimize for a reader building a mental model in one pass, not for the fewest lines.
+- Keep a function at one level of abstraction: a sequence of named steps, or the detail those steps hide — not both.
+- Prefer flat call graphs. Understanding a unit should not require following more than about two levels of indirection.
+- Extract a block when the extraction earns its name: reused, independently testable, or hiding detail the caller does not need. Do not extract merely to shorten a function.
+- Do not create single-use wrappers, pass-through layers, or helpers whose body is shorter than their signature.
+- Prefer direct calls over indirection that hides control flow — callbacks, dynamic dispatch, and event hops when a plain call works.
+- Use early returns to keep nesting shallow; more than about three levels means the logic wants restructuring, not more indentation.
+- Name functions and variables so call sites read as intent; a reader should rarely need to open the callee.
+- Comment the why, the tradeoff, and non-obvious behavior — not what the next line already says.
+
+### Size follows cohesion
+
+Both extremes cost the reader: a file too large to hold in their head, and a chain of small files that must all be open to follow one path. Split on cohesion, not line count.
+
+- A file should cover one subject a reader can summarize in a sentence. Split when it starts covering two, not when it crosses a line count.
+- Keep a linear flow — a request path, a state transition, a pipeline — in one file even when it runs long. Following one path should not mean opening five files.
+- Split when parts have independent readers, independent reasons to change, or independent tests. Those are real seams; line count is not.
+- Treat size limits as a smell to investigate, not a rule to satisfy. A long cohesive file is fine; a short file that only forwards calls is not.
+
 ## Delegate Deliberately
 
 - Default to single-agent execution for small, bounded tasks.
