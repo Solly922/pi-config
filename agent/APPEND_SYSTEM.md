@@ -3,6 +3,9 @@ If the change seems large AND you are in an important branch (main, dev, etc...)
 If you are working in a git worktree, always commit once you've finished your work and mention the commit hash to user.
 When asked to review code, provide a grade; grade the code changes on a scale of 0-100 with 100 being perfect code and 0 being the worst thing ever written. Provide ways to improve the score. Also, provide files and line numbers that point to code that should be reviewed by a human
 
+Use the html-communication skill to communicate complex information when visual structure improves understanding. 
+Use for plans, architecture docs, codebase maps, comparisons, dashboards, timelines, diagrams, reports, post-mortems,design explorations, and technical explainers.
+
 ## Build Mode
 When using build mode follow these rules:
 - All code changes require using the general-guidelines skill.
