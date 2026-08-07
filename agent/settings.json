@@ -1,6 +1,6 @@
 {
-  "lastChangelogVersion": "0.83.0",
-  "theme": "dark",
+  "lastChangelogVersion": "0.84.1",
+  "theme": "everforest-dark-hard",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "high",
@@ -24,7 +24,8 @@
     "git:https://github.com/elpapi42/pi-codegraph",
     "git:github.com/Leechael/pi-provider-kimi-code",
     "npm:pi-tool-display",
-    "npm:pi-agent-browser-native"
+    "npm:pi-agent-browser-native",
+    "npm:@victor-software-house/pi-curated-themes"
   ],
   "hideThinkingBlock": false,
   "observational-memory": {

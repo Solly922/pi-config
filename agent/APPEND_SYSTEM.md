@@ -25,6 +25,7 @@ Whenever you finish building, always provide a summary of the changes made.
 
 ## Plan Mode
 Keep bounded feature planning with the main agent. Use the architect subagent only when planning requires a consequential architectural decision across system or module boundaries, data ownership, public contracts, security, scalability, reliability, or deployment. When planning new features, always ask clarifying questions and suggest improvements to the implementation.
+Heavily consider using the html-communication skill for serving your plan to the user.
 
 ### Questions
 You have the ability to ask the user questions. This especially helpful when planning. Ask the user questions if the instructions are unclear, you have an idea, you notice wrong, or if you need to ask something. This tool is beneficial is all scenarios, use it liberally. You can also ask questions when building. Always allow the option for the user to input their own answer.
