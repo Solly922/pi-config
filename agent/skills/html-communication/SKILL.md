@@ -595,6 +595,25 @@ When revising an existing artifact:
 
 Avoid creating duplicate versions unless version separation is intentional.
 
+## Git Tracking
+
+Plans do not always need to be committed.
+
+Inspect the repository first and follow its existing conventions. Track the plan when it has lasting value, such as when:
+
+* the repo already tracks plans, ADRs, RFCs, or design docs
+* the work is significant, long-running, or spans multiple contributors/PRs
+* future maintainers will benefit from the rationale or implementation sequence
+
+Keep it temporary when:
+
+* the repo does not normally track planning artifacts
+* the plan is mainly for the current discussion
+* it will become obsolete quickly
+* the same information is already tracked elsewhere
+
+Choose the location based on the existing file structure and the plan's expected long-term value.
+
 ## Keep chat concise
 
 The artifact contains the depth.
