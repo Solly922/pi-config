@@ -1,9 +1,7 @@
 ---
 name: html-communication
-description: >
-When the user asks to communicate through an HTML document, or if they mentino "HTML" with no
-additional context.
-Use self-contained HTML to communicate complex information when visual
+description: When the user asks to communicate through an HTML document, or if they mentino "HTML" with no
+additional context. Use self-contained HTML to communicate complex information when visual
 structure improves understanding. Use for plans, architecture docs, codebase
 maps, comparisons, dashboards, timelines, diagrams, reports, post-mortems,
 design explorations, and technical explainers 
