@@ -1,75 +1,24 @@
 ---
 name: html-communication
 description: >
+When the user asks to communicate through an HTML document, or if they mentino "HTML" with no
+additional context.
 Use self-contained HTML to communicate complex information when visual
 structure improves understanding. Use for plans, architecture docs, codebase
 maps, comparisons, dashboards, timelines, diagrams, reports, post-mortems,
-design explorations, and technical explainers. Generate one self-contained
-HTML file and publish with Postplan when appropriate.
+design explorations, and technical explainers 
 ---
 
 # HTML Communication
 
-Use HTML when visual communication improves the answer.
+Use HTML for any request to produce a readable HTML artifact for a human - whether it is called
+a plan, spec, write-up, findings, summary, report, comparison, or a set of UI mocks.
 
-Markdown is best for simple, linear information. HTML is better when the user
-benefits from visual hierarchy, spatial organization, comparison, diagrams,
-navigation, or a document they can explore.
+HTML is better when the user benefits from visual hierarchy, spatial organization, comparison, 
+diagrams, navigation, or a document they can explore.
 
 Do not use HTML for short answers, small code snippets, simple debugging, or
 tasks where visual structure adds little value.
-
-## Workflow
-
-When this skill applies:
-
-1. Investigate the task and gather real information.
-2. Decide what information belongs in the artifact.
-3. Create one self-contained HTML file.
-4. Verify content and layout.
-5. Publish with Postplan when safe and useful.
-6. Give the user a short summary plus the URL or file path.
-
-Do not create a large Markdown answer and duplicate it into HTML.
-
-## Ground the artifact in evidence
-
-For codebase work, inspect relevant:
-
-* files and directories
-* symbols and interfaces
-* dependencies
-* tests
-* configuration
-* git diffs or PR context
-
-Use exact file paths, function names, API routes, tables, services, and other
-identifiers when useful.
-
-Clearly distinguish:
-
-* current behavior
-* proposed changes
-* assumptions
-* unresolved questions
-
-Do not invent architecture to make a diagram look complete.
-
-## File location
-
-For implementation plans:
-
-```text
-docs/plans/<yyyy-mm-dd>-<slug>.html
-```
-
-For other durable artifacts:
-
-```text
-docs/artifacts/<yyyy-mm-dd>-<slug>.html
-```
-
-If the file should not be committed, use a temporary directory instead.
 
 ## Self-contained HTML
 
@@ -107,35 +56,9 @@ Avoid unnecessary external dependencies.
 
 The file should remain useful when opened directly in a browser.
 
-## Avoid JavaScript by default
-
-Artifacts intended for Postplan should not rely on JavaScript.
-
-Use native HTML and CSS for:
-
-* disclosures
-* navigation
-* timelines
-* status indicators
-* responsive layouts
-* progress bars
-* hover states
-* print layouts
-
-Prefer:
-
-```html
-<details>
-  <summary>Technical details</summary>
-  ...
-</details>
-```
-
-If real interaction requires JavaScript, keep the artifact local unless the
-publishing target supports it.
-
 ## Visual design
 
+Always use the frontend-design skill
 Give the artifact an intentional visual style appropriate to the subject.
 
 Choose:
@@ -190,68 +113,6 @@ Avoid:
 * visual clutter
 
 Every visual element should communicate information.
-
-## Recommended structure
-
-Adapt this to the task:
-
-```text
-Hero
-Executive summary
-Key facts or metrics
-Main diagram or visual
-Major sections
-Risks / tradeoffs
-Verification
-Open questions
-Appendix / deep detail
-```
-
-The top of the document should immediately explain:
-
-* what the artifact is
-* what project/system it refers to
-* its status
-* when it was generated
-
-Example:
-
-```html
-<header class="hero">
-  <span class="eyebrow">Implementation Plan</span>
-  <h1>Authentication Migration</h1>
-  <p class="lede">
-    Move session management to the new auth system without breaking
-    existing clients.
-  </p>
-  <div class="meta">
-    <span class="badge">Draft</span>
-    <span>August 7, 2026</span>
-  </div>
-</header>
-```
-
-## Useful visual components
-
-Prefer information-dense components such as:
-
-* stat tiles
-* status badges
-* comparison cards
-* timelines
-* architecture diagrams
-* risk callouts
-* decision callouts
-* task tables
-* expandable technical sections
-
-For implementation plans, a useful table is:
-
-```text
-Task | Files | Change | Verification | Status
-```
-
-Do not add columns that carry little information.
 
 ## Diagrams
 
@@ -453,80 +314,6 @@ For longer snippets, use `<details>`.
 
 Label snippets with file paths when known.
 
-## Accessibility
-
-Use semantic markup:
-
-```html
-<header>
-<nav>
-<main>
-<section>
-<article>
-<table>
-<figure>
-<figcaption>
-<footer>
-```
-
-Maintain:
-
-* good contrast
-* visible focus states
-* logical heading order
-* useful link text
-* table headers
-* alt text when applicable
-
-Do not use color as the only status indicator.
-
-Prefer:
-
-```html
-<span class="status risk">⚠ Risk</span>
-```
-
-## Responsive layout
-
-Artifacts should remain readable on narrow screens.
-
-Example:
-
-```css
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-  gap: 1rem;
-}
-
-.table-wrap {
-  overflow-x: auto;
-}
-```
-
-Avoid layouts that require a fixed desktop width.
-
-## Print support
-
-For plans and reports, basic print styles are useful:
-
-```css
-@media print {
-  body {
-    background: white;
-  }
-
-  .no-print {
-    display: none;
-  }
-
-  section,
-  figure {
-    break-inside: avoid;
-  }
-}
-```
-
 ## Verification
 
 Before presenting the artifact:
@@ -614,23 +401,10 @@ Keep it temporary when:
 
 Choose the location based on the existing file structure and the plan's expected long-term value.
 
-## Keep chat concise
-
-The artifact contains the depth.
-
-The chat response should usually contain:
-
-* what was created
-* 2–5 important findings
-* the URL or file path
-
-Do not duplicate the artifact in chat.
-
 ## Final quality check
 
 Before finishing, ask:
 
-* Is HTML actually better than Markdown here?
 * Can the main point be understood quickly?
 * Does each visual element communicate something?
 * Are claims grounded in evidence?

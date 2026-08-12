@@ -18,14 +18,14 @@
     "npm:@tintinweb/pi-tasks",
     "npm:pi-mcp-adapter",
     "npm:pi-git-commands",
-    "npm:pi-show-diffs",
     "npm:pi-ask-user",
     "npm:pi-rtk-optimizer",
     "git:https://github.com/elpapi42/pi-codegraph",
     "git:github.com/Leechael/pi-provider-kimi-code",
     "npm:pi-tool-display",
     "npm:pi-agent-browser-native",
-    "npm:@victor-software-house/pi-curated-themes"
+    "npm:@victor-software-house/pi-curated-themes",
+    "git:github.com/Solly922/pi-show-diffs@feature/change-descriptions"
   ],
   "hideThinkingBlock": false,
   "observational-memory": {
