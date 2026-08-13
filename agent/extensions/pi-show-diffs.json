@@ -1,5 +1,5 @@
 {
-  "autoApprove": true,
+  "autoApprove": false,
   "diffColorMode": "default",
   "showDiffRail": true,
   "expandableLayout": false,
