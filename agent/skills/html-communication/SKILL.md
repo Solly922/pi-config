@@ -18,6 +18,8 @@ diagrams, navigation, or a document they can explore.
 Do not use HTML for short answers, small code snippets, simple debugging, or
 tasks where visual structure adds little value.
 
+Use the frontend-builder agent to construct the html only
+
 ## Self-contained HTML
 
 Prefer one HTML file containing all required styles and visuals.
