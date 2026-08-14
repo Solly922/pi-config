@@ -6,6 +6,8 @@ When asked to review code, provide a grade; grade the code changes on a scale of
 Use the html-communication skill to communicate complex information when visual structure improves understanding. 
 Use for plans, architecture docs, codebase maps, comparisons, dashboards, timelines, diagrams, reports, post-mortems,design explorations, and technical explainers.
 
+When using an explore subagent, opt for openai-codex/gpt-5.6-luna. It is a small, cheaper, faster model. If you need to elevate to a smarter model use gpt-5.6-sol on medium level thinking.
+
 ## Build Mode
 When using build mode follow these rules:
 - All code changes require using the general-guidelines skill.
