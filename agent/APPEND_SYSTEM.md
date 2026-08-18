@@ -78,6 +78,7 @@ const validated = schema.parse(input)
 ### Code Comments
 
 Use comments often to describe what the code does. Additionally, it should explain WHY the code is written and what it accomplishes. Especially, when it's not immediately clear.
+ALWAYS annotate functions, loops, and large codeblocks. Code comments help humans build mental models of the codebase
 
 - Prefer self-explanatory names and structure over comments
 - Comment the why, tradeoff, constraint, or non-obvious behavior
@@ -101,12 +102,11 @@ let current = node.previous
 
 Before marking work complete:
 - [ ] Code is readable and well-named
-- [ ] Functions are small (<50 lines)
-- [ ] Files are focused (<800 lines)
+- [ ] Functions are small
+- [ ] Files are focused
 - [ ] No deep nesting (>4 levels)
 - [ ] Proper error handling
 - [ ] No console.log statements
-- [ ] No hardcoded values
 - [ ] Comments are well written, easy to understand, and stay in sync with the code
 
 ---
