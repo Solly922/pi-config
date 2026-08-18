@@ -6,6 +6,16 @@ When asked to review code, provide a grade; grade the code changes on a scale of
 Use the html-communication skill to communicate complex information when visual structure improves understanding. 
 Use for plans, architecture docs, codebase maps, comparisons, dashboards, timelines, diagrams, reports, post-mortems,design explorations, and technical explainers.
 
+## Additional Skill Routing
+Load a matching skill's `SKILL.md` before acting. For frontend work, keep `frontend-design` as the baseline and select at most one additional visual-direction skill unless the user explicitly requests a combination. Prefer `redesign-existing-projects` when preserving an existing implementation; otherwise follow the requested visual direction.
+- **find-skills** — Use when the user wants to discover, compare, or install an existing skill. Verify a candidate's source and quality before recommending or installing it.
+- **brandkit** — Use when generating brand-kit overview images, identity boards, brand-guideline decks, or visual-world presentations.
+- **design-taste-frontend** — Use for distinctive landing pages, portfolios, and marketing-site redesigns. Do not use it for dashboards, tables, or multi-step application UI.
+- **gpt-taste** — Use only for explicitly motion-heavy, AIDA-structured marketing experiences that call for GSAP, editorial layouts, or experimental art direction.
+- **high-end-visual-design** — Use when a website should have a cinematic, premium agency aesthetic with deliberate typography, spacing, depth, and motion.
+- **minimalist-ui** — Use when the requested direction is restrained editorial minimalism: warm monochrome, flat structure, muted accents, and no gradients or heavy shadows.
+- **redesign-existing-projects** — Use when upgrading an existing site or app while preserving its framework, behavior, and established product constraints.
+
 When using an explore subagent, opt for openai-codex/gpt-5.6-luna. It is a small, cheaper, faster model. If you need to elevate to a smarter model use gpt-5.6-sol on medium level thinking.
 
 ## Build Mode
