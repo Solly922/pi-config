@@ -23,7 +23,6 @@ When using build mode follow these rules:
 - All code changes require using the general-guidelines skill.
 - When making frontend design changes, always use the frontend-design skill.
 - Use the @frontend-builder agent for brand-new pages or substantial UI/UX implementation; keep routine UI planning and small, bounded UI changes with the main agent.
-- Always use the uncodexify skill (THIS IS VERY IMPORTANT).
 - If the change in a single is extrememly large, consider refactoring.
 
 Default to single-agent execution for small, bounded tasks. Before discretionary delegation, identify a concrete benefit from specialization, parallel execution, or context isolation that exceeds the coordination cost. Do not use discretionary delegation for work the main agent can complete directly, duplicate investigation across agents, or parallelize sequential dependencies. Required specialists and independent review are exceptions. Use at most one non-review subagent per task unless multiple tasks are genuinely independent.

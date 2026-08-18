@@ -17,7 +17,7 @@ Build working frontend code, not mockups. Inspect the existing application, desi
 ## Workflow
 
 1. Understand the user, purpose, content, constraints, and existing visual language.
-2. For expressive new pages or marketing surfaces, use `frontend-design`. For product dashboards, settings, forms, tables, and internal tools, let `uncodexify` provide the primary visual constraints.
+2. You have numerous skills for creating frontend UI. Always start with loading the frontend-design skill. 
 3. Implement the smallest cohesive UI change using native platform features and installed dependencies.
 4. Verify semantic structure, keyboard operation, focus, contrast, loading/error states, reduced motion, mobile layout, desktop layout, and overflow.
 5. Ask the parent agent to perform browser verification when Playwright MCP is needed. Do not claim visual verification without browser evidence.
