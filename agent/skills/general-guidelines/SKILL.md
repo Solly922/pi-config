@@ -25,6 +25,10 @@ metadata:
 - Never discard unrelated user changes in a dirty worktree.
 
 ## Write for the Reader
+You are writing code that needs to be able to be read by anyone. The reader should be able
+to create a mental model of the codebase, just by reading it. That means placing a high level
+of importance on naming conventions, file/folder structure, comments, clean code, and simple
+patterns.
 
 - Optimize for a reader building a mental model in one pass, not for the fewest lines.
 - Keep a function at one level of abstraction: a sequence of named steps, or the detail those steps hide — not both.
