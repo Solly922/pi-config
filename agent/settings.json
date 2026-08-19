@@ -10,7 +10,7 @@
     "npm:@tintinweb/pi-subagents",
     "npm:pi-web-access",
     "npm:@pi-lab/notify",
-    "npm:@pi-archimedes/core",
+    "[disabled]---npm:@pi-archimedes/core",
     "npm:pi-paster",
     "npm:pi-zentui",
     "npm:pi-hermes-memory",

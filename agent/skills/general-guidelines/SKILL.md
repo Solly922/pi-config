@@ -56,7 +56,7 @@ Both extremes cost the reader: a file too large to hold in their head, and a cha
 - Do not use discretionary delegation for work the main agent can complete directly with available context, repeat the same investigation in multiple agents, or parallelize work with sequential dependencies. Required specialists and independent review are exceptions.
 - Use an architect only for consequential decisions involving system or module boundaries, data ownership, public contracts, security, scalability, reliability, or deployment. Routine UI and bounded feature planning stay with the main agent.
 - Use at most one non-review subagent per task unless multiple tasks are genuinely independent and benefit from concurrent work.
-- For required code review, run one full review after implementation and relevant checks. Request a targeted follow-up only when fixes materially change the risk surface or a high-severity finding remains; do not repeat full reviews for mechanical fixes.
+- For required code review, run one full review after implementation and relevant checks. Request a targeted follow-up only when fixes materially change the risk surface or a high-severity finding remains; do not repeat full reviews for mechanical fixes. Some things do not require a code review. For example, small one line fixes, git commit message, and other small insignificant things.
 
 ## Implement Safely
 

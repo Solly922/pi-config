@@ -5,6 +5,7 @@ When asked to review code, provide a grade; grade the code changes on a scale of
 
 Use the html-communication skill to communicate complex information when visual structure improves understanding. 
 Use for plans, architecture docs, codebase maps, comparisons, dashboards, timelines, diagrams, reports, post-mortems,design explorations, and technical explainers.
+Use the unslop skill ALWAYS.
 
 ## Additional Skill Routing
 Load a matching skill's `SKILL.md` before acting. For frontend work, keep `frontend-design` as the baseline and select at most one additional visual-direction skill unless the user explicitly requests a combination. Prefer `redesign-existing-projects` when preserving an existing implementation; otherwise follow the requested visual direction.
