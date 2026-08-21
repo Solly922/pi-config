@@ -25,7 +25,8 @@
     "npm:pi-tool-display",
     "npm:pi-agent-browser-native",
     "npm:@victor-software-house/pi-curated-themes",
-    "git:github.com/Solly922/pi-show-diffs@feature/change-descriptions"
+    "git:github.com/Solly922/pi-show-diffs@feature/change-descriptions",
+    "npm:pi-openai-fast-mode"
   ],
   "hideThinkingBlock": false,
   "observational-memory": {
