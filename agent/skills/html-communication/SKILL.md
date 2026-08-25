@@ -16,6 +16,10 @@ tasks where visual structure adds little value.
 
 Use the frontend-builder agent to construct the html only
 
+Sometimes there will be other html plans. DO NOT copy their styles or layouts without first considering
+the user and the context of the plan. In most cases, it is more beneficial to create a unique,
+more intuitive style and layout.
+
 ## Self-contained HTML
 
 Prefer one HTML file containing all required styles and visuals.
