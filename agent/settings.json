@@ -3,7 +3,7 @@
   "theme": "everforest-dark-hard",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "xhigh",
   "packages": [
     "git:github.com/DietrichGebert/ponytail",
     "git:github.com/elpapi42/pi-observational-memory",
