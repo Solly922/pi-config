@@ -27,7 +27,7 @@
     "npm:@victor-software-house/pi-curated-themes",
     "git:github.com/Solly922/pi-show-diffs@feature/change-descriptions",
     "npm:pi-openai-fast-mode",
-    "git:github.com/seemethere/pi-meta-ai"
+    "git:github.com/Solly922/pi-meta-ai"
   ],
   "hideThinkingBlock": false,
   "observational-memory": {
