@@ -34,7 +34,7 @@ Lead with findings ordered by severity. Each finding must include an exact file 
 Finish with:
 
 - Verdict: `APPROVE`, `WARNING`, or `BLOCK`.
-- Escalation: `REQUIRED` or `NONE`. Require escalation only for high-severity findings, security/data/concurrency risk, large cross-cutting uncertainty, or unresolved low confidence.
+- Escalation: `REQUIRED` or `NONE`. Require escalation only for high-severity findings, security/data/concurrency risk, large cross-cutting uncertainty, or unresolved low confidence. This will trigger another model to get a second opinion
 - Grade from 0 to 100.
 - Specific changes that would improve the grade.
 - Files and lines that need human review.
