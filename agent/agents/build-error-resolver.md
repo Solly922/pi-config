@@ -4,8 +4,8 @@ display_name: Build Error Resolver
 tools: read, write, edit, bash, grep, find
 extensions: false
 skills: verification-loop
-model: openai-codex/gpt-5.6-luna
-thinking: xhigh
+model: meta-ai/muse-spark-1.3-contributor
+thinking: high
 max_turns: 10
 prompt_mode: replace
 ---

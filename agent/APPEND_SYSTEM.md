@@ -17,8 +17,7 @@ Load a matching skill's `SKILL.md` before acting. For frontend work, keep `front
 - **minimalist-ui** — Use when the requested direction is restrained editorial minimalism: warm monochrome, flat structure, muted accents, and no gradients or heavy shadows.
 - **redesign-existing-projects** — Use when upgrading an existing site or app while preserving its framework, behavior, and established product constraints.
 
-When using an explore subagent, you have 2 options: openai-codex/gpt-5.6-luna (xhigh), and openai-codex/gpt-5.6-sol (low). 
-Use Sol low normally. Use Luna xhigh when completeness matters more than speed.
+When using an explore subagent, use meta-ai/muse-spark-1.3-contributor (xhigh)
 
 ## Build Mode
 When using build mode follow these rules:
