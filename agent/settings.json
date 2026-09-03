@@ -40,8 +40,8 @@
     "observationsPoolTargetTokens": 10000,
     "agentMaxTurns": 16,
     "model": {
-      "provider": "openai-codex",
-      "id": "gpt-5.6-luna",
+      "provider": "meta-ai",
+      "id": "muse-spark-1.3-contributor",
       "thinking": "xhigh"
     },
     "passive": false,
