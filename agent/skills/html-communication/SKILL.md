@@ -14,7 +14,7 @@ diagrams, navigation, or a document they can explore.
 Do not use HTML for short answers, small code snippets, simple debugging, or
 tasks where visual structure adds little value.
 
-Use the frontend-builder agent to construct the html only
+Use the drafter agent to construct the html only
 
 Sometimes there will be other html plans. DO NOT copy their styles or layouts without first considering
 the user and the context of the plan. In most cases, it is more beneficial to create a unique,
