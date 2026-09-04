@@ -3,8 +3,8 @@ description: Architecture specialist for consequential decisions involving syste
 display_name: Architect
 tools: read, grep, find
 extensions: false
-model: openai-codex/gpt-5.6-sol
-thinking: high
+model: openai-codex/gpt-6-astra
+thinking: medium
 max_turns: 12
 prompt_mode: replace
 ---
