@@ -33,6 +33,7 @@ Use these subagents only when their trigger applies:
 - @build-error-resolver - Use for non-trivial build or type failures when focused diagnosis would materially help. Keep straightforward failures with the main agent. The resolver makes minimal fixes and does not perform architectural edits.
 - @code-reviewer - MUST BE USED once after implementing and running relevant checks for all code changes. Use `meta-ai/muse-spark-1.3-contributor` with `thinking: xhigh` by default unless the user specifies otherwise. If it returns `Escalation: REQUIRED`, rerun only the affected findings or paths with `openai-codex/gpt-6-astra` `thinking: medium`. After fixing findings, request a targeted follow-up only when the fixes materially changed the risk surface or a high-severity finding remains. Do not repeat full reviews for mechanical fixes.
 - @frontend-builder - REQUIRED for brand-new pages and substantial UI implementation, but not for routine UI planning or small, bounded UI changes. Keep using the frontend-design skill alongside it for styling direction and visual quality.
+- @drafter - use this for building html plans, drafts, reports, comparisons, etc
 
 Whenever you finish building, always provide a summary of the changes made.
 
