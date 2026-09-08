@@ -41,6 +41,25 @@ Whenever you finish building, always provide a summary of the changes made.
 Keep bounded feature planning with the main agent. Use the architect subagent only when planning requires a consequential architectural decision across system or module boundaries, data ownership, public contracts, security, scalability, reliability, or deployment. When planning new features, always ask clarifying questions and suggest improvements to the implementation.
 Heavily consider using the html-communication skill for serving your plan to the user. HTML is easier to read and understand for humnas, so it is preferred, but not required.
 
+## Memory hierarchy
+
+Use memory systems according to their intended scope:
+
+1. Current context is authoritative for the active task.
+2. Observational memory preserves continuity within long sessions and across compaction.
+3. Hermes memory stores durable user/project facts, corrections, failures, conventions, and reusable procedures.
+4. LLM Wiki stores curated project knowledge, research, architecture, and source-backed documentation.
+
+Do not duplicate information between systems unless its role genuinely changes.
+
+Prefer original repository/code evidence over recalled memory when they conflict.
+
+Use Hermes session/memory search when prior-session context is relevant.
+
+Use the LLM Wiki when durable project or research knowledge is needed.
+
+Do not store routine transient implementation state in Hermes or the Wiki.
+
 ### Questions
 You have the ability to ask the user questions. This especially helpful when planning. Ask the user questions if the instructions are unclear, you have an idea, you notice wrong, or if you need to ask something. This tool is beneficial is all scenarios, use it liberally. You can also ask questions when building. Always allow the option for the user to input their own answer.
 
