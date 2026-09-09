@@ -5,14 +5,24 @@
   "defaultModel": "gpt-6-astra",
   "defaultThinkingLevel": "high",
   "packages": [
-    "git:github.com/DietrichGebert/ponytail",
+    {
+      "source": "git:github.com/DietrichGebert/ponytail",
+      "extensions": [
+        "+pi-extension/index.js"
+      ]
+    },
     "git:github.com/elpapi42/pi-observational-memory",
     "npm:@tintinweb/pi-subagents",
     "npm:pi-web-access",
     "npm:@pi-lab/notify",
     "[disabled]---npm:@pi-archimedes/core",
     "npm:pi-paster",
-    "npm:pi-zentui",
+    {
+      "source": "npm:pi-zentui",
+      "extensions": [
+        "+extensions/zentui/index.ts"
+      ]
+    },
     "npm:pi-hermes-memory",
     "npm:@zosmaai/pi-llm-wiki",
     "npm:@tintinweb/pi-tasks",
@@ -22,7 +32,12 @@
     "npm:pi-rtk-optimizer",
     "git:https://github.com/elpapi42/pi-codegraph",
     "git:github.com/Leechael/pi-provider-kimi-code",
-    "npm:pi-tool-display",
+    {
+      "source": "npm:pi-tool-display",
+      "extensions": [
+        "+index.ts"
+      ]
+    },
     "npm:pi-agent-browser-native",
     "npm:@victor-software-house/pi-curated-themes",
     "git:github.com/Solly922/pi-show-diffs@feature/change-descriptions",
