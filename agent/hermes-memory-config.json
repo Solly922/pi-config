@@ -1,0 +1,10 @@
+{
+  "llmModelOverride": "meta-ai/muse-spark-1.3-contributor",
+  "llmThinkingOverride": "high",
+  "reviewEnabled": true,
+  "nudgeInterval": 20,
+  "nudgeToolCalls": 30,
+  "reviewRecentMessages": 60,
+  "flushOnCompact": true,
+  "flushOnShutdown": true
+}

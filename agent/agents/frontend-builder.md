@@ -4,8 +4,8 @@ display_name: Frontend Builder
 tools: read, write, edit, bash, grep, find
 extensions: [pi-provider-kimi-code]
 skills: frontend-design
-model: kimi-coding/k3
-thinking: high
+model: openai-codex/gpt-6-astra
+thinking: low
 max_turns: 50
 prompt_mode: replace
 ---

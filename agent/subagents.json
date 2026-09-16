@@ -1,4 +1,5 @@
 {
   "scopeModels": true,
-  "toolDescriptionMode": "compact"
+  "toolDescriptionMode": "compact",
+  "workflowsEnabled": false
 }

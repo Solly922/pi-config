@@ -1,204 +1,132 @@
 # General Rules
-If the change seems large AND you are in an important branch (main, dev, etc...) ask the user if you should use a git worktree.
-If you are working in a git worktree, always commit once you've finished your work and mention the commit hash to user.
-When asked to review code, provide a grade; grade the code changes on a scale of 0-100 with 100 being perfect code and 0 being the worst thing ever written. Provide ways to improve the score. Also, provide files and line numbers that point to code that should be reviewed by a human
 
-Use the html-communication skill to communicate complex information when visual structure improves understanding. 
-Use for plans, architecture docs, codebase maps, comparisons, dashboards, timelines, diagrams, reports, post-mortems,design explorations, and technical explainers.
-Use the unslop skill ALWAYS.
+- If a change seems large AND you are on an important branch (main, dev, etc.), ask whether to use a git worktree.
+- When working in a git worktree, always commit finished work and mention the commit hash.
+- When reviewing code, provide a grade from 0–100, ways to improve it, and file paths with line numbers for anything needing human review.
+- Always summarize completed changes.
 
-## Additional Skill Routing
-Load a matching skill's `SKILL.md` before acting. For frontend work, keep `frontend-design` as the baseline and select at most one additional visual-direction skill unless the user explicitly requests a combination. Prefer `redesign-existing-projects` when preserving an existing implementation; otherwise follow the requested visual direction.
-- **find-skills** — Use when the user wants to discover, compare, or install an existing skill. Verify a candidate's source and quality before recommending or installing it.
-- **brandkit** — Use when generating brand-kit overview images, identity boards, brand-guideline decks, or visual-world presentations.
-- **design-taste-frontend** — Use for distinctive landing pages, portfolios, and marketing-site redesigns. Do not use it for dashboards, tables, or multi-step application UI.
-- **gpt-taste** — Use only for explicitly motion-heavy, AIDA-structured marketing experiences that call for GSAP, editorial layouts, or experimental art direction.
-- **high-end-visual-design** — Use when a website should have a cinematic, premium agency aesthetic with deliberate typography, spacing, depth, and motion.
-- **minimalist-ui** — Use when the requested direction is restrained editorial minimalism: warm monochrome, flat structure, muted accents, and no gradients or heavy shadows.
-- **redesign-existing-projects** — Use when upgrading an existing site or app while preserving its framework, behavior, and established product constraints.
+## Written Communication
 
-When using an explore subagent, use meta-ai/muse-spark-1.3-contributor (xhigh)
+Use the unslop skill for ALL written communication, including progress updates, plans, technical explanations, and final responses. Reuse the loaded skill while it remains available in context; reload it when needed.
 
-## Build Mode
-When using build mode follow these rules:
-- All code changes require using the general-guidelines skill.
-- When making frontend design changes, always use the frontend-design skill.
-- Use the @frontend-builder agent for brand-new pages or substantial UI/UX implementation; keep routine UI planning and small, bounded UI changes with the main agent.
-- If the change in a single is extrememly large, consider refactoring.
+Use html-communication when visual structure improves understanding, including plans, architecture docs, comparisons, diagrams, reports, timelines, and technical explanations. HTML is preferred for substantial plans, but not required.
 
-Model routing (suggested): use gpt-6-astra low by default, muse-spark-1.3 xhigh for bounded tool-heavy checks, Sol medium for ambiguous implementation, and gpt-5-astra high for architecture, security, database, or difficult debugging. Never use Terra and never use Sol above high. Always check which gpt model you are using. If it's gpt-5.6-sol or 6-astra, the only acceptable reasoning levels are low, medium, high. If it's gpt-5.6-luna, the only acceptable reasoning levels are xhigh and max.
+## Skill Routing
 
-Use these subagents only when their trigger applies:
-- @architect - Use only for consequential decisions involving system or module boundaries, data ownership, public contracts, security architecture, scalability, reliability, or deployment. Do not use for routine UI or bounded feature planning merely because the work is a new feature.
-- @build-error-resolver - Use for non-trivial build or type failures when focused diagnosis would materially help. Keep straightforward failures with the main agent. The resolver makes minimal fixes and does not perform architectural edits.
-- @code-reviewer - MUST BE USED once after implementing and running relevant checks for all code changes. Use `meta-ai/muse-spark-1.3-contributor` with `thinking: xhigh` by default unless the user specifies otherwise. If it returns `Escalation: REQUIRED`, rerun only the affected findings or paths with `openai-codex/gpt-6-astra` `thinking: medium`. After fixing findings, request a targeted follow-up only when the fixes materially changed the risk surface or a high-severity finding remains. Do not repeat full reviews for mechanical fixes.
-- @frontend-builder - REQUIRED for brand-new pages and substantial UI implementation, but not for routine UI planning or small, bounded UI changes. Keep using the frontend-design skill alongside it for styling direction and visual quality.
-- @drafter - use this for building html plans, drafts, reports, comparisons, etc
+Load the matching skill's `SKILL.md` before acting.
 
-Whenever you finish building, always provide a summary of the changes made.
+- All code changes require general-guidelines.
+- Frontend design changes require frontend-design as the baseline. Select at most one additional visual-direction skill unless the user requests a combination.
+- find-skills: Discover, compare, or install existing skills. Verify source and quality before recommending or installing.
+- brandkit: Brand-kit images, identity boards, guideline decks, and visual-world presentations.
+- design-taste-frontend: Distinctive landing pages, portfolios, and marketing sites. Do not use for dashboards, tables, or multi-step application UI.
+- gpt-taste: Only for explicitly motion-heavy, AIDA-structured marketing experiences using GSAP, editorial layouts, or experimental art direction.
+- high-end-visual-design: Cinematic, premium agency aesthetics with deliberate typography, spacing, depth, and motion.
+- minimalist-ui: Restrained editorial minimalism, warm monochrome, flat structure, muted accents, and no gradients or heavy shadows.
+- redesign-existing-projects: Prefer when upgrading an existing site or app while preserving its framework, behavior, and product constraints. Otherwise follow the requested visual direction.
 
-## Plan Mode
-Keep bounded feature planning with the main agent. Use the architect subagent only when planning requires a consequential architectural decision across system or module boundaries, data ownership, public contracts, security, scalability, reliability, or deployment. When planning new features, always ask clarifying questions and suggest improvements to the implementation.
-Heavily consider using the html-communication skill for serving your plan to the user. HTML is easier to read and understand for humnas, so it is preferred, but not required.
+## Model Routing
 
-## Memory hierarchy
+Suggested routing:
+- Default: gpt-6-astra, low.
+- Bounded tool-heavy checks: muse-spark-1.3, xhigh.
+- Ambiguous implementation: Sol, medium.
+- Architecture, security, database, or difficult debugging: gpt-6-astra, medium.
 
-Use memory systems according to their intended scope:
+Never use Terra or Sol above high. Always check the current GPT model:
+- gpt-5.6-sol and gpt-6-astra: only low, medium, or high.
+- gpt-5.6-luna: only xhigh or max.
+
+Use meta-ai/muse-spark-1.3-contributor with xhigh for Explore subagents.
+
+## Subagents
+
+Use these agents only when their trigger applies:
+
+- @architect: Consequential decisions about system/module boundaries, data ownership, public contracts, security architecture, scalability, reliability, or deployment. Keep routine UI and bounded feature planning with the main agent.
+- @build-error-resolver: Non-trivial build/type failures where focused diagnosis helps. Keep straightforward failures with the main agent. Make minimal fixes without architectural edits.
+- @code-reviewer: MUST BE USED once after implementation and relevant checks for ALL code changes. Default to meta-ai/muse-spark-1.3-contributor with xhigh unless the user specifies otherwise. If it returns `Escalation: REQUIRED`, rerun only affected findings or paths with openai-codex/gpt-6-astra at medium. After fixes, request targeted follow-up only when risk materially changed or a high-severity finding remains. Do not repeat full reviews for mechanical fixes.
+- @frontend-builder: REQUIRED for brand-new pages and substantial UI/UX implementation. Keep routine UI planning and small, bounded changes with the main agent. Continue using frontend-design for styling and visual quality.
+- @drafter: Building HTML plans, drafts, reports, and comparisons.
+
+## Build and Plan Modes
+
+When building, follow the skill and subagent rules above. Consider refactoring when a change to a single file becomes extremely large.
+
+When planning new features, always ask clarifying questions and suggest improvements. Keep bounded planning with the main agent unless the architect trigger applies. Heavily consider html-communication for presenting the plan.
+
+## Memory Hierarchy
 
 1. Current context is authoritative for the active task.
 2. Observational memory preserves continuity within long sessions and across compaction.
-3. Hermes memory stores durable user/project facts, corrections, failures, conventions, and reusable procedures.
+3. Hermes stores durable user/project facts, corrections, failures, conventions, and reusable procedures.
 4. LLM Wiki stores curated project knowledge, research, architecture, and source-backed documentation.
 
-Do not duplicate information between systems unless its role genuinely changes.
+Use Hermes session/memory search when prior-session context matters. Use LLM Wiki for durable project or research knowledge.
 
-Prefer original repository/code evidence over recalled memory when they conflict.
+Prefer original repository/code evidence over conflicting memories. Do not duplicate information between systems unless its role changes. Do not store routine transient implementation state in Hermes or Wiki.
 
-Use Hermes session/memory search when prior-session context is relevant.
+## Questions
 
-Use the LLM Wiki when durable project or research knowledge is needed.
+Use questions liberally during planning and building when instructions are unclear, you have an idea, notice something wrong, or need more information. Always allow the user to supply their own answer.
 
-Do not store routine transient implementation state in Hermes or the Wiki.
+## TO DO List Management
 
-### Questions
-You have the ability to ask the user questions. This especially helpful when planning. Ask the user questions if the instructions are unclear, you have an idea, you notice wrong, or if you need to ask something. This tool is beneficial is all scenarios, use it liberally. You can also ask questions when building. Always allow the option for the user to input their own answer.
+Keep the todo list updated after each step. Before finishing any run, ensure no items remain in progress, including changes the user rejected.
 
-### TO DO List management
-You have access to a todo list. You need to make sure that you are keeping it up to date after each step. Before you finish any run, ensure that there are no in progress items. If the user rejected some changes, do not leave the task as in progress.
-
-### File Organization
+## File Organization
 
 MANY SMALL FILES > FEW LARGE FILES:
-- High cohesion, low coupling
-- 200-400 lines typical, 800 max
-- Extract utilities from large components
-- Organize by feature/domain, not by type
 
-### Error Handling
+- High cohesion, low coupling.
+- Typically 200–400 lines per file; 800 maximum.
+- Extract utilities from large components.
+- Organize by feature/domain, not by type.
 
-ALWAYS handle errors comprehensively:
+## Error Handling and Input Validation
 
-```typescript
-try {
-  const result = await riskyOperation()
-  return result
-} catch (error) {
-  console.error('Operation failed:', error)
-  throw new Error('Detailed user-friendly message')
-}
-```
+ALWAYS handle errors comprehensively and provide meaningful error context.
 
-### Input Validation
+ALWAYS validate user input.
 
-ALWAYS validate user input:
+## Code Comments
 
-```typescript
-import { z } from 'zod'
+Use comments often to explain what code does, WHY it exists, and what it accomplishes.
 
-const schema = z.object({
-  email: z.string().email(),
-  age: z.number().int().min(0).max(150)
-})
+ALWAYS annotate functions, loops, and large code blocks.
 
-const validated = schema.parse(input)
-```
-
-### Code Comments
-
-Use comments often to describe what the code does. Additionally, it should explain WHY the code is written and what it accomplishes. Especially, when it's not immediately clear.
-ALWAYS annotate functions, loops, and large codeblocks. Code comments help humans build mental models of the codebase
-
-- Prefer self-explanatory names and structure over comments
-- Comment the why, tradeoff, constraint, or non-obvious behavior
-- It is acceptable to comment what the code is doing when the behavior is not immediately clear
-- Add a short comment before complex logic that would otherwise take time to parse
-- Keep comments accurate when code changes; stale comments are bugs
-- Avoid noisy banner comments and large explanatory blocks unless they are genuinely needed
-- Use comments to explain one-liners, clunky logic, obfuscated logic
-
-```typescript
-// GOOD: explains the constraint behind the logic
-// Keep the retry delay capped to avoid overwhelming the upstream API during outages
-const delay = Math.min(baseDelay * 2 ** attempt, MAX_DELAY)
-
-// ALSO GOOD: clarifies non-obvious behavior
-// Walk backward to find the most recent committed snapshot for this item
-let current = node.previous
-```
-
-### Code Quality Checklist
-
-Before marking work complete:
-- [ ] Code is readable and well-named
-- [ ] Functions are small
-- [ ] Files are focused
-- [ ] No deep nesting (>4 levels)
-- [ ] Proper error handling
-- [ ] No console.log statements
-- [ ] Comments are well written, easy to understand, and stay in sync with the code
-
----
+- Prefer self-explanatory names and structure.
+- Explain tradeoffs, constraints, and non-obvious behavior.
+- Add a short comment before complex logic.
+- Explain one-liners, clunky logic, or obfuscated code when needed.
+- Keep comments accurate as code changes.
+- Avoid noisy banners and unnecessary explanatory blocks.
 
 ## Testing Requirements
 
-### Test Coverage Guidance
+When the user or AGENTS.md requires formal coverage, include the relevant unit, integration, and E2E tests. Use Playwright for critical user-flow E2E tests.
 
-When the user or `AGENTS.md` requires formal test coverage, include the relevant test types:
-1. **Unit Tests** - Individual functions, utilities, components
-2. **Integration Tests** - API endpoints, database operations
-3. **E2E Tests** - Critical user flows (Playwright)
+When TDD is required:
+1. Write the test and verify it fails.
+2. Write the minimal implementation and verify it passes.
+3. Refactor and verify any required coverage target.
 
-### Test-Driven Development
+When troubleshooting test failures:
+1. Use tdd-workflow.
+2. Check isolation and verify mocks.
+3. Fix the implementation unless the tests are wrong.
 
-Use this workflow when the user or `AGENTS.md` requires TDD:
-1. Write test first (RED)
-2. Run test - it should FAIL
-3. Write minimal implementation (GREEN)
-4. Run test - it should PASS
-5. Refactor (IMPROVE)
-6. Verify any user- or `AGENTS.md`-specified coverage target
+## Completion Checklist
 
-### Troubleshooting Test Failures
+Before marking work complete:
 
-1. Use **tdd-workflow** skill
-2. Check test isolation
-3. Verify mocks are correct
-4. Fix implementation, not tests (unless tests are wrong)
-
----
-
-### Custom Hooks Pattern
-
-```typescript
-export function useDebounce<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value)
-
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedValue(value), delay)
-    return () => clearTimeout(handler)
-  }, [value, delay])
-
-  return debouncedValue
-}
-```
-
-### Repository Pattern
-
-```typescript
-interface Repository<T> {
-  findAll(filters?: Filters): Promise<T[]>
-  findById(id: string): Promise<T | null>
-  create(data: CreateDto): Promise<T>
-  update(id: string, data: UpdateDto): Promise<T>
-  delete(id: string): Promise<void>
-}
-```
-
-## Success Metrics
-
-You are successful when:
-- All required tests pass and any requested coverage target is met
-- No security vulnerabilities
-- Code is readable and maintainable
-- Performance is acceptable
-- User requirements are met
+- Code is readable and well-named.
+- Functions are small and files are focused.
+- Nesting does not exceed four levels.
+- Errors are handled and user input is validated.
+- No console.log statements remain.
+- Comments are clear, useful, and accurate.
+- All required tests pass and required coverage is met.
+- No security vulnerabilities remain.
+- Performance is acceptable.
+- User requirements are met.
