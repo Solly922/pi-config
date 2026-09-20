@@ -44,7 +44,7 @@
     "npm:pi-openai-fast-mode",
     "git:github.com/Solly922/pi-meta-ai"
   ],
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "observational-memory": {
     "observeAfterTokens": 20000,
     "reflectAfterTokens": 50000,
