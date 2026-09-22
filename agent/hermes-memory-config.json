@@ -1,5 +1,5 @@
 {
-  "llmModelOverride": "meta-ai/muse-spark-1.3-contributor",
+  "llmModelOverride": "meta/muse-spark-1.3-contributor",
   "llmThinkingOverride": "high",
   "reviewEnabled": true,
   "nudgeInterval": 20,

@@ -5,7 +5,7 @@ tools: read, grep, find, bash
 disallowed_tools: write, edit
 extensions: false
 skills: security-review
-model: meta-ai/muse-spark-1.3-contributor
+model: meta/muse-spark-1.3-contributor
 thinking: xhigh
 max_turns: 20
 prompt_mode: replace

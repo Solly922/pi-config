@@ -38,7 +38,7 @@ Never use Terra above high. Always check the current GPT model:
 - gpt-6-sol: low, medium, high, or xhigh.
 - gpt-5.6-luna: only xhigh or max.
 
-Use meta-ai/muse-spark-1.3-contributor with xhigh for Explore subagents.
+Use meta/muse-spark-1.3-contributor with xhigh for Explore subagents.
 
 ## Subagents
 
@@ -46,7 +46,7 @@ Use these agents only when their trigger applies:
 
 - @architect: Consequential decisions about system/module boundaries, data ownership, public contracts, security architecture, scalability, reliability, or deployment. Keep routine UI and bounded feature planning with the main agent.
 - @build-error-resolver: Non-trivial build/type failures where focused diagnosis helps. Keep straightforward failures with the main agent. Make minimal fixes without architectural edits.
-- @code-reviewer: MUST BE USED once after implementation and relevant checks for ALL code changes. Default to meta-ai/muse-spark-1.3-contributor with xhigh unless the user specifies otherwise. If it returns `Escalation: REQUIRED`, rerun only affected findings or paths with openai-codex/gpt-6-astra at medium. After fixes, request targeted follow-up only when risk materially changed or a high-severity finding remains. Do not repeat full reviews for mechanical fixes.
+- @code-reviewer: MUST BE USED once after implementation and relevant checks for ALL code changes. Default to meta/muse-spark-1.3-contributor with xhigh unless the user specifies otherwise. If it returns `Escalation: REQUIRED`, rerun only affected findings or paths with openai-codex/gpt-6-astra at medium. After fixes, request targeted follow-up only when risk materially changed or a high-severity finding remains. Do not repeat full reviews for mechanical fixes.
 - @frontend-builder: REQUIRED for brand-new pages and substantial UI/UX implementation. Keep routine UI planning and small, bounded changes with the main agent. Continue using frontend-design for styling and visual quality.
 - @drafter: Building HTML plans, drafts, reports, and comparisons.
 
