@@ -5,7 +5,7 @@ tools: read, grep, find
 disallowed_tools: write, edit
 extensions: false
 skills: security-review
-model: openai-codex/gpt-5.6-sol
+model: openai-codex/gpt-6-sol
 thinking: high
 max_turns: 10
 prompt_mode: replace

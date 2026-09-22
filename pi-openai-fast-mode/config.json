@@ -18,7 +18,7 @@
     },
     {
       "provider": "openai",
-      "model": "gpt-5.6-sol",
+      "model": "gpt-6-sol",
       "serviceTier": "priority"
     },
     {
@@ -53,7 +53,7 @@
     },
     {
       "provider": "openai-codex",
-      "model": "gpt-5.6-sol",
+      "model": "gpt-6-sol",
       "serviceTier": "priority"
     },
     {

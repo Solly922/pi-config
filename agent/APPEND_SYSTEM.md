@@ -33,8 +33,9 @@ Suggested routing:
 - Ambiguous implementation: Sol, medium.
 - Architecture, security, database, or difficult debugging: gpt-6-astra, medium.
 
-Never use Terra or Sol above high. Always check the current GPT model:
-- gpt-5.6-sol and gpt-6-astra: only low, medium, or high.
+Never use Terra above high. Always check the current GPT model:
+- gpt-6-astra: only low, medium, or high.
+- gpt-6-sol: low, medium, high, or xhigh.
 - gpt-5.6-luna: only xhigh or max.
 
 Use meta-ai/muse-spark-1.3-contributor with xhigh for Explore subagents.
