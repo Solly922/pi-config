@@ -27,6 +27,8 @@ Load the matching skill's `SKILL.md` before acting.
 
 ## Model Routing
 
+You have the jev-delegation skill, which will use a separate model to handle the routing. Ask the user at the beginning of each build session if they would like to use that skill. If not, you have the following:
+
 Suggested routing:
 - Default: gpt-6-astra, low.
 - Bounded tool-heavy checks: muse-spark-1.3, xhigh.

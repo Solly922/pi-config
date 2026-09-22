@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.87.0",
+  "lastChangelogVersion": "0.86.1",
   "theme": "everforest-dark-hard",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-6-sol",
@@ -42,9 +42,9 @@
     "npm:@victor-software-house/pi-curated-themes",
     "git:github.com/Solly922/pi-show-diffs@feature/change-descriptions",
     "npm:pi-openai-fast-mode",
-    "git:github.com/Solly922/pi-meta-ai"
+    "[disabled]-git:github.com/Solly922/pi-meta-ai"
   ],
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "observational-memory": {
     "observeAfterTokens": 20000,
     "reflectAfterTokens": 50000,
