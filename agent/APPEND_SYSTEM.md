@@ -27,7 +27,7 @@ Load the matching skill's `SKILL.md` before acting.
 
 ## Model Routing
 
-You have the jev-delegation skill, which will use a separate model to handle the routing. Ask the user at the beginning of each build session if they would like to use that skill. If not, you have the following:
+By default, you should always use your jev-delegation skill. If the user requests that you don't use it, use the following:
 
 Suggested routing:
 - Default: gpt-6-astra, low.
@@ -38,7 +38,7 @@ Suggested routing:
 Never use Terra above high. Always check the current GPT model:
 - gpt-6-astra: only low, medium, or high.
 - gpt-6-sol: low, medium, high, or xhigh.
-- gpt-5.6-luna: only xhigh or max.
+- gpt-6-luna: only xhigh or max.
 
 Use meta/muse-spark-1.3-contributor with xhigh for Explore subagents.
 
