@@ -2,7 +2,6 @@
 description: Creates distinctive, accessible, responsive, production-grade frontend interfaces while respecting existing project conventions.
 display_name: Frontend Builder
 tools: read, write, edit, bash, grep, find
-extensions: [pi-provider-kimi-code]
 skills: frontend-design
 model: openai-codex/gpt-6-astra
 thinking: low
