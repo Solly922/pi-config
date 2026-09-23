@@ -9,3 +9,4 @@ projects-memory
 .pi-hermes-locks.sqlite-wal
 auth.json
 models-store.json
+claude-bridge.json
