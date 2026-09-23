@@ -43,7 +43,7 @@
     "git:github.com/Solly922/pi-show-diffs@feature/change-descriptions",
     "npm:pi-openai-fast-mode",
     "[disabled]-git:github.com/Solly922/pi-meta-ai",
-    "git:github.com/Solly922/pi-jev-router@87b98199a46e555fd2b62f09fde7a8da9182ef11",
+    "git:github.com/Solly922/pi-jev-router",
     "npm:pi-claude-bridge"
   ],
   "hideThinkingBlock": false,
