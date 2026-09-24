@@ -27,7 +27,7 @@ Load the matching skill's `SKILL.md` before acting.
 
 ## Model Routing
 
-By default, you should always use your jev-delegation skill. If the user requests that you don't use it, use the following:
+By default, you should always use your jev-delegation skill. Sometimes, you might think it's unnecessary, but this is the default and you should ask the user if it's ok not to use it. If the user requests that you don't use it, use the following:
 
 Suggested routing:
 - Default: gpt-6-astra, low.
