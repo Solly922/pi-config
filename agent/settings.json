@@ -24,7 +24,12 @@
       ]
     },
     "npm:pi-hermes-memory",
-    "npm:@zosmaai/pi-llm-wiki",
+    {
+      "source": "npm:@zosmaai/pi-llm-wiki",
+      "prompts": [
+        "!prompts/wiki-run.md"
+      ]
+    },
     "npm:@tintinweb/pi-tasks",
     "npm:pi-mcp-adapter",
     "npm:pi-git-commands",
@@ -44,7 +49,9 @@
     "npm:pi-openai-fast-mode",
     "[disabled]-git:github.com/Solly922/pi-meta-ai",
     "git:github.com/Solly922/pi-jev-router",
-    "npm:pi-claude-bridge"
+    "npm:pi-claude-bridge",
+    "npm:@earendil-works/pi-ai@0.87.1",
+    "npm:@earendil-works/pi-coding-agent@0.87.1"
   ],
   "hideThinkingBlock": false,
   "observational-memory": {
