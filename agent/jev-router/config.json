@@ -24,8 +24,8 @@
       "weaknesses": ["higher-cost", "can-overcomplicate-bounded-tasks"],
       "thinking": { "supported": ["medium", "high", "xhigh"], "default": "medium" },
       "routing": {
-        "preferWhen": ["implementation_is_complex", "instruction_precision_is_critical", "task_requires_difficult_debugging", "consequences_are_high", "frontend_requires_significant_visual_design", "consequences_are_high"],
-        "avoidWhen": ["task_is_simple", "task_is_bounded", "task_is_primarily_search", "cheaper_model_is_sufficient"]
+        "preferWhen": ["implementation_is_complex", "instruction_precision_is_critical", "task_requires_difficult_debugging", "consequences_are_high", "frontend_requires_significant_visual_design", "consequences_are_high", "frontend_is_small_but_new"],
+        "avoidWhen": ["task_is_simple", "task_is_bounded", "task_is_primarily_search", "cheaper_model_is_sufficient", "frontend_components_are_well-established", "frontend_components_are_prexisting"]
       },
       "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 58, "costPerTask": 3.46 } },
       "usage": { "source": "claude" }
