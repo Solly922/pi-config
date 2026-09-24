@@ -43,7 +43,10 @@
         "+index.ts"
       ]
     },
-    "npm:pi-agent-browser-native",
+    {
+      "source": "npm:pi-agent-browser-native",
+      "extensions": []
+    },
     "npm:@victor-software-house/pi-curated-themes",
     "git:github.com/Solly922/pi-show-diffs@feature/change-descriptions",
     "npm:pi-openai-fast-mode",
@@ -53,7 +56,7 @@
     "npm:@earendil-works/pi-ai@0.87.1",
     "npm:@earendil-works/pi-coding-agent@0.87.1"
   ],
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "observational-memory": {
     "observeAfterTokens": 20000,
     "reflectAfterTokens": 50000,
