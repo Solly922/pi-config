@@ -1,9 +1,9 @@
 {
   "lastChangelogVersion": "0.87.1",
   "theme": "everforest-dark-hard",
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-6-sol",
-  "defaultThinkingLevel": "max",
+  "defaultProvider": "claude-bridge",
+  "defaultModel": "claude-opus-5-5",
+  "defaultThinkingLevel": "xhigh",
   "packages": [
     {
       "source": "git:github.com/DietrichGebert/ponytail",

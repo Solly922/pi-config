@@ -2,7 +2,9 @@
   "timeoutMs": 15000,
   "usage": { "cacheSeconds": 60, "timeoutMs": 3000 },
   "notes": [
+    "The smartest models are Claude Opus 5.5 and GPT-6 Astra, which are preferred for most work. Use smaller models for low-consequence work or when cost is a priority."
   ],
+
   "models": [
     {
       "id": "openai-codex/gpt-6-astra",
@@ -15,20 +17,34 @@
         "avoidWhen": ["task_is_simple", "task_is_bounded", "task_is_primarily_search", "cheaper_model_is_sufficient"]
       },
       "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 53, "costPerTask": 3.26 } },
-      "usage": { "source": "codex" }
+      "usage": { "source": "codex" },
+      "grades": {
+        "frontend": 7,
+        "writing": 8,
+        "debugging": 9,
+        "3D": 8,
+        "coding": 9
+      }
     },
     {
       "id": "claude-bridge/claude-opus-5-5",
       "tier": "expert",
       "strengths": ["architecture", "planning", "complex-implementation", "debugging", "code-review", "instruction-following", "long-horizon-agentic-work", "high-risk-reasoning", "frontend-design", "3d-design", "3d-implementation"],
       "weaknesses": ["higher-cost", "can-overcomplicate-bounded-tasks"],
-      "thinking": { "supported": ["medium", "high", "xhigh"], "default": "medium" },
+      "thinking": { "supported": ["medium", "high", "xhigh"], "default": "high" },
       "routing": {
         "preferWhen": ["implementation_is_complex", "instruction_precision_is_critical", "task_requires_difficult_debugging", "consequences_are_high", "frontend_requires_significant_visual_design", "consequences_are_high", "frontend_is_small_but_new"],
         "avoidWhen": ["task_is_simple", "task_is_bounded", "task_is_primarily_search", "cheaper_model_is_sufficient", "frontend_components_are_well-established", "frontend_components_are_prexisting"]
       },
       "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 58, "costPerTask": 3.46 } },
-      "usage": { "source": "claude" }
+      "usage": { "source": "claude" },
+      "grades": {
+        "frontend": 9,
+        "writing": 8,
+        "debugging": 9,
+        "3D": 9,
+        "coding": 9
+      }
     },
     {
       "id": "openai-codex/gpt-6-sol",
