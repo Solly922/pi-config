@@ -1,7 +1,9 @@
 ayu/
 mcp-cache.json
 bin/
-pi-hermes-memory
+# Hermes memory holds personal MEMORY.md/USER.md; only portable global skills are public.
+pi-hermes-memory/*
+!pi-hermes-memory/skills/
 projects-memory
 .pi-hermes-locks.sql
 .pi-hermes-locks.sqlite
