@@ -2,7 +2,6 @@
 description: Resolves build, compilation, type, module, and configuration errors using the smallest safe diff.
 display_name: Build Error Resolver
 tools: read, write, edit, bash, grep, find
-extensions: false
 skills: verification-loop
 model: meta/muse-spark-1.3-contributor
 thinking: high

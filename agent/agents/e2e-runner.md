@@ -3,7 +3,7 @@ description: Non-editing Playwright E2E runner that executes and diagnoses exist
 display_name: E2E Runner
 tools: read, grep, find, bash
 disallowed_tools: write, edit
-extensions: false
+extensions: pi-claude-bridge
 skills: e2e-testing
 model: openai-codex/gpt-5.6-luna
 thinking: xhigh

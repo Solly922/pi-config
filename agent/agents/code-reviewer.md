@@ -3,7 +3,7 @@ description: Expert non-editing code reviewer for correctness, regressions, secu
 display_name: Code Reviewer
 tools: read, grep, find, bash
 disallowed_tools: write, edit
-extensions: false
+extensions: pi-claude-bridge
 skills: security-review
 model: meta/muse-spark-1.3-contributor
 thinking: xhigh

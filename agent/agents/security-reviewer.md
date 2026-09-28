@@ -3,7 +3,7 @@ description: Strictly read-only security reviewer for authentication, authorizat
 display_name: Security Reviewer
 tools: read, grep, find
 disallowed_tools: write, edit
-extensions: false
+extensions: pi-claude-bridge
 skills: security-review
 model: openai-codex/gpt-6-astra
 thinking: medium

@@ -2,7 +2,6 @@
 description: All purpose agent that can implement features, forms, APIs, and tests when no narrower specialist fits. Only use when a specialized agent isn't necessary.
 display_name: General Implementation
 tools: read, write, edit, bash, grep, find
-extensions: false
 skills: general-guidelines
 max_turns: 50
 prompt_mode: replace
