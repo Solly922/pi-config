@@ -60,6 +60,20 @@
       "usage": { "source": "codex" }
     },
     {
+      "id": "claude-bridge/claude-sonnet-5-5",
+      "tier": "frontier-general",
+      "strengths": ["general-implementation", "debugging", "code-review", "frontend-implementation", "ui-polish", "writing", "document-generation", "fast-codebase-comprehension", "fast-iteration", "long-horizon-agentic-work", "cost-efficient-frontier-reasoning"],
+      "weaknesses": ["less-capable-than-opus-on-open-ended-judgment", "less-preferred-than-opus-and-astra-for-high-consequence-work", "higher-risk-cybersecurity-requests-fall-back-to-sonnet-5"],
+      "thinking": { "supported": ["xhigh"], "default": "xhigh" },
+      "routing": {
+        "preferWhen": ["task_requires_code", "implementation_is_general", "task_is_well_scoped", "task_requires_bug_fixing", "frontend_requires_polish", "task_requires_writing_or_documents", "implementing_an_existing_architecture_or_plan", "fast_iteration_is_valuable", "muse_requires_escalation", "code_review_requires_escalation", "build_error_requires_escalation", "quality_matters_but_opus_is_unnecessary"],
+        "avoidWhen": ["task_is_simple_search", "task_is_trivial", "task_requires_high-consequence-architecture", "task_requires_sustained_open-ended_judgment"],
+        "escalateTo": "claude-bridge/claude-opus-5-5"
+      },
+      "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 52, "costPerTask": 2.74 } },
+      "usage": { "source": "claude" }
+    },
+    {
       "id": "openai-codex/gpt-6-luna",
       "tier": "economy-reasoning",
       "strengths": ["very-low-cost", "reasoning-intensive-low-consequence-work", "high-volume-tasks", "non-interactive-analysis"],
