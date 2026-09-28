@@ -1,5 +1,6 @@
 {
   "model": "openai-codex/gpt-6-luna",
   "thinking": "low",
-  "retitleEvery": 5
+  "retitleEvery": 5,
+  "timeoutMs": 15000
 }
