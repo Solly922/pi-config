@@ -1,5 +1,5 @@
 {
-  "llmModelOverride": "claude-bridge/claude-sonnet-5-5",
+  "llmModelOverride": "openai-codex/gpt-6.1-sol",
   "llmThinkingOverride": "high",
   "reviewEnabled": true,
   "nudgeInterval": 20,

@@ -65,8 +65,8 @@
     "observationsPoolTargetTokens": 10000,
     "agentMaxTurns": 16,
     "model": {
-      "provider": "claude-bridge",
-      "id": "claude-sonnet-5-5",
+      "provider": "openai-codex",
+      "id": "gpt-6.1-sol",
       "thinking": "high"
     },
     "passive": false,
