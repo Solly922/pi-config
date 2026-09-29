@@ -2,7 +2,8 @@
   "timeoutMs": 15000,
   "usage": { "cacheSeconds": 60, "timeoutMs": 3000 },
   "notes": [
-    "The smartest models are claude-opus-5-5 and GPT-6-Astra, which are preferred for most work. Use smaller models for low-consequence work or when cost is a priority."
+    "The smartest models are claude-opus-5-5 and GPT-6-Astra, which are preferred for most work. Use smaller models for low-consequence work or when cost is a priority.",
+    "Perfer sonnet over sol"
   ],
 
   "models": [
@@ -62,7 +63,7 @@
     {
       "id": "claude-bridge/claude-sonnet-5-5",
       "tier": "frontier-general",
-      "strengths": ["general-implementation", "debugging", "code-review", "frontend-implementation", "ui-polish", "writing", "document-generation", "fast-codebase-comprehension", "fast-iteration", "long-horizon-agentic-work", "cost-efficient-frontier-reasoning"],
+      "strengths": ["general-implementation", "debugging", "code-review", "ui-polish", "writing", "document-generation", "fast-codebase-comprehension", "fast-iteration", "long-horizon-agentic-work", "cost-efficient-frontier-reasoning"],
       "weaknesses": ["less-capable-than-opus-on-open-ended-judgment", "less-preferred-than-opus-and-astra-for-high-consequence-work", "higher-risk-cybersecurity-requests-fall-back-to-sonnet-5"],
       "thinking": { "supported": ["xhigh"], "default": "xhigh" },
       "routing": {
