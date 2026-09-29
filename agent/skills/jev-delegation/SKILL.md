@@ -20,6 +20,7 @@ description: Split a multi-step coding goal into cohesive, independently testabl
 
 ## Integrate and check
 
+- When a child stops at its turn limit, read its summary and inspect the actual changes before continuing. Finish small remainders yourself. To continue, resume with only the remaining items and an explicit stop condition. Resumed runs have no turn limit in pi-subagents 0.19.0 (fix pending in tintinweb/pi-subagents#346), so launch a fresh agent with `max_turns` for large remainders.
 - Inspect the actual changes and test output rather than trusting the child's summary. Resolve conflicts and run integration checks. For code changes, use `@code-reviewer` once after implementation and relevant checks, following current model defaults and escalation rules; do not review a half-built diff. Keep the parent responsible for the final outcome.
 - Each routing call sends the candidate catalog, and each child must rebuild its own working context. Avoid microtasks, repeated discovery, and nested delegation. Token cost was not measured; do not claim a saving without usage data.
 
