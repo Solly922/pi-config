@@ -3,7 +3,7 @@
   "usage": { "cacheSeconds": 60, "timeoutMs": 3000 },
   "notes": [
     "The smartest models are claude-opus-5-5 and GPT-6-Astra, which are preferred for most work. Use smaller models for low-consequence work or when cost is a priority.",
-    "Perfer sonnet over sol"
+    "Prefer sonnet over sol"
   ],
 
   "models": [
@@ -12,7 +12,7 @@
       "tier": "expert",
       "strengths": ["architecture", "planning", "complex-implementation", "frontend-design", "3d-design", "3d-implementation", "high-risk-reasoning"],
       "weaknesses": ["higher-cost", "can-overcomplicate-bounded-tasks"],
-      "thinking": { "supported": ["low", "medium", "high"], "default": "medium" },
+      "thinking": { "supported": ["medium", "high", "xhigh"], "default": "medium" },
       "routing": {
         "preferWhen": ["task_requires_architecture", "task_requires_system_design", "implementation_is_complex", "frontend_requires_significant_visual_design", "task_requires_3d_design_or_implementation", "consequences_are_high"],
         "avoidWhen": ["task_is_simple", "task_is_bounded", "task_is_primarily_search", "cheaper_model_is_sufficient"]
@@ -51,7 +51,7 @@
       "id": "openai-codex/gpt-6-sol",
       "tier": "frontier-general",
       "strengths": ["general-implementation", "debugging", "code-review", "database-review", "frontend-implementation", "cost-efficient-frontier-reasoning"],
-      "weaknesses": ["can-overcomplicate-simple-tasks", "less-preferred-than-astra-for-high-consequence-work"],
+      "weaknesses": ["can-overcomplicate-simple-tasks", "less-capable-than-opus-and-astra-on-open-ended-judgment", "less-preferred-than-opus-and-astra-for-high-consequence-work"],
       "thinking": { "supported": [ "high", "xhigh", "max"], "default": "xhigh" },
       "routing": {
         "preferWhen": ["task_requires_code", "implementation_is_general", "task_requires_strong-reasoning", "muse_requires_escalation", "code_review_requires_escalation", "build_error_requires_escalation", "quality_matters_but_astra_is_unnecessary"],
@@ -70,6 +70,12 @@
         "preferWhen": ["task_requires_code", "implementation_is_general", "task_is_well_scoped", "task_requires_bug_fixing", "frontend_requires_polish", "task_requires_writing_or_documents", "implementing_an_existing_architecture_or_plan", "fast_iteration_is_valuable", "muse_requires_escalation", "code_review_requires_escalation", "build_error_requires_escalation", "quality_matters_but_opus_is_unnecessary"],
         "avoidWhen": ["task_is_simple_search", "task_is_trivial", "task_requires_high-consequence-architecture", "task_requires_sustained_open-ended_judgment"],
         "escalateTo": "claude-bridge/claude-opus-5-5"
+      },
+      "grades": {
+        "frontend": 7,
+        "writing": 8,
+        "debugging": 8,
+        "3D": 8
       },
       "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 52, "costPerTask": 2.74 } },
       "usage": { "source": "claude" }
