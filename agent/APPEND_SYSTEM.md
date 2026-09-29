@@ -37,7 +37,7 @@ Suggested routing:
 
 Never use Terra above high. Always check the current GPT model:
 - gpt-6-astra: only low, medium, or high.
-- gpt-6-sol: low, medium, high, or xhigh.
+- gpt-6.1-sol: low, medium, high, or xhigh.
 - gpt-6-luna: only xhigh or max.
 
 Use claude-bridge/claude-sonnet-5-5 with xhigh for Explore subagents.

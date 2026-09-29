@@ -2,8 +2,7 @@
   "timeoutMs": 15000,
   "usage": { "cacheSeconds": 60, "timeoutMs": 3000 },
   "notes": [
-    "The smartest models are claude-opus-5-5 and GPT-6-Astra, which are preferred for most work. Use smaller models for low-consequence work or when cost is a priority.",
-    "Prefer sonnet over sol"
+    "The smartest models are claude-opus-5-5 and GPT-6-Astra, which are preferred for most work. Use smaller models for low-consequence work or when cost is a priority."
   ],
 
   "models": [
@@ -48,17 +47,23 @@
       }
     },
     {
-      "id": "openai-codex/gpt-6-sol",
+      "id": "openai-codex/gpt-6.1-sol",
       "tier": "frontier-general",
-      "strengths": ["general-implementation", "debugging", "code-review", "database-review", "frontend-implementation", "cost-efficient-frontier-reasoning"],
-      "weaknesses": ["can-overcomplicate-simple-tasks", "less-capable-than-opus-and-astra-on-open-ended-judgment", "less-preferred-than-opus-and-astra-for-high-consequence-work"],
-      "thinking": { "supported": [ "high", "xhigh", "max"], "default": "xhigh" },
+      "strengths": ["code-review", "deep-code-audits", "debugging", "root-cause-investigation", "codebase-analysis", "database-review", "general-implementation", "scoped-work", "terminal-and-agentic-coding", "computer-use", "3d-modeling", "token-efficient", "cost-efficient-frontier-reasoning"],
+      "weaknesses": ["poor-frontend-and-ui-design-taste", "weak-at-long-unattended-rewrites", "follows-process-rules-instead-of-asking-for-help", "code-less-merge-ready-than-opus", "weak-game-mechanics-and-interaction-feel", "less-capable-than-opus-and-astra-on-open-ended-judgment", "less-preferred-than-opus-and-astra-for-high-consequence-work"],
+      "thinking": { "supported": ["high", "xhigh", "max"], "default": "xhigh" },
       "routing": {
-        "preferWhen": ["task_requires_code", "implementation_is_general", "task_requires_strong-reasoning", "quality_matters_but_astra_is_unnecessary"],
-        "avoidWhen": ["task_is_simple_search", "task_is_trivial", "task_requires_high-consequence-architecture"]
+        "preferWhen": ["task_requires_code_review", "task_requires_audit_or_root_cause_analysis", "task_requires_codebase_analysis", "task_requires_code", "task_is_well_scoped", "task_requires_computer_use", "task_requires_strong-reasoning", "quality_matters_but_astra_is_unnecessary"],
+        "avoidWhen": ["task_is_simple_search", "task_is_trivial", "frontend_requires_significant_visual_design", "task_is_long_unattended_rewrite", "task_requires_high-consequence-architecture", "task_requires_sustained_open-ended_judgment"]
       },
-      "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 48, "costPerTask": 1.06 } },
-      "usage": { "source": "codex" }
+      "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 52, "costPerTask": 0.72 } },
+      "usage": { "source": "codex" },
+      "grades": {
+        "frontend": 4,
+        "debugging": 9,
+        "3D": 7,
+        "coding": 8
+      }
     },
     {
       "id": "claude-bridge/claude-sonnet-5-5",
