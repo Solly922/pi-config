@@ -1,5 +1,5 @@
 {
-  "llmModelOverride": "meta/muse-spark-1.3-contributor",
+  "llmModelOverride": "claude-bridge/claude-sonnet-5-5",
   "llmThinkingOverride": "high",
   "reviewEnabled": true,
   "nudgeInterval": 20,

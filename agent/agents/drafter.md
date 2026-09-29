@@ -3,8 +3,8 @@ description: Creates UI quickly
 display_name: Drafter
 tools: read, write, edit, bash, grep, find
 skills: [html-communication, frontend-design]
-model: meta/muse-spark-1.3-contributor
-thinking: high
+model: claude-bridge/claude-sonnet-5-5
+thinking: xhigh
 max_turns: 50
 prompt_mode: replace
 ---

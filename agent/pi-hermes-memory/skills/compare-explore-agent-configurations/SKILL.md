@@ -16,7 +16,7 @@ When the user explicitly asks to compare model or reasoning configurations on re
 5. Verify the same central claims and selected citations for every answer against source, then report timing, usage, factual errors and omissions. Keep single-run recommendations qualified.
 
 ## Pitfalls
-- A retrying Muse run can preserve tool results while omitting corresponding assistant records from the output transcript. Its usage sum can undercount relative to agent status.
+- A retrying run can preserve tool results while omitting corresponding assistant records from the output transcript. Its usage sum can undercount relative to agent status.
 - Cached tokens count repeated context, not unique text. Provider tokenizers and billing differ.
 - Agent-status token summaries may exclude cache reads and are rounded; do not label them total processed tokens.
 - Do not rerun or expand the benchmark without user authorization merely to obtain a cleaner result.
