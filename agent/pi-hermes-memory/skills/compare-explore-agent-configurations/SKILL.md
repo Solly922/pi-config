@@ -1,9 +1,9 @@
 ---
 name: "compare-explore-agent-configurations"
 description: "Benchmark Explore model/reasoning configurations with identical tasks and auditable timing and usage"
-version: 1
+version: 2
 created: "2026-09-04"
-updated: "2026-09-04"
+updated: "2026-09-29"
 ---
 ## When to Use
 When the user explicitly asks to compare model or reasoning configurations on repository exploration.
@@ -20,6 +20,8 @@ When the user explicitly asks to compare model or reasoning configurations on re
 - Cached tokens count repeated context, not unique text. Provider tokenizers and billing differ.
 - Agent-status token summaries may exclude cache reads and are rounded; do not label them total processed tokens.
 - Do not rerun or expand the benchmark without user authorization merely to obtain a cleaner result.
+- When adding a model to an earlier round, reuse the exact prompts from the prior session files and confirm the targets are unchanged (diff sha256, package version) before comparing across rounds.
+- The same model and prompt can find different issues on reruns. A reviewer that found 5 issues in one run missed 3 of them in the next and found a different, more important one. Rank models from one run only with that caveat, and rerun the incumbent model alongside the new one.
 
 ## Verification
 1. Every requested model/reasoning setting has a completed result or explicit failure.
