@@ -51,8 +51,8 @@
       "id": "openai-codex/gpt-6.1-sol",
       "tier": "frontier-general",
       "strengths": ["code-review", "deep-code-audits", "debugging", "root-cause-investigation", "codebase-analysis", "database-review", "general-implementation", "scoped-work", "terminal-and-agentic-coding", "computer-use", "3d-modeling", "token-efficient", "cost-efficient-frontier-reasoning"],
-      "weaknesses": ["poor-frontend-and-ui-design-taste", "weak-at-long-unattended-rewrites", "follows-process-rules-instead-of-asking-for-help", "code-less-merge-ready-than-opus", "weak-game-mechanics-and-interaction-feel", "less-capable-than-opus-and-astra-on-open-ended-judgment", "less-preferred-than-opus-and-astra-for-high-consequence-work"],
-      "thinking": { "supported": ["high", "xhigh", "max"], "default": "xhigh" },
+      "weaknesses": ["slow", "poor-frontend-and-ui-design-taste", "weak-at-long-unattended-rewrites", "follows-process-rules-instead-of-asking-for-help", "code-less-merge-ready-than-opus", "weak-game-mechanics-and-interaction-feel", "less-capable-than-opus-and-astra-on-open-ended-judgment", "less-preferred-than-opus-and-astra-for-high-consequence-work"],
+      "thinking": { "supported": ["high", "xhigh"], "default": "high" },
       "routing": {
         "preferWhen": ["task_requires_code_review", "task_requires_audit_or_root_cause_analysis", "task_requires_codebase_analysis", "task_requires_code", "task_is_well_scoped", "task_requires_computer_use", "task_requires_strong-reasoning", "quality_matters_but_astra_is_unnecessary"],
         "avoidWhen": ["task_is_simple_search", "task_is_trivial", "frontend_requires_significant_visual_design", "task_is_long_unattended_rewrite", "task_requires_high-consequence-architecture", "task_requires_sustained_open-ended_judgment"]
