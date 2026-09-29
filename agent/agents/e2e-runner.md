@@ -7,7 +7,7 @@ extensions: pi-claude-bridge
 skills: e2e-testing
 model: openai-codex/gpt-5.6-luna
 thinking: xhigh
-max_turns: 10
+max_turns: 20
 prompt_mode: replace
 ---
 

@@ -7,7 +7,7 @@ extensions: pi-claude-bridge
 skills: security-review
 model: meta/muse-spark-1.3-contributor
 thinking: xhigh
-max_turns: 20
+max_turns: 30
 prompt_mode: replace
 ---
 

@@ -7,7 +7,7 @@ extensions: pi-claude-bridge
 skills: security-review
 model: openai-codex/gpt-6-astra
 thinking: medium
-max_turns: 12
+max_turns: 20
 prompt_mode: replace
 ---
 

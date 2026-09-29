@@ -5,7 +5,7 @@ tools: read, write, edit, bash, grep, find
 skills: verification-loop
 model: meta/muse-spark-1.3-contributor
 thinking: high
-max_turns: 10
+max_turns: 20
 prompt_mode: replace
 ---
 
