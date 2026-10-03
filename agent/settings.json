@@ -1,9 +1,10 @@
 {
-  "lastChangelogVersion": "0.99.1",
+  "lastChangelogVersion": "1.0.0",
   "theme": "everforest-dark-hard",
   "defaultProvider": "claude-bridge",
   "defaultModel": "claude-opus-5-5",
   "defaultThinkingLevel": "xhigh",
+  "defaultToolts": ["+codemode"],
   "packages": [
     {
       "source": "git:github.com/DietrichGebert/ponytail",
@@ -71,5 +72,9 @@
     },
     "passive": false,
     "debugLog": false
-  }
+  },
+  "extensions": [
+    "-builtin:mcp"
+  ],
+  "tuiMode": "fullscreen"
 }
