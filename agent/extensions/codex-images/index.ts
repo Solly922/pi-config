@@ -1,8 +1,12 @@
 import type { ExtensionAPI } from '@earendil-works/pi-coding-agent';
 import { BASE_URL, createGenerateImages } from './codex-images.ts';
+import { createGenerateImageTool } from './generate-image-tool.ts';
 
 /** Register separately so image models never replace the user's Codex chat catalog. */
 export default function (pi: ExtensionAPI) {
+  // Tools belong to each extension instance; their execute context supplies the bound session.
+  pi.registerTool(createGenerateImageTool());
+
   // Register per bound session, not at load. Pi applies load-time registrations when a session is
   // constructed, and pi-subagents' mention clones share the parent's ModelRuntime without ever
   // firing session_start. A load-time registration from such a clone would replace the parent's

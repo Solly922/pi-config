@@ -10,7 +10,7 @@
       "enabled": false
     },
     "truncate": {
-      "enabled": true,
+      "enabled": false,
       "maxChars": 12000
     },
     "sourceCodeFilteringEnabled": false,
