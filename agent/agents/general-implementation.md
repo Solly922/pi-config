@@ -3,7 +3,7 @@ description: All purpose agent that can implement features, forms, APIs, and tes
 display_name: General Implementation
 tools: read, write, edit, bash, grep, find
 skills: general-guidelines
-max_turns: 50
+max_turns: 120
 prompt_mode: replace
 ---
 
