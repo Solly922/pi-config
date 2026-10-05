@@ -12,3 +12,6 @@ projects-memory
 auth.json
 models-store.json
 claude-bridge.json
+
+# Extension tests stay local
+extensions/codex-images/*.test.ts

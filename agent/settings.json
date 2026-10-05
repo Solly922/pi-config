@@ -4,7 +4,7 @@
   "defaultProvider": "claude-bridge",
   "defaultModel": "claude-opus-5-5",
   "defaultThinkingLevel": "xhigh",
-  "defaultToolts": [
+  "defaultTools": [
     "+codemode"
   ],
   "packages": [
