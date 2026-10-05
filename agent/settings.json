@@ -1,10 +1,12 @@
 {
-  "lastChangelogVersion": "1.0.0",
+  "lastChangelogVersion": "1.0.3",
   "theme": "everforest-dark-hard",
   "defaultProvider": "claude-bridge",
   "defaultModel": "claude-opus-5-5",
   "defaultThinkingLevel": "xhigh",
-  "defaultToolts": ["+codemode"],
+  "defaultToolts": [
+    "+codemode"
+  ],
   "packages": [
     {
       "source": "git:github.com/DietrichGebert/ponytail",
@@ -56,7 +58,7 @@
     "npm:@earendil-works/pi-ai@0.87.1",
     "npm:@earendil-works/pi-coding-agent@0.87.1"
   ],
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "observational-memory": {
     "observeAfterTokens": 20000,
     "reflectAfterTokens": 50000,
