@@ -127,7 +127,6 @@ Before marking work complete:
 - Functions are small and files are focused.
 - Nesting does not exceed four levels.
 - Errors are handled and user input is validated.
-- No console.log statements remain.
 - Comments are clear, useful, and accurate.
 - All required tests pass and required coverage is met.
 - No security vulnerabilities remain.
