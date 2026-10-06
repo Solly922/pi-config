@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.0.3",
+  "lastChangelogVersion": "1.0.4",
   "theme": "everforest-dark-hard",
   "defaultProvider": "claude-bridge",
   "defaultModel": "claude-opus-5-5",
