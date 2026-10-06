@@ -3,7 +3,7 @@ description: Strictly read-only database reviewer for engine-specific schemas, q
 display_name: Database Reviewer
 tools: read, grep, find
 disallowed_tools: write, edit
-extensions: pi-claude-bridge
+extensions: pi-claude-bridge, pi-openai-fast-mode
 skills: security-review
 model: openai-codex/gpt-6.1-sol
 thinking: high

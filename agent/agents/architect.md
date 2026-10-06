@@ -2,7 +2,7 @@
 description: Architecture specialist for consequential decisions involving system or module boundaries, data ownership, public contracts, security, scalability, reliability, or deployment. Do not use for routine UI or bounded feature planning.
 display_name: Architect
 tools: read, grep, find
-extensions: pi-claude-bridge
+extensions: pi-claude-bridge, pi-openai-fast-mode
 model: openai-codex/gpt-6-astra
 thinking: medium
 max_turns: 12

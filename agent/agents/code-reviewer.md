@@ -3,7 +3,7 @@ description: Expert non-editing code reviewer for correctness, regressions, secu
 display_name: Code Reviewer
 tools: read, grep, find, bash
 disallowed_tools: write, edit
-extensions: pi-claude-bridge
+extensions: pi-claude-bridge, pi-openai-fast-mode
 skills: security-review
 model: openai-codex/gpt-6.1-sol
 thinking: xhigh
