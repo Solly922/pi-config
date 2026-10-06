@@ -59,6 +59,7 @@
       },
       "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 52, "costPerTask": 0.72 } },
       "usage": { "source": "codex" },
+      "fast": true,
       "grades": {
         "frontend": 4,
         "debugging": 9,
