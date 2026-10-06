@@ -52,11 +52,11 @@
     },
     "npm:@victor-software-house/pi-curated-themes",
     "git:github.com/Solly922/pi-show-diffs@feature/change-descriptions",
-    "git:github.com/Solly922/pi-jev-router",
     "git:github.com/elidickinson/pi-claude-bridge@a78a2a5525e96318f8dba7f9fd32ce2191be0136",
     "npm:@earendil-works/pi-ai@0.87.1",
     "npm:@earendil-works/pi-coding-agent@0.87.1",
-    "git:github.com/Solly922/pi-openai-fast-mode@feature/gpt-6-fast-mode"
+    "git:github.com/Solly922/pi-openai-fast-mode@feature/gpt-6-fast-mode",
+    "git:github.com/Solly922/pi-jev-router@feature/fast-models"
   ],
   "hideThinkingBlock": false,
   "observational-memory": {
