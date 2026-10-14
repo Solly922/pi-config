@@ -3,7 +3,8 @@
   "usage": { "cacheSeconds": 60, "timeoutMs": 3000 },
   "notes": [
     "The smartest models are claude-opus-5-5 and GPT-6-Astra, which are preferred for most work. Use smaller models for low-consequence work or when cost is a priority.",
-    "Always use a claude model for any frontend work"
+    "Always use a claude model for any frontend work",
+    "prefer 6.1 sol over 6 astra in all cases"
   ],
 
   "models": [
