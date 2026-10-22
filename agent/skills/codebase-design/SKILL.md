@@ -64,6 +64,15 @@ When designing an interface, ask:
 - **The interface is the test surface.** Callers and tests cross the same seam. If you want to test *past* the interface, the module is probably the wrong shape.
 - **One adapter means a hypothetical seam. Two adapters means a real one.** Don't introduce a seam unless something actually varies across it.
 
+## Red flags for agent contributors
+
+Assume the next contributor is an agent that sees only the files it opened, copies the nearest example, and takes the shortest path that compiles. Prefer the design where a change that looks right from one file is right for the whole repo. Revise a design that shows any of these:
+
+- **Split ownership.** More than one module writes the same state or keeps its own copy. An agent that edits one writer can't see the others, so their rules drift. Give each piece of state one owning module. Others read it or ask the owner to change it.
+- **Two ways to do one task.** An agent copies whichever way it finds first, so every way keeps gaining callers. Keep one way. Move callers off the others and delete them in the same change.
+- **Importable internals.** If a caller can import a module's implementation, an agent will, and it becomes part of the interface. Make internals unreachable from outside the module so the import fails the build.
+- **Hand-synced lists.** Two or more places list the same items, and adding one means editing every list. Keep one list and derive the others. If a list can't be derived, make the build fail when the lists disagree.
+
 ## Designing for testability
 
 Good interfaces make testing natural:
