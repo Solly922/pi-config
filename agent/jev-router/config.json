@@ -4,7 +4,8 @@
   "notes": [
     "The smartest models are claude-opus-5-5 and GPT-6-Astra, which are preferred for most work. Use smaller models for low-consequence work or when cost is a priority.",
     "Always use a claude model for any frontend work",
-    "prefer 6.1 sol over 6 astra in all cases"
+    "prefer 6.1 sol over 6 astra in all cases",
+    "Use gpt-6.1-terra only for the Explore agent (read-only code search). Never pick it for any other agent."
   ],
 
   "models": [
@@ -75,7 +76,7 @@
       "weaknesses": ["less-capable-than-opus-on-open-ended-judgment", "less-preferred-than-opus-and-astra-for-high-consequence-work", "higher-risk-cybersecurity-requests-fall-back-to-sonnet-5"],
       "thinking": { "supported": ["xhigh"], "default": "xhigh" },
       "routing": {
-        "preferWhen": ["task_requires_code", "implementation_is_general", "task_is_well_scoped", "task_requires_bug_fixing", "frontend_requires_polish", "task_requires_writing_or_documents", "implementing_an_existing_architecture_or_plan", "fast_iteration_is_valuable", "quality_matters_but_opus_is_unnecessary", "task_is_primarily_search", "task_is_tool-heavy", "task_is_drafting", "first_pass_is_appropriate"],
+        "preferWhen": ["task_requires_code", "implementation_is_general", "task_is_well_scoped", "task_requires_bug_fixing", "frontend_requires_polish", "task_requires_writing_or_documents", "implementing_an_existing_architecture_or_plan", "fast_iteration_is_valuable", "quality_matters_but_opus_is_unnecessary", "task_is_tool-heavy", "task_is_drafting", "first_pass_is_appropriate"],
         "avoidWhen": ["task_is_trivial", "task_requires_high-consequence-architecture", "task_requires_sustained_open-ended_judgment"],
         "escalateTo": "claude-bridge/claude-opus-5-5"
       },
@@ -87,6 +88,19 @@
       },
       "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 52, "costPerTask": 2.74 } },
       "usage": { "source": "claude" }
+    },
+    {
+      "id": "openai-codex/gpt-6.1-terra",
+      "tier": "economy-fast",
+      "strengths": ["explore-agent-read-only-code-search"],
+      "weaknesses": ["routed-only-for-the-Explore-agent", "misses-findings-in-code-review", "less-careful-implementation-than-sonnet"],
+      "thinking": { "supported": ["medium", "high", "xhigh"], "default": "xhigh" },
+      "routing": {
+        "preferWhen": ["agent_is_Explore", "task_is_primarily_search", "task_is_read_only_code_lookup"],
+        "avoidWhen": ["agent_is_not_Explore", "task_requires_code", "task_requires_code_review", "task_requires_audit_or_root_cause_analysis", "task_requires_writing_or_documents"]
+      },
+      "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 48, "costPerTask": 0.4 } },
+      "usage": { "source": "codex" }
     },
     {
       "id": "openai-codex/gpt-6-luna",
