@@ -111,6 +111,8 @@
     { "name": "code-reviewer", "definition": "../agents/code-reviewer.md" },
     { "name": "security-reviewer", "definition": "../agents/security-reviewer.md" },
     { "name": "database-reviewer", "definition": "../agents/database-reviewer.md" },
-    { "name": "drafter", "definition": "../agents/drafter.md" }
+    { "name": "drafter", "definition": "../agents/drafter.md" },
+    { "name": "e2e-runner", "definition": "../agents/e2e-runner.md" },
+    { "name": "general-purpose", "builtin": true, "description": "Researches complex questions, searches code and runs multi-step tasks with every available tool, including web search and URL fetching. Use it when a task needs tools no specialist agent has, such as checking current docs or package versions online." }
   ]
 }
