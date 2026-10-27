@@ -16,13 +16,15 @@ Use html-communication when visual structure improves understanding, including p
 Load the matching skill's `SKILL.md` before acting.
 
 - All code changes require general-guidelines.
-- Frontend design changes require frontend-design as the baseline. Select at most one additional visual-direction skill unless the user requests a combination.
+- Frontend design changes require frontend-design as the baseline. For a whole page, an app screen, or a redesign, also load design-taste-frontend; where the two disagree, design-taste-frontend wins. A style skill (gpt-taste, high-end-visual-design, minimalist-ui) runs only when the user asks for its look, one at a time, and replaces design-taste-frontend for that build, because its inspector fails their eyebrows, hairlines, glass, and gradients.
 - find-skills: Discover, compare, or install existing skills. Verify source and quality before recommending or installing.
 - brandkit: Brand-kit images, identity boards, guideline decks, and visual-world presentations.
 - design-taste-frontend: Distinctive landing pages, portfolios, marketing and product sites, and app screens such as dashboards, admin views, and settings. Also use it to redesign, restyle, or review an existing page or app screen while keeping its stack, content, and behavior.
-- gpt-taste: Only for explicitly motion-heavy, AIDA-structured marketing experiences using GSAP, editorial layouts, or experimental art direction.
-- high-end-visual-design: Cinematic, premium agency aesthetics with deliberate typography, spacing, depth, and motion.
-- minimalist-ui: Restrained editorial minimalism, warm monochrome, flat structure, muted accents, and no gradients or heavy shadows.
+- uncodexify: Small changes inside an existing product UI that has its own design system. New app screens go through design-taste-frontend's app-screen route.
+- scroll-craft: Only when the user asks for a scroll-driven or cinematic scroll experience. It replaces design-taste-frontend for that page.
+- gpt-taste: Only when the user asks for a motion-heavy, AIDA-structured GSAP page with editorial layouts or experimental art direction.
+- high-end-visual-design: Only when the user asks for a soft, premium agency look with deliberate depth and spring motion.
+- minimalist-ui: Only when the user asks for restrained editorial minimalism with warm monochrome, flat structure, and muted accents.
 
 ## Model Routing
 
@@ -49,7 +51,7 @@ Use these agents only when their trigger applies:
 - @architect: Consequential decisions about system/module boundaries, data ownership, public contracts, security architecture, scalability, reliability, or deployment. Keep routine UI and bounded feature planning with the main agent.
 - @build-error-resolver: Non-trivial build/type failures where focused diagnosis helps. Keep straightforward failures with the main agent. Make minimal fixes without architectural edits.
 - @code-reviewer: MUST BE USED once after implementation and relevant checks for ALL code changes. Default to openai-codex/gpt-6.1-sol with xhigh unless the user specifies otherwise. If it returns `Escalation: REQUIRED`, rerun only affected findings or paths with claude-bridge/claude-opus-5-5 at xhigh. Launch the rerun through JevAgent with `agent`, `model`, and `thinking` set; the Agent tool's `model` parameter cannot override the code-reviewer frontmatter. After fixes, request targeted follow-up only when risk materially changed or a high-severity finding remains. Do not repeat full reviews for mechanical fixes.
-- @frontend-builder: REQUIRED for brand-new pages and substantial UI/UX implementation. Keep routine UI planning and small, bounded changes with the main agent. Continue using frontend-design for styling and visual quality.
+- @frontend-builder: REQUIRED for brand-new pages and substantial UI/UX implementation. Keep routine UI planning and small, bounded changes with the main agent. Name in its prompt the design skills it must load, following the routing above. It runs with its own system prompt and does not see these rules.
 - @drafter: Building HTML plans, drafts, reports, and comparisons.
 
 ## Build and Plan Modes
