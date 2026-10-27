@@ -19,11 +19,10 @@ Load the matching skill's `SKILL.md` before acting.
 - Frontend design changes require frontend-design as the baseline. Select at most one additional visual-direction skill unless the user requests a combination.
 - find-skills: Discover, compare, or install existing skills. Verify source and quality before recommending or installing.
 - brandkit: Brand-kit images, identity boards, guideline decks, and visual-world presentations.
-- design-taste-frontend: Distinctive landing pages, portfolios, and marketing sites. Do not use for dashboards, tables, or multi-step application UI.
+- design-taste-frontend: Distinctive landing pages, portfolios, marketing and product sites, and app screens such as dashboards, admin views, and settings. Also use it to redesign, restyle, or review an existing page or app screen while keeping its stack, content, and behavior.
 - gpt-taste: Only for explicitly motion-heavy, AIDA-structured marketing experiences using GSAP, editorial layouts, or experimental art direction.
 - high-end-visual-design: Cinematic, premium agency aesthetics with deliberate typography, spacing, depth, and motion.
 - minimalist-ui: Restrained editorial minimalism, warm monochrome, flat structure, muted accents, and no gradients or heavy shadows.
-- redesign-existing-projects: Prefer when upgrading an existing site or app while preserving its framework, behavior, and product constraints. Otherwise follow the requested visual direction.
 
 ## Model Routing
 
