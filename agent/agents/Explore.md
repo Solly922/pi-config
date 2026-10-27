@@ -4,7 +4,7 @@ display_name: Explore
 tools: "read, bash, grep, find, ls, ext:pi-codegraph/search, ext:pi-codegraph/files, ext:pi-codegraph/context, ext:pi-codegraph/explore, ext:pi-codegraph/callers, ext:pi-codegraph/callees, ext:pi-codegraph/impact, ext:pi-codegraph/node"
 extensions: true
 skills: true
-model: claude-bridge/claude-sonnet-5-5
+model: openai-codex/gpt-6.1-terra
 thinking: xhigh
 prompt_mode: replace
 ---

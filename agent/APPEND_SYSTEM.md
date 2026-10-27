@@ -35,12 +35,13 @@ Suggested routing:
 - Ambiguous implementation: Sol, medium.
 - Architecture, security, database, or difficult debugging: gpt-6-astra, medium.
 
-Never use Terra above high. Always check the current GPT model:
+Always check the current GPT model:
 - gpt-6-astra: only low, medium, or high.
 - gpt-6.1-sol: low, medium, high, or xhigh.
+- gpt-6.1-terra: only medium, high, or xhigh. Use it only for Explore subagents.
 - gpt-6-luna: only xhigh or max.
 
-Use claude-bridge/claude-sonnet-5-5 with xhigh for Explore subagents.
+Use openai-codex/gpt-6.1-terra with xhigh for Explore subagents.
 
 ## Subagents
 
