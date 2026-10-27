@@ -6,3 +6,8 @@ Projects
 .codegraph
 agent/trust
 trust.json
+
+# Machine-local Pi runtime and extension notification state
+/agent/install/
+/agent/mcp-last-seen-version.json
+/agent/pi-web-access/last-seen-version.json
