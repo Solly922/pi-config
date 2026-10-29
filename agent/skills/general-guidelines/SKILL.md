@@ -9,6 +9,8 @@ metadata:
 
 # General Guidelines
 
+SIMPLICITY IS ALWAYS BETTER. Favor simple code structure, file structure, logic, and code changes over complex implementations.
+
 ## Think Before Coding
 
 - Inspect the repository before choosing an implementation.
@@ -49,6 +51,70 @@ Both extremes cost the reader: a file too large to hold in their head, and a cha
 - Split when parts have independent readers, independent reasons to change, or independent tests. Those are real seams; line count is not.
 - Treat size limits as a smell to investigate, not a rule to satisfy. A long cohesive file is fine; a short file that only forwards calls is not.
 
+### Use whitespace effectively
+
+Whitespace is a tool that can be used to help make code look more readable. It can be used to group/break up related lines of code.
+
+Before:
+```ts
+  apis.post('/', async (request, reply) => {
+    if (stores === undefined) return;
+    const input = newApiRequestSchema.safeParse(request.body);
+    if (!input.success) return invalidRequest(request, reply, issuesOf(input.error));
+    try {
+      const created = await stores.apis.create({
+        ...input.data,
+        status: 'active',
+        upstream: { ...input.data.upstream, keyVersion: null },
+        source: null,
+        sourceText: null,
+        operations: [],
+      });
+      return sendApi(reply.code(201).header('Location', `/admin/api/apis/${created.id}`), created);
+    } catch (error) {
+      if (error instanceof AlreadyExistsError) {
+        return problem(request, reply, 409, 'api_exists', {
+          detail: 'An API already uses this ID. Choose another.',
+        });
+      }
+      return answerWriteFailure(request, reply, error);
+    }
+  });
+```
+
+After:
+```ts
+  apis.post('/', async (request, reply) => {
+    if (stores === undefined) return;
+
+    const input = newApiRequestSchema.safeParse(request.body);
+    if (!input.success) return invalidRequest(request, reply, issuesOf(input.error));
+
+    try {
+      const created = await stores.apis.create({
+        ...input.data,
+        status: 'active',
+        upstream: { ...input.data.upstream, keyVersion: null },
+        source: null,
+        sourceText: null,
+        operations: [],
+      });
+
+      return sendApi(reply.code(201).header('Location', `/admin/api/apis/${created.id}`), created);
+    } catch (error) {
+      console.log("error occured: ", error)
+
+      if (error instanceof AlreadyExistsError) {
+        return problem(request, reply, 409, 'api_exists', {
+          detail: 'An API already uses this ID. Choose another.',
+        });
+      }
+
+      return answerWriteFailure(request, reply, error);
+    }
+  });
+```
+
 ## Delegate Deliberately
 
 - Default to single-agent execution for small, bounded tasks.
@@ -70,3 +136,10 @@ Both extremes cost the reader: a file too large to hold in their head, and a cha
 Run the narrowest relevant check first, then the repository's normal quality gates when warranted. Report exactly what ran and distinguish passing checks from checks that were not available.
 
 For non-trivial implementation work, leave one runnable check that would fail if the behavior regressed. Read-only roles should recommend the smallest useful check instead of creating it.
+
+## Reflect
+After making a change, ask yourself:
+- Will this structure make sense to the dev? If not, change it
+- Is this code structure confusing? If it is, change it
+- Should I suggest file structure changes?
+- Is there anything here that I should mention to the user that isn't immediately obvious?
