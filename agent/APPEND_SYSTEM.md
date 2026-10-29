@@ -92,6 +92,8 @@ MANY SMALL FILES > FEW LARGE FILES:
 
 ALWAYS handle errors comprehensively and provide meaningful error context.
 
+Usually log errors where you catch them. Use the project's existing logger, or `console.error` (or the language's equivalent) when there is none. Include what failed and the IDs or inputs needed to trace it, and leave out secrets and personal data. Skip the log when you rethrow to a caller that already logs it, so one failure produces one log entry.
+
 ALWAYS validate user input.
 
 ## Code Comments
