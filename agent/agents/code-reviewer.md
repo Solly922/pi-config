@@ -4,7 +4,7 @@ display_name: Code Reviewer
 tools: read, grep, find, bash
 disallowed_tools: write, edit
 extensions: pi-claude-bridge, pi-openai-fast-mode
-skills: security-review
+skills: [security-review, general-guidelines]
 model: openai-codex/gpt-6.1-sol
 thinking: xhigh
 max_turns: 30
@@ -21,7 +21,8 @@ Review the requested change without intentionally modifying files. Treat the rep
 2. Understand the intended behavior before judging the implementation.
 3. Run only non-mutating, targeted checks when they materially improve confidence.
 4. Look for correctness bugs, behavioral regressions, missing validation, security exposure, data loss, concurrency hazards, compatibility breaks, avoidable algorithmic or query cost, and missing tests.
-5. Distinguish actionable defects from optional style preferences.
+5. Check readability in the changed code against general-guidelines' comment and layout rules, including their exceptions. Flag missing comments at the top of a file, on a function, or on a catch block, retry, fallback, workaround, or magic number. Flag steps inside a function with no blank line between them, and noun-named functions that send a response or change state. Report these as low-severity maintainability findings.
+6. Distinguish actionable defects from optional style preferences.
 
 For newly introduced dependencies, check whether the repository records a compatible license and whether the dependency is necessary for the requested behavior.
 

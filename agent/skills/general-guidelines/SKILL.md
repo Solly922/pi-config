@@ -40,7 +40,8 @@ patterns.
 - Prefer direct calls over indirection that hides control flow — callbacks, dynamic dispatch, and event hops when a plain call works.
 - Use early returns to keep nesting shallow; more than about three levels means the logic wants restructuring, not more indentation.
 - Name functions and variables so call sites read as intent; a reader should rarely need to open the callee.
-- Comment the why, the tradeoff, and non-obvious behavior — not what the next line already says.
+- Name a function that sends a response or changes state with a verb, such as `sendApi` or `rejectStaleVersion`. Keep noun names like `storedApi` for lookups with no side effects.
+- Comment each file, each function, and each catch block, retry, fallback, workaround, and magic number. Say what the code can't: the purpose, the reason, or the risk. This overrides ponytail's "Comment only the why the code cannot show, in one line."
 
 ### Size follows cohesion
 
@@ -53,10 +54,18 @@ Both extremes cost the reader: a file too large to hold in their head, and a cha
 
 ### Use whitespace effectively
 
-Whitespace is a tool that can be used to help make code look more readable. It can be used to group/break up related lines of code.
+Inside a function, put a blank line between steps. A step is one of these:
+
+- A value and the check on it, such as `const input = schema.safeParse(body)` and its `if (!input.success) return ...`.
+- A run of related assignments or calls.
+- A `try` block, a loop, or a multi-line `if`.
+- The final `return` after multi-line work.
+
+A comment that starts a step goes right below the blank line. A function of three single-line statements or fewer needs no blank lines, and a block never starts or ends with one. Ponytail's "one line" and "shortest diff" rules are about how much code you write, not about blank lines or layout.
 
 Before:
 ```ts
+  // Creates an API: active, with no operations and no upstream key yet.
   apis.post('/', async (request, reply) => {
     if (stores === undefined) return;
     const input = newApiRequestSchema.safeParse(request.body);
@@ -72,6 +81,7 @@ Before:
       });
       return sendApi(reply.code(201).header('Location', `/admin/api/apis/${created.id}`), created);
     } catch (error) {
+      // A taken ID gets its own 409. Other store refusals become problem responses.
       if (error instanceof AlreadyExistsError) {
         return problem(request, reply, 409, 'api_exists', {
           detail: 'An API already uses this ID. Choose another.',
@@ -84,6 +94,7 @@ Before:
 
 After:
 ```ts
+  // Creates an API: active, with no operations and no upstream key yet.
   apis.post('/', async (request, reply) => {
     if (stores === undefined) return;
 
@@ -102,8 +113,9 @@ After:
 
       return sendApi(reply.code(201).header('Location', `/admin/api/apis/${created.id}`), created);
     } catch (error) {
-      console.log("error occured: ", error)
+      console.error('Failed to create API', { apiId: input.data.id, error });
 
+      // A taken ID gets its own 409. Other store refusals become problem responses.
       if (error instanceof AlreadyExistsError) {
         return problem(request, reply, 409, 'api_exists', {
           detail: 'An API already uses this ID. Choose another.',

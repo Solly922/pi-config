@@ -7,7 +7,9 @@
 
 ## Written Communication
 
-Use the unslop skill for ALL written communication, including progress updates, plans, technical explanations, and final responses. Reuse the loaded skill while it remains available in context; reload it when needed.
+Use the unslop skill for prose written for people, including progress updates, plans, technical explanations, final responses, and commit messages. Reuse the loaded skill while it remains available in context; reload it when needed.
+
+In code, identifiers, code comments, and technical docs such as AGENTS.md, use the standard technical term (CSRF, ETag, disable, idempotent, retry) even where unslop would pick a plainer word, so readers can search for it.
 
 Use html-communication when visual structure improves understanding, including plans, architecture docs, comparisons, diagrams, reports, timelines, and technical explanations. HTML is preferred for substantial plans, but not required.
 
@@ -92,22 +94,34 @@ MANY SMALL FILES > FEW LARGE FILES:
 
 ALWAYS handle errors comprehensively and provide meaningful error context.
 
-Usually log errors where you catch them. Use the project's existing logger, or `console.error` (or the language's equivalent) when there is none. Include what failed and the IDs or inputs needed to trace it, and leave out secrets and personal data. Skip the log when you rethrow to a caller that already logs it, so one failure produces one log entry.
+Usually log errors where you catch them. Use the project's existing logger, or `console.error` (or the language's equivalent) when there is none. Include what failed and the IDs or inputs needed to trace it, and leave out secrets and personal data. Skip the log only when you rethrow to a caller that already logs the same detail, so one failure produces one log entry. A caller that logs only a status code doesn't count.
 
 ALWAYS validate user input.
 
 ## Code Comments
 
-Use comments often to explain what code does, WHY it exists, and what it accomplishes.
+Comment generously. Each of these gets a comment:
 
-ALWAYS annotate functions, loops, and large code blocks.
+- The top of each file: what it covers and where it fits.
+- Each function: what it's for, in a line or two, plus the reason when it isn't obvious.
+- Each catch block, retry, fallback, and workaround: why it exists and what it protects.
+- Each magic number, ordering requirement, and security check: why that value or order.
+- Each run of 10 or more lines doing one step: a one-line label.
 
-- Prefer self-explanatory names and structure.
-- Explain tradeoffs, constraints, and non-obvious behavior.
-- Add a short comment before complex logic.
-- Explain one-liners, clunky logic, or obfuscated code when needed.
-- Keep comments accurate as code changes.
-- Avoid noisy banners and unnecessary explanatory blocks.
+A comment says what the code can't: the purpose, the reason, or the risk. Keep comments accurate as code changes. These rules override ponytail's "Comment only the why the code cannot show, in one line."
+
+## Code Layout
+
+Inside a function, put a blank line between steps. A step is one of these:
+
+- A value and the check on it, such as `const input = schema.safeParse(body)` and its `if (!input.success) return ...`.
+- A run of related assignments or calls.
+- A `try` block, a loop, or a multi-line `if`.
+- The final `return` after multi-line work.
+
+A comment that starts a step goes right below the blank line. A function of three single-line statements or fewer needs no blank lines, and a block never starts or ends with one.
+
+Ponytail's "one line" and "shortest diff" rules are about how much code you write, not about blank lines or layout.
 
 ## Testing Requirements
 
@@ -131,7 +145,7 @@ Before marking work complete:
 - Functions are small and files are focused.
 - Nesting does not exceed four levels.
 - Errors are handled and user input is validated.
-- Comments are clear, useful, and accurate.
+- Comments and blank lines follow the Code Comments and Code Layout rules.
 - All required tests pass and required coverage is met.
 - No security vulnerabilities remain.
 - Performance is acceptable.
