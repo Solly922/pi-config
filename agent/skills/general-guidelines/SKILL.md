@@ -41,7 +41,7 @@ patterns.
 - Use early returns to keep nesting shallow; more than about three levels means the logic wants restructuring, not more indentation.
 - Name functions and variables so call sites read as intent; a reader should rarely need to open the callee.
 - Name a function that sends a response or changes state with a verb, such as `sendApi` or `rejectStaleVersion`. Keep noun names like `storedApi` for lookups with no side effects.
-- Comment each file, each function, and each catch block, retry, fallback, workaround, and magic number. Say what the code can't: the purpose, the reason, or the risk. This overrides ponytail's "Comment only the why the code cannot show, in one line."
+- Comment only where a careful reader would otherwise get the code wrong: a surprising choice, an ordering or security constraint, a workaround and what breaks without it, a magic number's source, or the decision behind it. Put the comment on the line it explains. Functions get no doc comments, and a file gets a top comment only when its name and folder don't say what it's for. Never repeat a name, a type, or the next line.
 
 ### Size follows cohesion
 

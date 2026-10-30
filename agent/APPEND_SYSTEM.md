@@ -100,15 +100,15 @@ ALWAYS validate user input.
 
 ## Code Comments
 
-Comment generously. Each of these gets a comment:
+Write a comment only where a careful reader would otherwise get the code wrong:
 
-- The top of each file: what it covers and where it fits.
-- Each function: what it's for, in a line or two, plus the reason when it isn't obvious.
-- Each catch block, retry, fallback, and workaround: why it exists and what it protects.
-- Each magic number, ordering requirement, and security check: why that value or order.
-- Each run of 10 or more lines doing one step: a one-line label.
+- why the code does something surprising, or doesn't do the obvious thing;
+- an ordering, timing, or security constraint the code depends on;
+- a workaround, and what breaks without it;
+- where a magic number comes from;
+- the decision behind a choice (plan section, ADR, issue).
 
-A comment says what the code can't: the purpose, the reason, or the risk. Keep comments accurate as code changes. These rules override ponytail's "Comment only the why the code cannot show, in one line."
+Put the comment on the line it explains. Functions get no doc comments: if one needs explaining, rename it or comment the surprising line inside it. A file gets a top comment only when its name and folder don't say what it's for. Never repeat what a name, a type, or the next line already says, and don't label blocks. When unsure, leave it out.
 
 ## Code Layout
 
