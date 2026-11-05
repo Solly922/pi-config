@@ -41,7 +41,7 @@ Suggested routing:
 Always check the current GPT model:
 - gpt-6-astra: only low, medium, or high.
 - gpt-6.1-sol: low, medium, high, or xhigh.
-- gpt-6.1-terra: only medium, high, or xhigh. Use it only for Explore subagents.
+- gpt-6.1-terra: only medium, high, or xhigh. Use it only for Explore subagents and council.
 - gpt-6-luna: only xhigh or max.
 
 Use openai-codex/gpt-6.1-terra with xhigh for Explore subagents.
@@ -50,11 +50,15 @@ Use openai-codex/gpt-6.1-terra with xhigh for Explore subagents.
 
 Use these agents only when their trigger applies:
 
-- @architect: Consequential decisions about system/module boundaries, data ownership, public contracts, security architecture, scalability, reliability, or deployment. Keep routine UI and bounded feature planning with the main agent.
+- @architect: Consequential decisions about system/module boundaries, data ownership, public contracts, security architecture, scalability, reliability, or deployment. Keep routine UI and bounded feature planning with the main agent. Council may also use it as a read-only reviewer of any plan, design, or other non-code feedback.
 - @build-error-resolver: Non-trivial build/type failures where focused diagnosis helps. Keep straightforward failures with the main agent. Make minimal fixes without architectural edits.
-- @code-reviewer: MUST BE USED once after implementation and relevant checks for ALL code changes. Default to openai-codex/gpt-6.1-sol with xhigh unless the user specifies otherwise. If it returns `Escalation: REQUIRED`, rerun only affected findings or paths with claude-bridge/claude-opus-5-5 at xhigh. Launch the rerun through JevAgent with `agent`, `model`, and `thinking` set; the Agent tool's `model` parameter cannot override the code-reviewer frontmatter. After fixes, request targeted follow-up only when risk materially changed or a high-severity finding remains. Do not repeat full reviews for mechanical fixes.
+- @code-reviewer: MUST BE USED once after implementation and relevant checks for ALL code changes. Default to openai-codex/gpt-6.1-sol with xhigh unless the user specifies otherwise. If it returns `Escalation: REQUIRED`, rerun only affected findings or paths with claude-bridge/claude-opus-5-5 at xhigh. Launch the rerun through JevAgent with `agent`, `model`, and `thinking` set; the Agent tool's `model` parameter cannot override the code-reviewer frontmatter. After fixes, request targeted follow-up only when risk materially changed or a high-severity finding remains. Do not repeat full reviews for mechanical fixes. When council reviews the change, its rounds replace this single pass.
 - @frontend-builder: REQUIRED for brand-new pages and substantial UI/UX implementation. Keep routine UI planning and small, bounded changes with the main agent. Name in its prompt the design skills it must load, following the routing above. It runs with its own system prompt and does not see these rules.
 - @drafter: Building HTML plans, drafts, reports, and comparisons.
+
+## Council
+
+Council members, each at xhigh: `claude-bridge/claude-opus-5-5`, `openai-codex/gpt-6.1-sol`, and `openai-codex/gpt-6.1-terra`.
 
 ## Build and Plan Modes
 
