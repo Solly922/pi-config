@@ -2,118 +2,150 @@
   "timeoutMs": 15000,
   "usage": { "cacheSeconds": 60, "timeoutMs": 3000 },
   "notes": [
-    "The smartest models are claude-opus-5-5 and GPT-6-Astra, which are preferred for most work. Use smaller models for low-consequence work or when cost is a priority.",
+    "GPT-6.1 Sol is the default for most coding, review, and debugging: it scores within a few points of Claude Opus 5.5 and GPT-6 Astra at a fraction of the cost.",
+    "Claude Opus 5.5 writes the most mergeable code and gives the best reviews of hard cross-file changes. Prefer it when consequences are high, the task is long and unattended, or a cheaper pick already fell short.",
+    "Use GPT-6 Astra instead of GPT-6.1 Sol only for 3D, vision, computer use, or science and math-heavy reasoning.",
     "Always use a claude model for any frontend work",
-    "prefer 6.1 sol over 6 astra in all cases",
-    "Use gpt-6.1-terra only for the Explore agent (read-only code search). Never pick it for any other agent."
+    "Use gpt-6.1-terra only for the Explore agent (read-only code search). Never pick it for any other agent.",
+    "Speed matters as much as cost. minutesPerTask is the time Artificial Analysis measured per task at that thinking level, so it reflects both output speed and how many tokens the model writes. When quality is close, prefer the faster option.",
+    "GPT-6.1 Sol runs on OpenAI's priority tier here, so it finishes faster than its measured minutesPerTask.",
+    "Claude models may refuse offensive security, exploit, or reverse-engineering tasks. Route those to GPT-6.1 Sol."
   ],
 
   "models": [
     {
       "id": "openai-codex/gpt-6-astra",
       "tier": "expert",
-      "strengths": ["architecture", "planning", "complex-implementation", "frontend-design", "3d-design", "3d-implementation", "high-risk-reasoning"],
-      "weaknesses": ["higher-cost", "can-overcomplicate-bounded-tasks"],
-      "thinking": { "supported": ["medium", "high", "xhigh"], "default": "medium" },
+      "strengths": ["3d-design", "3d-implementation", "vision-and-image-understanding", "computer-use", "science-and-math-reasoning", "tool-use", "thorough-cross-file-review", "admits-when-it-cannot-solve-something", "fewest-output-tokens-among-expert-models"],
+      "weaknesses": ["higher-cost", "slow-output", "over-engineers-targeted-fixes", "over-researches-and-burns-budget-on-vague-or-long-tasks", "can-overcomplicate-bounded-tasks"],
+      "thinking": { "supported": ["low", "medium", "high"], "default": "high" },
       "routing": {
-        "preferWhen": ["task_requires_architecture", "task_requires_system_design", "implementation_is_complex", "frontend_requires_significant_visual_design", "task_requires_3d_design_or_implementation", "consequences_are_high"],
-        "avoidWhen": ["task_is_simple", "task_is_bounded", "task_is_primarily_search", "cheaper_model_is_sufficient"]
+        "preferWhen": ["task_requires_3d_design_or_implementation", "task_requires_vision_or_image_understanding", "task_requires_computer_use", "task_requires_science_or_math_reasoning"],
+        "avoidWhen": ["task_is_simple", "task_is_bounded", "task_is_targeted_fix", "task_is_primarily_search", "task_is_vague_and_long_running", "cheaper_model_is_sufficient"]
       },
-      "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 53, "costPerTask": 3.26 } },
+      "benchmarks": {
+        "artificialAnalysis": {
+          "intelligenceIndex": 54.8, "costPerTask": 3.24, "minutesPerTask": 8.2,
+          "byThinking": {
+            "low": { "intelligenceIndex": 43.3, "costPerTask": 1.42, "minutesPerTask": 3.2 },
+            "medium": { "intelligenceIndex": 51.6, "costPerTask": 2.73, "minutesPerTask": 6.0 },
+            "high": { "intelligenceIndex": 54.8, "costPerTask": 3.24, "minutesPerTask": 8.2 }
+          }
+        }
+      },
       "usage": { "source": "codex" },
-      "grades": {
-        "frontend": 7,
-        "writing": 8,
-        "debugging": 9,
-        "3D": 8,
-        "coding": 9
-      }
+      "grades": { "frontend": 7, "writing": 8, "debugging": 9, "3D": 8, "coding": 9, "code-review": 8 }
     },
     {
       "id": "claude-bridge/claude-opus-5-5",
       "tier": "expert",
-      "strengths": ["architecture", "planning", "complex-implementation", "debugging", "code-review", "instruction-following", "long-horizon-agentic-work", "high-risk-reasoning", "frontend-design", "3d-design", "3d-implementation"],
-      "weaknesses": ["higher-cost", "can-overcomplicate-bounded-tasks"],
+      "strengths": ["most-mergeable-code", "complex-implementation", "hard-cross-file-code-review", "debugging-and-failure-analysis", "long-unattended-agentic-runs", "architecture", "planning", "instruction-following", "high-risk-reasoning", "frontend-design", "3d-design", "3d-implementation", "writing"],
+      "weaknesses": ["higher-cost", "uses-many-tokens-at-high-effort", "may-refuse-security-or-reverse-engineering-tasks", "can-act-beyond-the-permission-it-was-given", "can-overcomplicate-bounded-tasks", "can-end-a-turn-on-a-progress-update", "guesses-instead-of-saying-it-does-not-know-a-fact"],
       "thinking": { "supported": ["medium", "high", "xhigh"], "default": "high" },
       "routing": {
-        "preferWhen": ["implementation_is_complex", "instruction_precision_is_critical", "task_requires_difficult_debugging", "consequences_are_high", "frontend_requires_significant_visual_design", "consequences_are_high", "frontend_is_small_but_new", "code_review_requires_escalation", "build_error_requires_escalation"],
-        "avoidWhen": ["task_is_simple", "task_is_bounded", "task_is_primarily_search", "cheaper_model_is_sufficient", "frontend_components_are_well-established", "frontend_components_are_prexisting"]
+        "preferWhen": ["implementation_is_complex", "consequences_are_high", "task_is_long_and_unattended", "task_requires_difficult_debugging", "task_requires_architecture", "instruction_precision_is_critical", "frontend_requires_significant_visual_design", "frontend_is_small_but_new", "code_review_requires_escalation", "build_error_requires_escalation"],
+        "avoidWhen": ["task_is_simple", "task_is_bounded", "task_is_primarily_search", "cheaper_model_is_sufficient", "frontend_components_are_well-established", "frontend_components_are_preexisting", "task_involves_offensive_security_or_reverse_engineering"]
       },
-      "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 58, "costPerTask": 3.46 } },
+      "benchmarks": {
+        "artificialAnalysis": {
+          "intelligenceIndex": 51.8, "costPerTask": 3.46, "minutesPerTask": 9.1,
+          "byThinking": {
+            "medium": { "intelligenceIndex": 48.2, "costPerTask": 2.45, "minutesPerTask": 6.6 },
+            "high": { "intelligenceIndex": 51.8, "costPerTask": 3.46, "minutesPerTask": 9.1 },
+            "xhigh": { "intelligenceIndex": 57.4, "costPerTask": 6.05, "minutesPerTask": 16.0 }
+          }
+        }
+      },
       "usage": { "source": "claude" },
-      "grades": {
-        "frontend": 9,
-        "writing": 8,
-        "debugging": 9,
-        "3D": 9,
-        "coding": 9
-      }
+      "grades": { "frontend": 9, "writing": 9, "debugging": 9, "3D": 9, "coding": 9, "code-review": 10 }
     },
     {
       "id": "openai-codex/gpt-6.1-sol",
       "tier": "frontier-general",
-      "strengths": ["code-review", "deep-code-audits", "debugging", "root-cause-investigation", "codebase-analysis", "database-review", "general-implementation", "scoped-work", "terminal-and-agentic-coding", "computer-use", "3d-modeling", "token-efficient", "cost-efficient-frontier-reasoning", "token-efficiency", "readable-code"],
-      "weaknesses": ["slow", "poor-frontend-and-ui-design-taste", "weak-at-long-unattended-rewrites", "follows-process-rules-instead-of-asking-for-help", "code-less-merge-ready-than-opus", "weak-game-mechanics-and-interaction-feel", "less-capable-than-opus-and-astra-on-open-ended-judgment", "less-preferred-than-opus-and-astra-for-high-consequence-work"],
-      "thinking": { "supported": ["high", "xhigh"], "default": "high" },
+      "strengths": ["code-review-with-few-false-alarms", "deep-code-audits", "debugging", "root-cause-investigation", "codebase-analysis", "database-review", "general-implementation", "scoped-work", "terminal-and-agentic-coding", "3d-modeling", "cost-efficient-frontier-reasoning", "token-efficiency", "readable-code"],
+      "weaknesses": ["slow", "poor-frontend-and-ui-design-taste", "weak-at-long-unattended-rewrites", "follows-process-rules-instead-of-asking-for-help", "over-engineers-and-expands-scope", "can-ignore-AGENTS.md-rules", "code-less-merge-ready-than-opus", "weak-game-mechanics-and-interaction-feel", "less-capable-than-opus-and-astra-on-open-ended-judgment", "less-preferred-than-opus-for-high-consequence-work"],
+      "thinking": { "supported": ["high", "xhigh"], "default": "xhigh" },
       "routing": {
-        "preferWhen": ["task_requires_code_review", "task_requires_audit_or_root_cause_analysis", "task_requires_codebase_analysis", "task_requires_code", "task_is_well_scoped", "task_requires_computer_use", "task_requires_strong-reasoning", "quality_matters_but_astra_is_unnecessary", "readability_matters"],
-        "avoidWhen": ["task_is_simple_search", "task_is_trivial", "frontend_requires_significant_visual_design", "task_is_long_unattended_rewrite", "task_requires_high-consequence-architecture", "task_requires_sustained_open-ended_judgment"]
+        "preferWhen": ["task_requires_code", "task_requires_code_review", "task_requires_audit_or_root_cause_analysis", "task_requires_codebase_analysis", "task_requires_database_review", "task_is_well_scoped", "task_requires_strong-reasoning", "quality_matters_but_opus_is_unnecessary", "readability_matters"],
+        "avoidWhen": ["task_is_simple_search", "task_is_trivial", "frontend_requires_significant_visual_design", "task_is_long_unattended_rewrite", "task_requires_high-consequence-architecture", "task_requires_sustained_open-ended_judgment", "task_requires_3d_vision_or_computer_use"]
       },
-      "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 52, "costPerTask": 0.72 } },
+      "benchmarks": {
+        "artificialAnalysis": {
+          "intelligenceIndex": 52.5, "costPerTask": 0.76, "minutesPerTask": 9.1,
+          "byThinking": {
+            "high": { "intelligenceIndex": 50.3, "costPerTask": 0.59, "minutesPerTask": 6.6 },
+            "xhigh": { "intelligenceIndex": 52.5, "costPerTask": 0.76, "minutesPerTask": 9.1 }
+          }
+        }
+      },
       "usage": { "source": "codex" },
       "fast": true,
-      "grades": {
-        "frontend": 4,
-        "debugging": 9,
-        "3D": 7,
-        "coding": 8
-      }
+      "grades": { "frontend": 4, "debugging": 9, "3D": 7, "coding": 8, "code-review": 9 }
     },
     {
       "id": "claude-bridge/claude-sonnet-5-5",
       "tier": "frontier-general",
-      "strengths": ["general-implementation", "debugging", "code-review", "ui-polish", "writing", "document-generation", "fast-codebase-comprehension", "fast-iteration", "long-horizon-agentic-work", "cost-efficient-frontier-reasoning"],
-      "weaknesses": ["less-capable-than-opus-on-open-ended-judgment", "less-preferred-than-opus-and-astra-for-high-consequence-work", "higher-risk-cybersecurity-requests-fall-back-to-sonnet-5"],
+      "strengths": ["writing", "document-generation", "knowledge-work", "fastest-frontier-output", "ui-polish", "small-well-specified-frontend-tasks", "fast-iteration-on-frontend-and-documents"],
+      "weaknesses": ["costs-more-than-opus-at-high-for-a-lower-score", "noisier-code-reviews-than-opus-and-sol", "adds-unrequested-tests-docs-and-files", "guesses-instead-of-saying-it-does-not-know-a-fact", "less-capable-than-opus-on-open-ended-judgment", "less-preferred-than-opus-for-high-consequence-work", "higher-risk-cybersecurity-requests-fall-back-to-sonnet-5"],
       "thinking": { "supported": ["xhigh"], "default": "xhigh" },
       "routing": {
-        "preferWhen": ["task_requires_code", "implementation_is_general", "task_is_well_scoped", "task_requires_bug_fixing", "frontend_requires_polish", "task_requires_writing_or_documents", "implementing_an_existing_architecture_or_plan", "fast_iteration_is_valuable", "quality_matters_but_opus_is_unnecessary", "task_is_tool-heavy", "task_is_drafting", "first_pass_is_appropriate"],
-        "avoidWhen": ["task_is_trivial", "task_requires_high-consequence-architecture", "task_requires_sustained_open-ended_judgment"],
+        "preferWhen": ["task_requires_writing_or_documents", "task_is_drafting", "frontend_requires_polish", "frontend_components_are_well-established", "fast_iteration_on_frontend_or_documents_is_valuable"],
+        "avoidWhen": ["task_is_trivial", "task_requires_code_review", "task_requires_difficult_debugging", "task_requires_high-consequence-architecture", "task_requires_sustained_open-ended_judgment"],
         "escalateTo": "claude-bridge/claude-opus-5-5"
       },
-      "grades": {
-        "frontend": 8,
-        "writing": 8,
-        "debugging": 8,
-        "3D": 8
+      "benchmarks": {
+        "artificialAnalysis": {
+          "intelligenceIndex": 49.9, "costPerTask": 4.09, "minutesPerTask": 14.7,
+          "byThinking": {
+            "xhigh": { "intelligenceIndex": 49.9, "costPerTask": 4.09, "minutesPerTask": 14.7 }
+          }
+        }
       },
-      "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 52, "costPerTask": 2.74 } },
-      "usage": { "source": "claude" }
+      "usage": { "source": "claude" },
+      "grades": { "frontend": 8, "writing": 9, "debugging": 8, "3D": 8, "coding": 8, "code-review": 7 }
     },
     {
       "id": "openai-codex/gpt-6.1-terra",
       "tier": "economy-fast",
-      "strengths": ["explore-agent-read-only-code-search"],
-      "weaknesses": ["routed-only-for-the-Explore-agent", "misses-findings-in-code-review", "less-careful-implementation-than-sonnet"],
+      "strengths": ["explore-agent-read-only-code-search", "fewest-wrong-guesses-of-the-openai-models"],
+      "weaknesses": ["routed-only-for-the-Explore-agent", "can-end-a-turn-early-or-ask-to-continue", "misses-findings-in-code-review", "less-careful-implementation-than-sonnet"],
       "thinking": { "supported": ["medium", "high", "xhigh"], "default": "xhigh" },
       "routing": {
         "preferWhen": ["agent_is_Explore", "task_is_primarily_search", "task_is_read_only_code_lookup"],
         "avoidWhen": ["agent_is_not_Explore", "task_requires_code", "task_requires_code_review", "task_requires_audit_or_root_cause_analysis", "task_requires_writing_or_documents"]
       },
-      "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 48, "costPerTask": 0.4 } },
+      "benchmarks": {
+        "artificialAnalysis": {
+          "intelligenceIndex": 45.3, "costPerTask": 0.4, "minutesPerTask": 5.9,
+          "byThinking": {
+            "medium": { "intelligenceIndex": 38.2, "costPerTask": 0.17, "minutesPerTask": 2.5 },
+            "high": { "intelligenceIndex": 42.4, "costPerTask": 0.26, "minutesPerTask": 3.8 },
+            "xhigh": { "intelligenceIndex": 45.3, "costPerTask": 0.4, "minutesPerTask": 5.9 }
+          }
+        }
+      },
       "usage": { "source": "codex" }
     },
     {
-      "id": "openai-codex/gpt-6-luna",
-      "tier": "economy-reasoning",
-      "strengths": ["very-low-cost", "reasoning-intensive-low-consequence-work", "high-volume-tasks", "non-interactive-analysis"],
-      "weaknesses": ["slower-reasoning", "lower-capability-than-sol-and-astra", "unclear-primary-routing-niche"],
-      "thinking": { "supported": ["xhigh", "max"], "default": "max" },
+      "id": "claude-bridge/claude-haiku-5-5",
+      "tier": "economy-fast",
+      "strengths": ["fastest-output", "very-low-cost", "read-only-lookups", "triage", "mechanical-edits", "simple-file-generation", "few-wrong-guesses-for-its-size"],
+      "weaknesses": ["weak-on-complex-implementation", "misses-subtle-bugs-in-review", "can-skip-a-search-or-check-at-low-effort", "writes-many-tokens-so-tasks-are-not-as-fast-as-its-output-speed", "refuses-more-often-than-larger-claude-models"],
+      "thinking": { "supported": ["low", "medium"], "default": "medium" },
       "routing": {
-        "preferWhen": ["cost_is_high_priority", "latency_is_not_important", "task_is_low-consequence"],
-        "avoidWhen": ["latency_is_important", "implementation_is_complex", "task_is_high-risk"]
+        "preferWhen": ["task_is_trivial", "task_is_mechanical", "task_is_read_only_lookup", "task_is_triage", "task_is_low-consequence", "speed_is_important", "cost_is_high_priority"],
+        "avoidWhen": ["implementation_is_complex", "task_requires_code_review", "task_requires_difficult_debugging", "instruction_precision_is_critical", "consequences_are_high"]
       },
-      "benchmarks": { "artificialAnalysis": { "intelligenceIndex": 37, "costPerTask": null } },
-      "usage": { "source": "codex" }
+      "benchmarks": {
+        "artificialAnalysis": {
+          "intelligenceIndex": 24.6, "costPerTask": 0.09, "minutesPerTask": 4.0,
+          "byThinking": {
+            "low": { "intelligenceIndex": 18.6, "costPerTask": 0.04, "minutesPerTask": 2.2 },
+            "medium": { "intelligenceIndex": 24.6, "costPerTask": 0.09, "minutesPerTask": 4.0 }
+          }
+        }
+      },
+      "usage": { "source": "claude" }
     }
   ],
   "agents": [
