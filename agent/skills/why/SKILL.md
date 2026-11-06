@@ -50,7 +50,7 @@ Run all three searches, even when the anchor seems to answer the question. A ski
 
 1. **Source control.** git and `gh`: PRs, review threads, and linked GitHub issues (the issue tracker). Playbook: [references/code-archaeology.md](references/code-archaeology.md).
 2. **In-repo docs.** ADRs, CHANGELOG, `docs/`, READMEs, code comments, TODO/FIXME, and tests. Same playbook.
-3. **Past sessions and notes.** Run `session_search` for the file path, key symbols, and PR number (try two or three phrasings, with and without the `project` filter), then `memory_search` and `wiki_search` for the same terms. In T3 Code without those tools, run `t3_thread_search` for the same terms. This is secondary evidence. An agent's past claim is not proof, so cite the snippet with its session date and confirm it against git where you can. Tier it by [epistemics](references/epistemics.md#secondary-evidence).
+3. **Past sessions and notes.** Run `session_search` for the file path, key symbols, and PR number (try two or three phrasings, with and without the `project` filter), then `memory_search` and `wiki_search` for the same terms. In T3 Code, also run `t3_thread_search` for the same terms, because `session_search` only covers pi sessions. This is secondary evidence. An agent's past claim is not proof, so cite the snippet with its session date and confirm it against git where you can. Tier it by [epistemics](references/epistemics.md#secondary-evidence).
 
 If the target looks defensive (retries, timeouts, null guards, rate limits, feature flags, egress guards, OOM handlers), also run the incident search in [references/code-archaeology.md](references/code-archaeology.md#defensive-code-incident-and-postmortem-signals).
 

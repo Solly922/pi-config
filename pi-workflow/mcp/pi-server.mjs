@@ -1,0 +1,193 @@
+#!/usr/bin/env node
+// MCP server for native Claude Code and Codex threads. It runs pi extensions (Hermes memory and Jev
+// routing) inside a headless pi session and exposes their tools, so both harnesses share pi's memory.
+
+import { spawn } from 'node:child_process';
+import { existsSync, readFileSync } from 'node:fs';
+import { homedir } from 'node:os';
+import { dirname, join } from 'node:path';
+import { Writable } from 'node:stream';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+
+// MCP owns stdout, and Hermes and pi log progress with console.info. Everything except protocol
+// messages goes to stderr, which both harnesses keep as the server's log.
+const writeProtocol = process.stdout.write.bind(process.stdout);
+process.stdout.write = process.stderr.write.bind(process.stderr);
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+const AGENT_DIR = join(homedir(), '.pi', 'agent');
+const PI_VERSION = readFileSync(join(AGENT_DIR, 'install', 'current-version'), 'utf8').trim();
+const PI_MODULES = join(AGENT_DIR, 'install', 'releases', PI_VERSION, 'node_modules', '@earendil-works');
+const MCP_SDK = join(AGENT_DIR, 'npm', 'node_modules', '@modelcontextprotocol', 'sdk', 'dist', 'esm');
+
+const EXTENSIONS = [
+  {
+    path: join(AGENT_DIR, 'npm', 'node_modules', 'pi-hermes-memory', 'src', 'index.ts'),
+    tools: ['memory_add', 'memory_replace', 'memory_remove', 'memory_search', 'session_search', 'skill_manage'],
+  },
+  { path: join(HERE, '..', 'extensions', 'route.ts'), tools: ['route'] },
+];
+const EXPOSED = EXTENSIONS.flatMap((extension) => extension.tools);
+// These change which skill folders exist, so the native skill links need a sync afterwards.
+const SKILL_SET_ACTIONS = new Set(['create', 'delete']);
+const SHUTDOWN_WAIT_MS = 5_000;
+
+const { Server } = await importFile(join(MCP_SDK, 'server', 'index.js'));
+const { StdioServerTransport } = await importFile(join(MCP_SDK, 'server', 'stdio.js'));
+const { CallToolRequestSchema, ListToolsRequestSchema } = await importFile(join(MCP_SDK, 'types.js'));
+
+const ready = startPiSession(process.cwd()).catch((error) => {
+  console.error('pi MCP server: could not start the pi session', { cwd: process.cwd(), error });
+  throw error;
+});
+
+// Registered before startup finishes, so a client that gives up during startup still gets a clean shutdown.
+process.stdin.on('end', shutDown);
+process.on('SIGTERM', shutDown);
+process.on('SIGINT', shutDown);
+
+// The instructions come from the pi session, so initialize waits for it. Clients wait for
+// tools/list anyway, which needs the session too. A failed start still serves, with tool errors.
+const instructions = await ready.then((state) => state.instructions, () => undefined);
+
+const server = new Server({ name: 'pi', version: '1.0.0' }, { capabilities: { tools: {} }, instructions });
+server.setRequestHandler(ListToolsRequestSchema, listTools);
+server.setRequestHandler(CallToolRequestSchema, callTool);
+
+const protocolOut = new Writable({
+  write(chunk, encoding, callback) {
+    writeProtocol(chunk, encoding, callback);
+  },
+});
+await server.connect(new StdioServerTransport(process.stdin, protocolOut));
+
+function importFile(path) {
+  return import(pathToFileURL(path).href);
+}
+
+async function startPiSession(cwd) {
+  const sdk = await importFile(join(PI_MODULES, 'pi-coding-agent', 'dist', 'index.js'));
+  const { validateToolArguments } = await importFile(join(PI_MODULES, 'pi-ai', 'dist', 'index.js'));
+
+  const settingsManager = sdk.SettingsManager.inMemory({});
+  const loader = new sdk.DefaultResourceLoader({
+    cwd,
+    agentDir: AGENT_DIR,
+    settingsManager,
+    noExtensions: true,
+    additionalExtensionPaths: EXTENSIONS.map((extension) => extension.path).filter((path) => existsSync(path)),
+    noSkills: true,
+    noPromptTemplates: true,
+    noThemes: true,
+    noContextFiles: true,
+  });
+  await loader.reload();
+
+  for (const { path, error } of loader.getExtensions().errors) {
+    console.error('pi MCP server: extension failed to load', { path, error });
+  }
+
+  const { session } = await sdk.createAgentSession({
+    cwd,
+    agentDir: AGENT_DIR,
+    resourceLoader: loader,
+    settingsManager,
+    sessionManager: sdk.SessionManager.inMemory(cwd),
+    noTools: 'builtin',
+  });
+  await session.bindExtensions({ mode: 'print' });
+
+  const missing = EXPOSED.filter((name) => !session.getToolDefinition(name));
+  if (missing.length > 0) console.error('pi MCP server: tools not registered', { missing });
+
+  // Hermes adds its memory policy and pinned instructions to pi's prompt in this event.
+  const { systemPromptOptions } = await session.extensionRunner.emitBeforeAgentStart({ prompt: '', images: [] }, {});
+
+  return { session, validateToolArguments, instructions: systemPromptOptions.appendSystemPrompt.trim() || undefined };
+}
+
+async function listTools() {
+  const { session } = await ready;
+
+  const tools = EXPOSED.flatMap((name) => {
+    const definition = session.getToolDefinition(name);
+    if (!definition) return [];
+
+    return [{ name, description: describe(definition), inputSchema: JSON.parse(JSON.stringify(definition.parameters)) }];
+  });
+
+  return { tools };
+}
+
+// pi shows a tool's guidelines in the system prompt; MCP has only the description to carry them.
+function describe(definition) {
+  const guidelines = definition.promptGuidelines ?? [];
+  if (guidelines.length === 0) return definition.description;
+
+  return `${definition.description}\n\nGuidelines:\n${guidelines.map((line) => `- ${line}`).join('\n')}`;
+}
+
+async function callTool(request, extra) {
+  const { name, arguments: rawArguments = {} } = request.params;
+  const { session, validateToolArguments } = await ready;
+  const definition = EXPOSED.includes(name) ? session.getToolDefinition(name) : undefined;
+  if (!definition) return errorResult(`Unknown tool: ${name}`);
+
+  try {
+    const prepared = definition.prepareArguments ? definition.prepareArguments(rawArguments) : rawArguments;
+    const args = validateToolArguments(
+      { name, description: definition.description, parameters: definition.parameters },
+      { type: 'toolCall', id: String(extra.requestId), name, arguments: prepared },
+    );
+
+    const ctx = session.extensionRunner.createContext();
+    const result = await definition.execute(String(extra.requestId), args, extra.signal, () => {}, ctx);
+    if (name === 'skill_manage' && SKILL_SET_ACTIONS.has(args.action)) resyncNativeConfig();
+
+    return { content: result.content.map(toMcpContent) };
+  } catch (error) {
+    console.error('pi MCP server: tool call failed', { tool: name, cwd: session.cwd, error });
+    return errorResult(error instanceof Error ? error.message : String(error));
+  }
+}
+
+function toMcpContent(part) {
+  if (part.type === 'image') return { type: 'image', data: part.data, mimeType: part.mimeType };
+  return { type: 'text', text: part.text ?? '' };
+}
+
+function errorResult(message) {
+  return { isError: true, content: [{ type: 'text', text: message }] };
+}
+
+function resyncNativeConfig() {
+  const sync = spawn(process.execPath, [join(HERE, '..', 'sync.mjs')], { stdio: ['ignore', 'ignore', 'pipe'] });
+
+  let stderr = '';
+  sync.stderr.on('data', (chunk) => {
+    stderr += chunk;
+  });
+  sync.on('close', (code) => {
+    if (code !== 0) console.error('pi MCP server: sync after skill_manage failed', { code, stderr });
+  });
+}
+
+let shuttingDown;
+
+// session_shutdown lets Hermes checkpoint and close its SQLite database. A session that never
+// finishes starting has nothing to close, so the wait is bounded.
+function shutDown() {
+  shuttingDown ??= (async () => {
+    try {
+      const state = await Promise.race([ready, new Promise((resolve) => setTimeout(resolve, SHUTDOWN_WAIT_MS))]);
+      if (!state) return;
+
+      await state.session.extensionRunner.emit({ type: 'session_shutdown', reason: 'quit' });
+      state.session.dispose();
+    } catch (error) {
+      console.error('pi MCP server: shutdown failed', { error });
+    } finally {
+      process.exit(0);
+    }
+  })();
+}

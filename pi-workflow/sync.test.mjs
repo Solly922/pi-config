@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import {
+  existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, utimesSync, writeFileSync,
+} from 'node:fs';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { after, test } from 'node:test';
@@ -88,6 +90,106 @@ test('sync refuses a rules file with ambiguous markers and leaves it unchanged',
     assert.match(run.stderr, /needs one pi-workflow start marker/);
     assert.equal(readFileSync(join(root, '.claude', 'CLAUDE.md'), 'utf8'), markers);
   }
+});
+
+test('sync manages only its own MCP servers in Claude and Codex', () => {
+  const root = freshRoot();
+  mkdirSync(join(root, '.claude'), { recursive: true });
+  mkdirSync(join(root, '.codex'), { recursive: true });
+
+  const mine = { type: 'http', url: 'https://example.com/my-context7' };
+  const stale = { type: 'stdio', command: 'node', args: ['/old/pi-server.mjs'], env: { PI_WORKFLOW: '1' } };
+  const dropped = { type: 'stdio', command: 'node', args: ['/old/dropped.mjs'], env: { PI_WORKFLOW: '1' } };
+  writeFileSync(join(root, '.claude', '.claude.json'), JSON.stringify({ mcpServers: { context7: mine, pi: stale, dropped } }));
+  writeFileSync(join(root, '.codex', 'config.toml'), 'model = "x"\n\n[mcp_servers."codegraph"]\ncommand = "mine"\n');
+
+  const run = sync(root);
+  assert.equal(run.status, 0, run.stderr);
+  assert.match(run.stderr, /Claude MCP server context7 exists and pi-workflow does not manage it/);
+
+  const claude = JSON.parse(readFileSync(join(root, '.claude', '.claude.json'), 'utf8')).mcpServers;
+  assert.deepEqual(claude.context7, mine);
+  assert.match(claude.pi.args[0], /pi-workflow\/mcp\/pi-server\.mjs$/);
+  assert.equal(claude.dropped, undefined);
+
+  const toml = readFileSync(join(root, '.codex', 'config.toml'), 'utf8');
+  assert.match(toml, /^model = "x"\n\n\[mcp_servers\."codegraph"\]\ncommand = "mine"\n\n# pi-workflow:start/);
+  assert.match(toml, /\[mcp_servers\.pi\]\n[\s\S]*env_vars = \["TYPESAFE_API_KEY", "PATH"/);
+  assert.equal(toml.match(/codegraph/g).length, 1);
+
+  assert.equal(sync(root).stdout, '');
+});
+
+test('sync keeps servers the user declared in any TOML form, and ignores marker text that is not a whole line', () => {
+  const root = freshRoot();
+  mkdirSync(join(root, '.codex'), { recursive: true });
+  const mine = 'note = "see # pi-workflow:start in the docs"\nmcp_servers.pi.command = "mine"\n\n[mcp_servers.\'context7\']\nurl = "https://example.com/mine"\n';
+  writeFileSync(join(root, '.codex', 'config.toml'), mine);
+
+  const run = sync(root);
+  assert.equal(run.status, 0, run.stderr);
+
+  const toml = readFileSync(join(root, '.codex', 'config.toml'), 'utf8');
+  assert.ok(toml.startsWith(mine));
+  assert.doesNotMatch(toml, /\[mcp_servers\.(pi|context7)\]/);
+  assert.match(toml, /\[mcp_servers\.gh_grep\]/);
+});
+
+test('sync writes into CLAUDE_CONFIG_DIR and CODEX_HOME when they are set', () => {
+  const home = freshRoot();
+  symlinkSync(join(homedir(), '.pi'), join(home, '.pi'));
+  const env = { ...process.env, HOME: home, CLAUDE_CONFIG_DIR: join(home, 'claude-profile'), CODEX_HOME: join(home, 'codex-profile') };
+
+  const run = spawnSync(process.execPath, [SYNC], { encoding: 'utf8', env });
+  assert.equal(run.status, 0, run.stderr);
+
+  assert.ok(existsSync(join(home, 'claude-profile', 'CLAUDE.md')));
+  assert.ok(existsSync(join(home, 'claude-profile', 'agents', 'code-reviewer.md')));
+  assert.ok(JSON.parse(readFileSync(join(home, 'claude-profile', '.claude.json'), 'utf8')).mcpServers.pi);
+  assert.match(readFileSync(join(home, 'codex-profile', 'config.toml'), 'utf8'), /\[mcp_servers\.pi\]/);
+  assert.equal(existsSync(join(home, '.claude')), false);
+  assert.equal(existsSync(join(home, '.codex')), false);
+});
+
+test('sync clears a lock whose owner is gone', () => {
+  const root = freshRoot();
+  const lock = join(root, '.cache', 'pi-workflow-sync.lock');
+
+  mkdirSync(lock, { recursive: true });
+  utimesSync(lock, new Date(0), new Date(0));
+  assert.equal(sync(root).status, 0);
+  assert.equal(existsSync(lock), false);
+
+  const exited = spawnSync(process.execPath, ['-e', 'process.stdout.write(String(process.pid))'], { encoding: 'utf8' });
+  mkdirSync(lock, { recursive: true });
+  writeFileSync(join(lock, 'pid'), exited.stdout);
+  assert.equal(sync(root).status, 0);
+  assert.equal(existsSync(lock), false);
+});
+
+test('sync ignores the Codex config of the project it runs from', () => {
+  const root = freshRoot();
+  const project = join(root, 'project');
+  mkdirSync(join(project, '.codex'), { recursive: true });
+  mkdirSync(join(root, '.codex'), { recursive: true });
+  writeFileSync(join(project, '.codex', 'config.toml'), '[mcp_servers.context7]\nurl = "https://example.com/project"\n');
+  writeFileSync(join(root, '.codex', 'config.toml'), `[projects.${JSON.stringify(project)}]\ntrust_level = "trusted"\n`);
+
+  const run = spawnSync(process.execPath, [SYNC, '--root', root], { cwd: project, encoding: 'utf8' });
+  assert.equal(run.status, 0, run.stderr);
+  assert.match(readFileSync(join(root, '.codex', 'config.toml'), 'utf8'), /\[mcp_servers\.context7\]/);
+});
+
+test('sync restores config.toml when Codex rejects it', () => {
+  const root = freshRoot();
+  mkdirSync(join(root, '.codex'), { recursive: true });
+  const broken = '[mcp_servers.x]\ncommand = \n';
+  writeFileSync(join(root, '.codex', 'config.toml'), broken);
+
+  const run = sync(root);
+  assert.equal(run.status, 1);
+  assert.match(run.stderr, /was restored because Codex rejected/);
+  assert.equal(readFileSync(join(root, '.codex', 'config.toml'), 'utf8'), broken);
 });
 
 test('TOML strings escape every control character TOML forbids', () => {

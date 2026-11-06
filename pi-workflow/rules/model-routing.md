@@ -20,7 +20,9 @@ Always check the current GPT model:
 
 Targets are T3 Code provider instances: `claudeAgent` runs Claude Code and `codex` runs Codex.
 
-- Same provider as you: use your native subagent tool, `Agent` in Claude Code or `spawn_agent` in Codex. A named agent's file already sets its model and effort.
+The `pi` MCP server's `route` tool is Jev: it picks the agent, model, and effort and returns them as `agent:` and `target:` lines without launching anything. Pass the user's required agent, model, or effort as its constraints; with all three fixed it makes no paid call.
+
+- Same provider as you: use your native subagent tool, `Agent` in Claude Code or `spawn_agent` in Codex, when the named agent's own model and effort (the preferred model at the end of its description) are the ones you want. Otherwise use `delegate_task`, which sets them exactly.
 - Other provider: use the t3-code `delegate_task` tool with `target: {providerInstanceId, model, options}`. Set effort with `options.effort` for `claudeAgent` and `options.reasoningEffort` for `codex`.
 - If `delegate_task` rejects a GPT-6.1 model you picked from this table, launch `gpt-6-sol` at the same effort instead and tell the user. Council members and models the user named are exceptions: report the rejection instead of substituting.
 - Outside T3 Code there is no `delegate_task`. Use your native subagent tool, which runs the named agent on its fallback model, and tell the user the preferred model was unavailable.
