@@ -3,11 +3,12 @@
 // routing) inside a headless pi session and exposes their tools, so both harnesses share pi's memory.
 
 import { spawn } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
-import { homedir } from 'node:os';
+import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { Writable } from 'node:stream';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
+
+import { AGENT_DIR, HERMES_SRC, PI_NODE_MODULES, importFile, piReleaseModules } from '../lib/pi.mjs';
 
 // MCP owns stdout, and Hermes and pi log progress with console.info. Everything except protocol
 // messages goes to stderr, which both harnesses keep as the server's log.
@@ -15,14 +16,12 @@ const writeProtocol = process.stdout.write.bind(process.stdout);
 process.stdout.write = process.stderr.write.bind(process.stderr);
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const AGENT_DIR = join(homedir(), '.pi', 'agent');
-const PI_VERSION = readFileSync(join(AGENT_DIR, 'install', 'current-version'), 'utf8').trim();
-const PI_MODULES = join(AGENT_DIR, 'install', 'releases', PI_VERSION, 'node_modules', '@earendil-works');
-const MCP_SDK = join(AGENT_DIR, 'npm', 'node_modules', '@modelcontextprotocol', 'sdk', 'dist', 'esm');
+const PI_MODULES = join(piReleaseModules(), '@earendil-works');
+const MCP_SDK = join(PI_NODE_MODULES, '@modelcontextprotocol', 'sdk', 'dist', 'esm');
 
 const EXTENSIONS = [
   {
-    path: join(AGENT_DIR, 'npm', 'node_modules', 'pi-hermes-memory', 'src', 'index.ts'),
+    path: join(HERMES_SRC, 'index.ts'),
     tools: ['memory_add', 'memory_replace', 'memory_remove', 'memory_search', 'session_search', 'skill_manage'],
   },
   { path: join(HERE, '..', 'extensions', 'route.ts'), tools: ['route'] },
@@ -60,10 +59,6 @@ const protocolOut = new Writable({
   },
 });
 await server.connect(new StdioServerTransport(process.stdin, protocolOut));
-
-function importFile(path) {
-  return import(pathToFileURL(path).href);
-}
 
 async function startPiSession(cwd) {
   const sdk = await importFile(join(PI_MODULES, 'pi-coding-agent', 'dist', 'index.js'));
