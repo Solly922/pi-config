@@ -1,6 +1,6 @@
 ---
 name: council
-description: Get review or feedback from the council members named in APPEND_SYSTEM.md and loop until they agree. Use for /skill:council.
+description: Get review or feedback from the council members named in your instructions' Council section and loop until they agree. Use for /council or /skill:council.
 disable-model-invocation: true
 license: MIT
 metadata:
@@ -15,17 +15,20 @@ relevant checks. Give council the updated implementation; do not defer known
 fixes until reviews return. If the user wants to discard the implementation
 and explore new ideas, skip fixes to code being replaced.
 
-Bring in one delegate per council member listed in APPEND_SYSTEM.md, at the
-thinking level listed there, usually for review or feedback. If the user's
+Bring in one delegate per council member listed in the Council section of your
+instructions, at the thinking level listed there, usually for review or feedback. If the user's
 instructions name other members, use those. If a member is unavailable,
 report it instead of substituting.
 
-Launch the delegates in parallel with `JevAgent`, setting `agent`, `model`,
-and `thinking` so Jev skips its paid routing. Use the `code-reviewer` agent
-for code review and the `architect` agent for plans, designs, and other
-non-code feedback. Both are read-only. Give each delegate the request and relevant
-context, wait for every result with `get_subagent_result`, then summarize the
-useful findings, disagreements, and recommended next steps.
+In pi, launch the delegates in parallel with `JevAgent`, setting `agent`,
+`model`, and `thinking` so Jev skips its paid routing, and wait for every result
+with `get_subagent_result`. In Claude Code or Codex, launch them in parallel
+with `delegate_task` as the Council and Subagents sections describe, and read
+each result with `task_status` when T3 Code reports it finished. Use the
+`code-reviewer` agent for code review and the `architect` agent for plans,
+designs, and other non-code feedback. Both are read-only. Give each delegate the
+request and relevant context, then summarize the useful findings,
+disagreements, and recommended next steps.
 
 For a code review, ask each delegate for a grade from 0 to 100.
 code-reviewer already ends its report with one.

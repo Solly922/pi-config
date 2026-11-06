@@ -118,7 +118,8 @@ review" if you have high confidence in your changes.
 ## Asking the user
 
 A question in a normal message goes unseen, and the thread looks done. To ask
-the user something, use `ask_user` so the thread shows that it is waiting.
+the user something, use `ask_user` (`AskUserQuestion` in Claude Code) so the
+thread shows that it is waiting.
 Put all the context in the question: the PR link, what blocks you, and the
 options with your recommendation first.
 

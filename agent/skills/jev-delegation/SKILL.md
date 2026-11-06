@@ -1,9 +1,9 @@
 ---
 name: jev-delegation
-description: Split a multi-step coding goal into cohesive, independently testable work and delegate suitable slices through JevAgent. Use when subagents could help without multiplying context and integration costs.
+description: Split a multi-step coding goal into cohesive, independently testable work and delegate suitable slices through JevAgent in pi, or native subagents and delegate_task in Claude Code and Codex. Use when subagents could help without multiplying context and integration costs.
 ---
 
-# Delegate with JevAgent
+# Delegate work
 
 ## Choose the boundary
 
@@ -14,9 +14,10 @@ description: Split a multi-step coding goal into cohesive, independently testabl
 ## Launch one slice
 
 - Inspect enough of the repository to state the outcome, relevant paths, constraints, and acceptance checks. Give the child a self-contained prompt, not the whole parent conversation. Tell it to follow repository `AGENTS.md`, load `general-guidelines` for code changes and `frontend-design` for UI design, run focused checks, and avoid unrelated edits.
-- Use `JevAgent` when agent, model, or thinking selection is useful. Leave those fields unset for automatic choice. Read current higher-priority instructions and pass user-required or mandatory specialist/model/thinking choices as exact constraints; router eligibility alone does not enforce those policies. Jev's RPC route can override agent frontmatter defaults. If all three are fixed, JevAgent skips paid inference; use ordinary `Agent` only when its frontmatter defaults will not override a required choice.
+- In pi, use `JevAgent` when agent, model, or thinking selection is useful. Leave those fields unset for automatic choice. Read current higher-priority instructions and pass user-required or mandatory specialist/model/thinking choices as exact constraints; router eligibility alone does not enforce those policies. Jev's RPC route can override agent frontmatter defaults. If all three are fixed, JevAgent skips paid inference; use ordinary `Agent` only when its frontmatter defaults will not override a required choice.
 - Give a short `description` and set `max_turns` when the child needs a firm turn bound. Router `timeoutMs` bounds routing and startup acknowledgement, not the child run. Jev sends the prompt, description, and candidate catalog to TypeSafe; keep secrets and sensitive user data out of them.
 - JevAgent launches the selected agent in the background and returns an ID and route source. Wait for the completion notification or use `get_subagent_result` with that ID. Notice `explicit-fallback` if configured; do not launch a duplicate or automatically retry or escalate after failure.
+- In Claude Code or Codex, JevAgent is unavailable. Pick the agent, model, and effort from the Model Routing table, keeping the same required constraints, and launch as its "Launching a subagent" list says. T3 Code reports when a `delegate_task` child finishes; read it with `task_status`. Do not launch a duplicate or automatically retry or escalate after failure.
 
 ## Integrate and check
 
