@@ -35,7 +35,7 @@ test('pi MCP server lists the pi tools, keeps stdout for protocol messages, and 
 
   const list = await request('tools/list', {});
   assert.deepEqual(list.result.tools.map((tool) => tool.name).sort(), [
-    'memory_add', 'memory_remove', 'memory_replace', 'memory_search', 'route', 'session_search', 'skill_manage',
+    'generate_image', 'memory_add', 'memory_remove', 'memory_replace', 'memory_search', 'recall', 'route', 'session_search', 'skill_manage',
   ]);
   for (const tool of list.result.tools) assert.equal(tool.inputSchema.type, 'object', tool.name);
 

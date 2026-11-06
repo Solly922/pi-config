@@ -16,8 +16,11 @@ const APP_SERVER_TIMEOUT_MS = 20_000;
 
 const HOOKS = [
   { event: 'SessionStart', handler: 'session-context', timeout: 15 },
+  { event: 'SessionStart', handler: 'shadow', timeout: 10 },
+  { event: 'SessionStart', handler: 'observations', timeout: 15 },
   { event: 'SessionStart', handler: 'ponytail-activate', timeout: 15 },
   { event: 'UserPromptSubmit', handler: 'wiki-recall', timeout: 10 },
+  { event: 'UserPromptSubmit', handler: 'shadow', timeout: 10 },
   { event: 'UserPromptSubmit', handler: 'ponytail-mode', timeout: 10 },
   { event: 'SubagentStart', handler: 'ponytail-subagent', timeout: 10 },
   { event: 'PreToolUse', matcher: { claude: 'Bash', codex: '^Bash$' }, handler: 'rtk', timeout: 10 },

@@ -4,16 +4,23 @@
 
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
+import { readFile, readdir, stat } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { Writable } from 'node:stream';
 import { fileURLToPath } from 'node:url';
 
-import { AGENT_DIR, HERMES_SRC, PI_NODE_MODULES, importFile, piReleaseModules } from '../lib/pi.mjs';
+import {
+  AGENT_DIR, CODEX_IMAGES, HERMES_SRC, OBSERVATIONAL_MEMORY, PI_NODE_MODULES, importFile, piReleaseModules, shadowDir, shadowPaths,
+} from '../lib/pi.mjs';
 
 // MCP owns stdout, and Hermes and pi log progress with console.info. Everything except protocol
 // messages goes to stderr, which both harnesses keep as the server's log.
 const writeProtocol = process.stdout.write.bind(process.stdout);
 process.stdout.write = process.stderr.write.bind(process.stderr);
+
+// Marks this process as pi, so a Claude Code the extensions launch (through pi's Claude bridge)
+// skips the native hooks.
+process.env.PI_CODING_AGENT = 'true';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const PI_MODULES = join(piReleaseModules(), '@earendil-works');
@@ -25,6 +32,8 @@ const EXTENSIONS = [
     tools: ['memory_add', 'memory_replace', 'memory_remove', 'memory_search', 'session_search', 'skill_manage'],
   },
   { path: join(HERE, '..', 'extensions', 'route.ts'), tools: ['route'] },
+  { path: join(OBSERVATIONAL_MEMORY, 'dist', 'index.ts'), tools: ['recall'] },
+  { path: CODEX_IMAGES, tools: ['generate_image'] },
 ];
 const EXPOSED = EXTENSIONS.flatMap((extension) => extension.tools);
 // These change which skill folders exist, so the native skill links need a sync afterwards.
@@ -98,7 +107,7 @@ async function startPiSession(cwd) {
   // Hermes adds its memory policy and pinned instructions to pi's prompt in this event.
   const { systemPromptOptions } = await session.extensionRunner.emitBeforeAgentStart({ prompt: '', images: [] }, {});
 
-  return { session, validateToolArguments, instructions: systemPromptOptions.appendSystemPrompt.trim() || undefined };
+  return { sdk, session, validateToolArguments, instructions: systemPromptOptions.appendSystemPrompt.trim() || undefined };
 }
 
 async function listTools() {
@@ -124,7 +133,7 @@ function describe(definition) {
 
 async function callTool(request, extra) {
   const { name, arguments: rawArguments = {} } = request.params;
-  const { session, validateToolArguments } = await ready;
+  const { sdk, session, validateToolArguments } = await ready;
   const definition = EXPOSED.includes(name) ? session.getToolDefinition(name) : undefined;
   if (!definition) return errorResult(`Unknown tool: ${name}`);
 
@@ -135,7 +144,7 @@ async function callTool(request, extra) {
       { type: 'toolCall', id: String(extra.requestId), name, arguments: prepared },
     );
 
-    const ctx = session.extensionRunner.createContext();
+    const ctx = name === 'recall' ? await recallContext(sdk, session, args.id, extra.signal) : session.extensionRunner.createContext();
     const result = await definition.execute(String(extra.requestId), args, extra.signal, () => {}, ctx);
     if (name === 'skill_manage' && SKILL_SET_ACTIONS.has(args.action)) resyncNativeConfig();
 
@@ -143,6 +152,58 @@ async function callTool(request, extra) {
   } catch (error) {
     console.error('pi MCP server: tool call failed', { tool: name, cwd: session.cwd, error });
     return errorResult(error instanceof Error ? error.message : String(error));
+  }
+}
+
+// Observational memory's recall reads the current session's ledger. Here the memory lives in the
+// shadow session of whichever native thread recorded the id.
+async function recallContext(sdk, session, id, signal) {
+  const ctx = Object.defineProperties({}, Object.getOwnPropertyDescriptors(session.extensionRunner.createContext()));
+  const file = await shadowSessionWith(id, signal);
+  if (file) Object.defineProperty(ctx, 'sessionManager', { value: sdk.SessionManager.open(file) });
+
+  return ctx;
+}
+
+// Claude names its thread to MCP servers, so that thread's shadow session is tried first. The
+// others are read newest first, without blocking the server's other tool calls.
+async function shadowSessionWith(id, signal) {
+  const needle = `"id":"${id}"`;
+  const current = currentClaudeShadow();
+  if (current && (await contains(current, needle))) return current;
+
+  const files = [];
+  for (const harness of ['claude', 'codex']) {
+    const dir = shadowDir(harness);
+    if (!existsSync(dir)) continue;
+
+    for (const name of await readdir(dir)) {
+      if (name.endsWith('.jsonl')) files.push({ path: join(dir, name), modified: (await stat(join(dir, name))).mtimeMs });
+    }
+  }
+  files.sort((a, b) => b.modified - a.modified);
+
+  for (const { path } of files) {
+    signal?.throwIfAborted();
+    if (path !== current && (await contains(path, needle))) return path;
+  }
+
+  return undefined;
+}
+
+function currentClaudeShadow() {
+  try {
+    return process.env.CLAUDE_CODE_SESSION_ID ? shadowPaths('claude', process.env.CLAUDE_CODE_SESSION_ID).file : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+async function contains(path, needle) {
+  try {
+    return (await readFile(path, 'utf8')).includes(needle);
+  } catch {
+    return false;
   }
 }
 

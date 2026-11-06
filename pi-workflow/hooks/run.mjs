@@ -7,6 +7,8 @@ import { readFileSync } from 'node:fs';
 
 const HANDLERS = {
   'session-context': () => import('./session-context.mjs'),
+  shadow: () => import('./shadow.mjs'),
+  observations: () => import('./observations.mjs'),
   'wiki-recall': () => import('./wiki.mjs'),
   'wiki-guard': () => import('./wiki.mjs'),
   rtk: () => import('./rtk.mjs'),

@@ -6,7 +6,7 @@ Turns the pi config in `~/.pi/agent` into Claude Code and Codex config, so nativ
 node ~/.pi/pi-workflow/sync.mjs             # write the config
 node ~/.pi/pi-workflow/sync.mjs --dry-run   # list changes only
 node ~/.pi/pi-workflow/sync.mjs --root /tmp/preview   # write under another home
-node --test ~/.pi/pi-workflow/sync.test.mjs ~/.pi/pi-workflow/hooks/run.test.mjs ~/.pi/pi-workflow/mcp/pi-server.test.mjs ~/.pi/pi-workflow/extensions/route.test.ts
+cd ~/.pi/pi-workflow && node --test sync.test.mjs hooks/*.test.mjs mcp/*.test.mjs memory/*.test.mjs extensions/*.test.ts
 ```
 
 Rerun sync after editing `APPEND_SYSTEM.md`, adding or removing a skill, changing an agent, or changing `MCP_SERVERS` in `sync.mjs`. Skill edits need no rerun because the skills are symlinked.
@@ -31,8 +31,19 @@ An agent whose preferred model is on the other provider gets a fallback model ta
 
 - Hermes (`memory_*`, `session_search`, `skill_manage`), the same extension and store pi uses. Its memory policy and pinned instructions become the server's MCP instructions.
 - `extensions/route.ts`, Jev routing that returns a T3 `delegate_task` target instead of launching a pi subagent. It reuses pi-jev-router's `router.ts` and its config in `agent/jev-router/config.json`.
+- Observational memory's `recall`, pointed at the shadow session (below) that recorded the requested id.
+- `generate_image` from `agent/extensions/codex-images`, which draws through the user's ChatGPT subscription. Codex also has its own image skill; Claude has no other way to make images.
 
 Both harnesses start MCP servers in the thread's working directory, which is how Hermes picks the project. Codex passes servers only a few environment variables, so its entry forwards `TYPESAFE_API_KEY` through `env_vars`. After `skill_manage` creates or deletes a skill, the server reruns sync so the new skill gets its links.
+
+## Shadow sessions
+
+pi's background memory work, Hermes's review, correction detection and flush, and observational memory's observe, reflect and drop cycle, runs inside pi on its own session. For a native thread, `memory/shadow.mjs` keeps a pi session that mirrors the thread: it tails the Claude Code or Codex transcript, converts each line with `memory/transcript.mjs`, appends the messages, and emits the events pi would (`agent_start`, `message_end`, `turn_end`, `agent_end`, `agent_settled`). Hermes and observational memory react exactly as they do in pi, with the user's own settings.
+
+- One process per thread, started by the `shadow` hook and recorded in a pid file. It exits after 30 minutes without new transcript lines and resumes from its saved offset when the thread is used again.
+- Files live in `~/.pi/agent/sessions/native-claude/` and `native-codex/`: the shadow session (`<session id>.jsonl`), its offset, pid, and log. Hermes indexes that folder, so `session_search` finds native threads. pi's all-sessions picker lists them too, named `Claude Code thread <id>` or `Codex thread <id>`.
+- After the harness compacts, the `observations` hook adds the shadow session's reflections and newest observations, rendered by observational memory and kept under both harnesses' hook-text limits.
+- The harness compacts on its own schedule, so observational memory does not shape the compaction itself as it does in pi. It may also lag up to its `observeAfterTokens` threshold behind the latest turns, which the harness's own summary covers.
 
 ## Hooks
 
@@ -41,6 +52,8 @@ Every hook runs `hooks/run.mjs <claude|codex> <handler>`. It exits at once when 
 | Event | Handler | What it does |
 | --- | --- | --- |
 | SessionStart | `session-context` | LLM Wiki status line and the Hermes project skills for the repo |
+| SessionStart, UserPromptSubmit | `shadow` | starts the thread's shadow session if it is not running |
+| SessionStart (after compaction) | `observations` | observational memory for the thread |
 | SessionStart, UserPromptSubmit, SubagentStart | `ponytail-*` | ponytail's own hook scripts from its pi checkout |
 | UserPromptSubmit | `wiki-recall` | the same per-prompt wiki recall as pi's llm-wiki extension |
 | PreToolUse (Bash) | `rtk` | rtk command rewrites; in Codex only when approvals are already off, because Codex applies a rewrite only together with an "allow" decision |
