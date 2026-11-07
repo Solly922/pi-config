@@ -9,7 +9,7 @@ node ~/.pi/pi-workflow/sync.mjs --root /tmp/preview   # write under another home
 cd ~/.pi/pi-workflow && node --test sync.test.mjs hooks/*.test.mjs mcp/*.test.mjs memory/*.test.mjs extensions/*.test.ts
 ```
 
-Rerun sync after editing `APPEND_SYSTEM.md`, adding or removing a skill, changing an agent, or changing `MCP_SERVERS` in `sync.mjs`. Skill edits need no rerun because the skills are symlinked.
+Sync reruns by itself: at each Claude or Codex session start, the `sync` hook compares `APPEND_SYSTEM.md`, the agents, `rules/`, the skill source folders, and sync's own code against `~/.cache/pi-workflow-sync.stamp`, and starts a background sync when something is newer (log in `~/.cache/pi-workflow-sync.log`). The session that triggers it keeps what it already loaded, so a change reaches the next session. Run it by hand to apply a change right away. Skill edits need no sync because the skills are symlinked.
 
 | Source | Output |
 | --- | --- |
@@ -34,7 +34,7 @@ An agent whose preferred model is on the other provider gets a fallback model ta
 - Observational memory's `recall`, pointed at the shadow session (below) that recorded the requested id.
 - `generate_image` from `agent/extensions/codex-images`, which draws through the user's ChatGPT subscription. Codex also has its own image skill; Claude has no other way to make images.
 
-Both harnesses start MCP servers in the thread's working directory, which is how Hermes picks the project. Codex passes servers only a few environment variables, so its entry forwards `TYPESAFE_API_KEY` through `env_vars`. After `skill_manage` creates or deletes a skill, the server reruns sync so the new skill gets its links.
+Both harnesses start MCP servers in the thread's working directory, which is how Hermes picks the project. This session and the shadow sessions use the memory extensions' own model (observational memory's `model` in `settings.json`, else Hermes's `llmModelOverride`) as their session model, so a fallback to the session model stays on it rather than on pi's first available model. Codex passes servers only a few environment variables, so its entry forwards `TYPESAFE_API_KEY` through `env_vars`. After `skill_manage` creates or deletes a skill, the server reruns sync so the new skill gets its links.
 
 ## Shadow sessions
 
@@ -51,6 +51,8 @@ Every hook runs `hooks/run.mjs <claude|codex> <handler>`. It exits at once when 
 
 | Event | Handler | What it does |
 | --- | --- | --- |
+| SessionStart | `sync` | starts a background sync when the pi sources changed since the last one |
+| SessionStart (Claude only) | `project-rules` | each `AGENTS.md` in the session folder and the folders above it, as pi reads them, that has no `CLAUDE.md` beside it and belongs to the user, because Claude Code reads only `CLAUDE.md`; a pointer instead when they exceed hook text limits |
 | SessionStart | `session-context` | LLM Wiki status line and the Hermes project skills for the repo |
 | SessionStart, UserPromptSubmit | `shadow` | starts the thread's shadow session if it is not running |
 | SessionStart (after compaction) | `observations` | observational memory for the thread |

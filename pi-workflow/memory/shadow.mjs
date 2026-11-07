@@ -8,7 +8,9 @@ import { chmodSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync
 import { join } from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
 
-import { AGENT_DIR, HERMES_SRC, OBSERVATIONAL_MEMORY, importFile, piReleaseModules, shadowPaths } from '../lib/pi.mjs';
+import {
+  AGENT_DIR, HERMES_SRC, OBSERVATIONAL_MEMORY, importFile, piReleaseModules, shadowPaths, useMemoryModel,
+} from '../lib/pi.mjs';
 import { claimOwnership, releaseOwnership } from './owner.mjs';
 import { createReplayer } from './replay.mjs';
 import { readTranscript } from './transcript.mjs';
@@ -33,7 +35,11 @@ const stopRequested = new AbortController();
 process.on('SIGTERM', () => stopRequested.abort());
 process.on('SIGINT', () => stopRequested.abort());
 
-const session = await startShadowSession();
+const session = await startShadowSession().catch((error) => {
+  console.error(`shadow ${harness}/${sessionId}: could not start`, { error });
+  releaseOwnership(paths.pid);
+  process.exit(1);
+});
 const newReplayer = () => createReplayer({ sessionManager: session.sessionManager, emit: (event) => session.extensionRunner.emit(event) });
 
 let replayer = newReplayer();
@@ -85,6 +91,13 @@ async function startShadowSession() {
   const { session: shadow } = await sdk.createAgentSession({
     cwd, agentDir: AGENT_DIR, resourceLoader: loader, settingsManager, sessionManager, noTools: 'builtin',
   });
+
+  // Running the memory extensions on another provider than the user chose for them would be worse
+  // than not running them.
+  if (!(await useMemoryModel(shadow))) {
+    throw new Error('none of the models set for observational memory or Hermes is available; set one with a working login');
+  }
+
   await shadow.bindExtensions({
     mode: 'print',
     onError: (error) => console.error(`shadow ${harness}/${sessionId}: extension error`, error),

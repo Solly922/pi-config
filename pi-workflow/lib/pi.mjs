@@ -28,6 +28,50 @@ export function shadowPaths(harness, sessionId) {
   return { dir, file: `${base}.jsonl`, state: `${base}.state.json`, pid: `${base}.pid`, log: `${base}.log` };
 }
 
+// Makes a headless pi session's model one the memory extensions are set to use, so an extension that
+// falls back to the session model stays on it instead of pi's first available model, which here is
+// Anthropic through pi's own OAuth login. Returns the model chosen, or undefined when none is usable.
+export async function useMemoryModel(session) {
+  const available = session.extensionRunner.createContext().modelRegistry.getAvailable();
+
+  for (const candidate of memoryModels()) {
+    const model = available.find((entry) => entry.provider === candidate.provider && entry.id === candidate.id);
+    if (!model) continue;
+
+    await session.setModel(model);
+    if (candidate.thinking) session.setThinkingLevel(candidate.thinking);
+    return model;
+  }
+
+  return undefined;
+}
+
+// Each extension's model, then its fallbacks, in the order the extensions try them.
+function memoryModels() {
+  const memory = readJson(join(AGENT_DIR, 'settings.json'))?.['observational-memory'] ?? {};
+  const hermes = readJson(join(AGENT_DIR, 'hermes-memory-config.json')) ?? {};
+  const hermesRefs = [hermes.llmModelOverride, ...(Array.isArray(hermes.llmFallbackModels) ? hermes.llmFallbackModels : [])];
+
+  return [
+    memory.model,
+    memory.fallbackModel,
+    ...hermesRefs.map((ref) => modelReference(ref, hermes.llmThinkingOverride)),
+  ].filter((model) => typeof model?.provider === 'string' && typeof model?.id === 'string');
+}
+
+function modelReference(ref, thinking) {
+  const [provider, ...id] = typeof ref === 'string' ? ref.trim().split('/') : [];
+  return provider && id.length > 0 ? { provider, id: id.join('/'), thinking } : undefined;
+}
+
+function readJson(path) {
+  try {
+    return JSON.parse(readFileSync(path, 'utf8'));
+  } catch {
+    return undefined;
+  }
+}
+
 // pi installs each release under its own folder and records the active one here.
 export function piReleaseModules() {
   const version = readFileSync(join(AGENT_DIR, 'install', 'current-version'), 'utf8').trim();

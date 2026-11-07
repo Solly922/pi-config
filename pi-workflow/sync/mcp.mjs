@@ -28,6 +28,8 @@ export const MCP_SERVERS = {
   gh_grep: { url: 'https://mcp.grep.app' },
 };
 
+// Returns false when a Claude CLI call failed. A missing Claude CLI is not a failure: there is
+// nothing to sync into.
 export function syncClaudeServers() {
   const current = readJson(CLAUDE_JSON)?.mcpServers ?? {};
   const changes = [];
@@ -52,8 +54,13 @@ export function syncClaudeServers() {
 
   for (const args of changes) {
     log(`claude ${args.slice(0, 5).join(' ')}`);
-    if (!DRY_RUN && runCli('claude', args, CLAUDE_ENV) !== 'ok') return;
+    if (DRY_RUN) continue;
+
+    const outcome = runCli('claude', args, CLAUDE_ENV);
+    if (outcome !== 'ok') return outcome === 'missing';
   }
+
+  return true;
 }
 
 function isOwnedClaudeServer(server) {

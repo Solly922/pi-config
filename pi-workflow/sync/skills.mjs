@@ -6,7 +6,7 @@ import { dirname, join } from 'node:path';
 
 import { CLAUDE_HOME, DEST, DRY_RUN, PI_AGENT, log, pathExists, remove, warn } from './context.mjs';
 
-const SKILL_SOURCES = [
+export const SKILL_SOURCES = [
   join(PI_AGENT, 'skills'),
   join(PI_AGENT, 'pi-hermes-memory', 'skills'),
   join(PI_AGENT, 'git', 'github.com', 'DietrichGebert', 'ponytail', 'skills'),

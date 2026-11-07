@@ -19,7 +19,7 @@
       "directTools": false
     },
     "playwright": {
-      "command": "/home/solomonschuster/.pi/agent/bin/playwright-mcp",
+      "command": "~/.pi/agent/bin/playwright-mcp",
       "args": [
         "--headless",
         "--isolated",

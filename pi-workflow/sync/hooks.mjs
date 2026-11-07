@@ -14,7 +14,10 @@ const HOOK_RUNNER = join(WORKFLOW_DIR, 'hooks', 'run.mjs');
 export const CODEX_HOOKS = join(CODEX_HOME, 'hooks.json');
 const APP_SERVER_TIMEOUT_MS = 20_000;
 
+// `only` limits a hook to one harness: Codex already reads AGENTS.md itself.
 const HOOKS = [
+  { event: 'SessionStart', handler: 'sync', timeout: 10 },
+  { event: 'SessionStart', handler: 'project-rules', timeout: 10, only: 'claude' },
   { event: 'SessionStart', handler: 'session-context', timeout: 15 },
   { event: 'SessionStart', handler: 'shadow', timeout: 10 },
   { event: 'SessionStart', handler: 'observations', timeout: 15 },
@@ -31,10 +34,14 @@ function hookCommand(harness, handler) {
   return `node ${JSON.stringify(HOOK_RUNNER)} ${harness} ${handler}`;
 }
 
+function hooksFor(harness) {
+  return HOOKS.filter((hook) => !hook.only || hook.only === harness);
+}
+
 function hookConfig(harness) {
   const config = {};
 
-  for (const { event, matcher, handler, timeout } of HOOKS) {
+  for (const { event, matcher, handler, timeout } of hooksFor(harness)) {
     const group = { ...(matcher ? { matcher: matcher[harness] } : {}), hooks: [{ type: 'command', command: hookCommand(harness, handler), timeout }] };
     (config[event] ??= []).push(group);
   }
@@ -101,7 +108,7 @@ export async function syncCodexHooks() {
   // Every field Codex hashes must match, so a variant of one of ours, such as an async copy of the
   // wiki guard that could no longer deny an edit, is not trusted either.
   const source = realpathSync(CODEX_HOOKS);
-  const expected = HOOKS.map((hook) => ({
+  const expected = hooksFor('codex').map((hook) => ({
     eventName: hook.event[0].toLowerCase() + hook.event.slice(1),
     matcher: hook.matcher?.codex ?? null,
     handlerType: 'command',

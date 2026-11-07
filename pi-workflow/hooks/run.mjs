@@ -6,6 +6,8 @@
 import { readFileSync } from 'node:fs';
 
 const HANDLERS = {
+  sync: () => import('./sync.mjs'),
+  'project-rules': () => import('./project-rules.mjs'),
   'session-context': () => import('./session-context.mjs'),
   shadow: () => import('./shadow.mjs'),
   observations: () => import('./observations.mjs'),

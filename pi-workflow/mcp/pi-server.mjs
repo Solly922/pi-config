@@ -10,7 +10,8 @@ import { Writable } from 'node:stream';
 import { fileURLToPath } from 'node:url';
 
 import {
-  AGENT_DIR, CODEX_IMAGES, HERMES_SRC, OBSERVATIONAL_MEMORY, PI_NODE_MODULES, importFile, piReleaseModules, shadowDir, shadowPaths,
+  AGENT_DIR, CODEX_IMAGES, HERMES_SRC, OBSERVATIONAL_MEMORY, PI_NODE_MODULES, importFile, piReleaseModules, useMemoryModel,
+  shadowDir, shadowPaths,
 } from '../lib/pi.mjs';
 
 // MCP owns stdout, and Hermes and pi log progress with console.info. Everything except protocol
@@ -99,6 +100,14 @@ async function startPiSession(cwd) {
     sessionManager: sdk.SessionManager.inMemory(cwd),
     noTools: 'builtin',
   });
+
+  // None of the served tools calls the session model, so a missing one is only worth a log line.
+  try {
+    if (!(await useMemoryModel(session))) console.error('pi MCP server: no model set for observational memory or Hermes is available');
+  } catch (error) {
+    console.error('pi MCP server: could not switch to the memory model', { error });
+  }
+
   await session.bindExtensions({ mode: 'print' });
 
   const missing = EXPOSED.filter((name) => !session.getToolDefinition(name));

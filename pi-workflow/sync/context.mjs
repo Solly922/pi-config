@@ -10,6 +10,7 @@ export const PI_AGENT = join(homedir(), '.pi', 'agent');
 export const WORKFLOW_DIR = dirname(dirname(fileURLToPath(import.meta.url)));
 
 export const DRY_RUN = process.argv.includes('--dry-run');
+export const IF_STALE = process.argv.includes('--if-stale');
 export const ROOT = rootArgument();
 export const DEST = ROOT ?? homedir();
 

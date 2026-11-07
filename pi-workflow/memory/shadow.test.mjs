@@ -1,8 +1,11 @@
-// Runs the real shadow process with pi's SDK, Hermes and observational memory in a scratch home.
-// The fixture stays under every review and observation threshold, so no model is called.
+// Runs the real shadow process with pi's SDK, Hermes and observational memory in a scratch home with
+// the real model settings and a copy of the logins, which the shadow needs to pick its model. The
+// fixture stays under every review and observation threshold, so no model is called.
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
+import {
+  appendFileSync, chmodSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync,
+} from 'node:fs';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
@@ -14,7 +17,13 @@ after(() => rmSync(home, { recursive: true, force: true }));
 
 const agent = join(home, '.pi', 'agent');
 mkdirSync(agent, { recursive: true });
-for (const name of ['install', 'git', 'npm']) symlinkSync(join(homedir(), '.pi', 'agent', name), join(agent, name));
+for (const name of ['install', 'git', 'npm', 'models.json', 'settings.json', 'hermes-memory-config.json']) {
+  symlinkSync(join(homedir(), '.pi', 'agent', name), join(agent, name));
+}
+
+// A copy, so a token refresh here can never race a running pi over the real file.
+copyFileSync(join(homedir(), '.pi', 'agent', 'auth.json'), join(agent, 'auth.json'));
+chmodSync(join(agent, 'auth.json'), 0o600);
 
 const transcript = join(home, 'transcript.jsonl');
 const shadowFile = join(agent, 'sessions', 'native-claude', 'thread-1.jsonl');
@@ -27,20 +36,25 @@ const line = (uuid, type, content, message = {}) => `${JSON.stringify({
 async function runShadowUntilCaughtUp() {
   const { PI_CODING_AGENT: _inPi, ...env } = process.env;
   const child = spawn(process.execPath, [SHADOW, 'claude', 'thread-1', transcript, home], { env: { ...env, HOME: home }, stdio: ['ignore', 'ignore', 'pipe'] });
+  const closed = new Promise((resolve) => child.on('close', resolve));
+  let exited = false;
+  closed.then(() => {
+    exited = true;
+  });
+
   let stderr = '';
   child.stderr.on('data', (chunk) => {
     stderr += chunk;
   });
 
   const size = statSync(transcript).size;
-  for (let waited = 0; waited < 60_000; waited += 250) {
+  for (let waited = 0; waited < 60_000 && !exited; waited += 250) {
     if (existsSync(stateFile) && JSON.parse(readFileSync(stateFile, 'utf8')).offset === size) break;
     await sleep(250);
   }
 
   child.kill('SIGTERM');
-  const code = await new Promise((resolve) => child.on('close', resolve));
-  assert.equal(code, 0, stderr);
+  assert.equal(await closed, 0, stderr);
 }
 
 function storedMessages() {

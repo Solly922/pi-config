@@ -192,7 +192,7 @@ test('sync adds its hooks next to the user\'s and has Codex trust only its own',
   const settings = JSON.parse(readFileSync(join(root, '.claude', 'settings.json'), 'utf8'));
   assert.equal(settings.theme, 'dark');
   assert.deepEqual(settings.hooks.PreToolUse[0], mine);
-  assert.match(settings.hooks.SessionStart[0].hooks[0].command, /hooks\/run\.mjs" claude session-context$/);
+  assert.ok(settings.hooks.SessionStart.some((group) => /hooks\/run\.mjs" claude session-context$/.test(group.hooks[0].command)));
 
   const toml = readFileSync(join(root, '.codex', 'config.toml'), 'utf8');
   const trusted = [...toml.matchAll(/^\[hooks\.state\."(.+):(\w+):\d+:\d+"\]$/gm)];
@@ -201,6 +201,31 @@ test('sync adds its hooks next to the user\'s and has Codex trust only its own',
   assert.ok(trusted.every((match) => match[1] === join(root, '.codex', 'hooks.json')));
 
   assert.equal(sync(root).stdout, '');
+});
+
+test('AGENTS.md is added for Claude only, and the stamp says when sources are newer than the last sync', () => {
+  const root = freshRoot();
+  assert.equal(sync(root).status, 0);
+
+  const claude = JSON.parse(readFileSync(join(root, '.claude', 'settings.json'), 'utf8')).hooks.SessionStart;
+  const codex = JSON.parse(readFileSync(join(root, '.codex', 'hooks.json'), 'utf8')).hooks.SessionStart;
+  assert.ok(claude.some((group) => group.hooks[0].command.endsWith('claude project-rules')));
+  assert.equal(codex.some((group) => group.hooks[0].command.includes('project-rules')), false);
+
+  const freshness = new URL('./sync/freshness.mjs', import.meta.url).href;
+  const ask = (call) => spawnSync(process.execPath, ['--input-type=module', '-e',
+    `import { ${call.split('(')[0]} } from ${JSON.stringify(freshness)}; process.stdout.write(String(${call}));`,
+    '--', '--root', root], { encoding: 'utf8' }).stdout;
+  assert.equal(ask('needsSync()'), 'false');
+  assert.equal(ask('claimBackgroundSync()'), 'false');
+
+  const stamp = readdirSync(join(root, '.cache')).find((name) => /^pi-workflow-sync-\w+\.stamp$/.test(name));
+  utimesSync(join(root, '.cache', stamp), new Date(0), new Date(0));
+  assert.equal(ask('needsSync()'), 'true');
+
+  // Of several session starts at once, only the first starts a sync.
+  assert.equal(ask('claimBackgroundSync()'), 'true');
+  assert.equal(ask('claimBackgroundSync()'), 'false');
 });
 
 test('sync trusts hooks through a symlinked hooks.json and keeps trust the user wrote', () => {
