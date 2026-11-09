@@ -25,6 +25,22 @@ Each file in `rules/` starts with the `## ` heading of the `APPEND_SYSTEM.md` se
 
 An agent whose preferred model is on the other provider gets a fallback model taken from the Model Routing table: `claude-sonnet-5-5` in Claude Code, `gpt-6-astra` in Codex. That copy only runs when `delegate_task` is unavailable, outside T3 Code.
 
+## Set up on another machine
+
+Sync builds every path from the machine's own home folder, so the username can differ. Git carries the rules, skills, agents, pi settings, the Jev config, and this folder. It does not carry logins, installed pi packages, memory, or `agent/bin/`.
+
+1. Install T3 Code, Claude Code, and Codex, and sign in to both providers in T3's settings. Codex must be 0.167 or newer to get the GPT-6.1 models. `node` 22.19 or newer must be on the PATH T3 starts with.
+2. Put `TYPESAFE_API_KEY` where the desktop session reads it, such as a file in `~/.config/environment.d/` on Linux. A shell profile is not enough, because T3 is not started from a shell.
+3. Clone the repo to `~/.pi` with `git clone https://github.com/Solly922/pi-config.git ~/.pi`, or `git pull` if it is already there.
+4. Install pi with its installer, `curl -fsSL https://pi.dev/install.sh | sh`, not with npm: pi-workflow loads pi from the installer's release folder. Run `pi` once so it installs the packages listed in `settings.json`, then `/login` to OpenAI Codex (the memory model and Jev's usage check) and any other provider you use.
+5. Run `node ~/.pi/pi-workflow/sync.mjs`, restart T3, and start a new thread.
+
+Optional:
+
+- `rtk` and `codegraph` on the PATH. Without them, rtk rewrites are skipped and the codegraph server fails to start.
+- `~/.pi/agent/bin/playwright-mcp` for Playwright in pi, a script such as `exec npx -y @playwright/mcp@0.0.84 --executable-path /usr/bin/chromium "$@"` with that machine's browser path.
+- Memory: copy `~/.pi/agent/pi-hermes-memory/`, `~/.pi/agent/projects-memory/`, and `~/.llm-wiki/` across while pi and T3 are closed on both machines, because Hermes keeps a SQLite database there. Memory does not sync between machines after that.
+
 ## The pi MCP server
 
 `mcp/pi-server.mjs` runs a headless pi session with two extensions and serves their tools over stdio:
