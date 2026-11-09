@@ -4,6 +4,7 @@
   "notes": [
     "GPT-6.1 Sol is the default for most coding, review, and debugging: it scores within a few points of Claude Opus 5.5 and GPT-6 Astra at a fraction of the cost.",
     "Claude Opus 5.5 writes the most mergeable code and gives the best reviews of hard cross-file changes. Prefer it when consequences are high, the task is long and unattended, or a cheaper pick already fell short.",
+    "Claude Fable 5.2 scores highest at every thinking level, and at medium it beats Claude Opus 5.5 at high for similar cost. At high it costs about three times as much. Pick it over Opus when the task is among the hardest and the result is worth that cost.",
     "Use GPT-6 Astra instead of GPT-6.1 Sol only for 3D, vision, computer use, or science and math-heavy reasoning.",
     "Always use a claude model for any frontend work",
     "Use gpt-6.1-terra only for the Explore agent (read-only code search). Never pick it for any other agent.",
@@ -58,6 +59,27 @@
       },
       "usage": { "source": "claude" },
       "grades": { "frontend": 9, "writing": 9, "debugging": 9, "3D": 9, "coding": 9, "code-review": 10 }
+    },
+    {
+      "id": "claude-bridge/claude-fable-5-2",
+      "tier": "expert",
+      "strengths": ["highest-intelligence-index-at-every-thinking-level", "hardest-reasoning-and-implementation", "difficult-debugging", "architecture", "long-agentic-runs", "terminal-and-agentic-coding", "knowledge-work", "strong-at-medium-effort"],
+      "weaknesses": ["highest-cost-at-high-effort", "twice-the-token-price-of-opus", "task-time-not-yet-measured", "extra-safety-measures-refuse-more-security-and-dual-use-tasks", "guesses-instead-of-saying-it-does-not-know-a-fact", "overkill-for-bounded-tasks"],
+      "thinking": { "supported": ["medium", "high"], "default": "high" },
+      "routing": {
+        "preferWhen": ["task_is_among_the_hardest", "consequences_are_high", "task_requires_difficult_debugging", "task_requires_architecture", "opus_or_sol_already_fell_short"],
+        "avoidWhen": ["task_is_simple", "task_is_bounded", "task_is_primarily_search", "cheaper_model_is_sufficient", "cost_is_high_priority", "task_involves_offensive_security_or_reverse_engineering"]
+      },
+      "benchmarks": {
+        "artificialAnalysis": {
+          "intelligenceIndex": 61.8, "costPerTask": 9.08,
+          "byThinking": {
+            "medium": { "intelligenceIndex": 56.4, "costPerTask": 3.8 },
+            "high": { "intelligenceIndex": 61.8, "costPerTask": 9.08 }
+          }
+        }
+      },
+      "usage": { "source": "claude" }
     },
     {
       "id": "openai-codex/gpt-6.1-sol",
