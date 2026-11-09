@@ -10,7 +10,7 @@ import { Writable } from 'node:stream';
 import { fileURLToPath } from 'node:url';
 
 import {
-  AGENT_DIR, CODEX_IMAGES, HERMES_SRC, OBSERVATIONAL_MEMORY, PI_NODE_MODULES, importFile, piReleaseModules, useMemoryModel,
+  AGENT_DIR, CODEX_IMAGES, HERMES_SRC, OBSERVATIONAL_MEMORY, PI_NODE_MODULES, importFile, piPackage, useMemoryModel,
   shadowDir, shadowPaths,
 } from '../lib/pi.mjs';
 
@@ -24,7 +24,6 @@ process.stdout.write = process.stderr.write.bind(process.stderr);
 process.env.PI_CODING_AGENT = 'true';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const PI_MODULES = join(piReleaseModules(), '@earendil-works');
 const MCP_SDK = join(PI_NODE_MODULES, '@modelcontextprotocol', 'sdk', 'dist', 'esm');
 
 const EXTENSIONS = [
@@ -71,8 +70,8 @@ const protocolOut = new Writable({
 await server.connect(new StdioServerTransport(process.stdin, protocolOut));
 
 async function startPiSession(cwd) {
-  const sdk = await importFile(join(PI_MODULES, 'pi-coding-agent', 'dist', 'index.js'));
-  const { validateToolArguments } = await importFile(join(PI_MODULES, 'pi-ai', 'dist', 'index.js'));
+  const sdk = await importFile(join(piPackage('@earendil-works/pi-coding-agent'), 'dist', 'index.js'));
+  const { validateToolArguments } = await importFile(join(piPackage('@earendil-works/pi-ai'), 'dist', 'index.js'));
 
   const settingsManager = sdk.SettingsManager.inMemory({});
   const loader = new sdk.DefaultResourceLoader({

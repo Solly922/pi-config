@@ -1,8 +1,8 @@
 // Locations of the installed pi runtime and of the pi packages the native harnesses reuse.
 
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 export const AGENT_DIR = join(homedir(), '.pi', 'agent');
@@ -72,10 +72,33 @@ function readJson(path) {
   }
 }
 
-// pi installs each release under its own folder and records the active one here.
-export function piReleaseModules() {
-  const version = readFileSync(join(AGENT_DIR, 'install', 'current-version'), 'utf8').trim();
-  return join(AGENT_DIR, 'install', 'releases', version, 'node_modules');
+const PI_PACKAGE = '@earendil-works/pi-coding-agent';
+
+// pi's installer puts each release in its own folder and records the active one in current-version.
+// Without that file, or when its release is gone, pi is a global npm install.
+function piRoot() {
+  const versionFile = join(AGENT_DIR, 'install', 'current-version');
+  if (existsSync(versionFile)) {
+    const version = readFileSync(versionFile, 'utf8').trim();
+    const release = join(AGENT_DIR, 'install', 'releases', version, 'node_modules', PI_PACKAGE);
+    if (version && existsSync(release)) return release;
+  }
+
+  // shortcut: assumes npm's default global prefix beside this node (nvm or system Node), not a custom
+  // `npm config set prefix`; resolve the `pi` command on PATH if that setup comes up.
+  const npmGlobal = join(dirname(process.execPath), '..', 'lib', 'node_modules', PI_PACKAGE);
+  if (existsSync(npmGlobal)) return npmGlobal;
+
+  throw new Error(`pi is not installed: no release named in ${versionFile} and nothing at ${npmGlobal}`);
+}
+
+// A global npm install nests pi's dependencies under pi, and the installer hoists them beside it.
+export function piPackage(name) {
+  const root = piRoot();
+  if (name === PI_PACKAGE) return root;
+
+  const nested = join(root, 'node_modules', name);
+  return existsSync(nested) ? nested : join(root, '..', '..', name);
 }
 
 export function importFile(path) {
@@ -85,6 +108,6 @@ export function importFile(path) {
 // pi's own TypeScript loader, for pi packages that ship only .ts sources inside node_modules,
 // where Node refuses to strip types.
 export async function piTypeScriptLoader() {
-  const { createJiti } = await importFile(join(piReleaseModules(), 'jiti', 'lib', 'jiti.mjs'));
+  const { createJiti } = await importFile(join(piPackage('jiti'), 'lib', 'jiti.mjs'));
   return createJiti(import.meta.url);
 }

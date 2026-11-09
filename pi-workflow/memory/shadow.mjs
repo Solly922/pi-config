@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
 
 import {
-  AGENT_DIR, HERMES_SRC, OBSERVATIONAL_MEMORY, importFile, piReleaseModules, shadowPaths, useMemoryModel,
+  AGENT_DIR, HERMES_SRC, OBSERVATIONAL_MEMORY, importFile, piPackage, shadowPaths, useMemoryModel,
 } from '../lib/pi.mjs';
 import { claimOwnership, releaseOwnership } from './owner.mjs';
 import { createReplayer } from './replay.mjs';
@@ -65,7 +65,7 @@ while (!stopRequested.signal.aborted && Date.now() - lastActivity < IDLE_MS) {
 await shutDown();
 
 async function startShadowSession() {
-  const sdk = await importFile(join(piReleaseModules(), '@earendil-works', 'pi-coding-agent', 'dist', 'index.js'));
+  const sdk = await importFile(join(piPackage('@earendil-works/pi-coding-agent'), 'dist', 'index.js'));
   const settingsManager = sdk.SettingsManager.inMemory({});
   const loader = new sdk.DefaultResourceLoader({
     cwd,
