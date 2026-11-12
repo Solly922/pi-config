@@ -4,6 +4,7 @@
 - When working in a git worktree, always commit finished work and mention the commit hash.
 - When reviewing code, provide a grade from 0–100, ways to improve it, and file paths with line numbers for anything needing human review.
 - Always summarize completed changes.
+- Do not add a `Co-Authored-By` trailer for an AI model to git commits, or a "Generated with <tool>" line to pull request descriptions.
 
 ## Written Communication
 
