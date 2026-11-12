@@ -3,8 +3,8 @@ description: Creates distinctive, accessible, responsive, production-grade front
 display_name: Frontend Builder
 tools: read, write, edit, bash, grep, find
 skills: true
-model: openai-codex/gpt-6-astra
-thinking: low
+model: claude-bridge/claude-opus-5-5
+thinking: high
 max_turns: 100
 prompt_mode: replace
 ---
