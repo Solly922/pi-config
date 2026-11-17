@@ -4,15 +4,14 @@ By default, you should always use your jev-delegation skill. Sometimes, you migh
 
 | Work | Target |
 | --- | --- |
-| Default | `codex` / `gpt-6-astra`, low |
+| Default | `codex` / `gpt-6.2-astra`, medium |
 | Bounded tool-heavy checks | `claudeAgent` / `claude-sonnet-5-5`, xhigh |
-| Ambiguous implementation | `codex` / `gpt-6.1-sol`, medium |
-| Architecture, security, database, or difficult debugging | `codex` / `gpt-6-astra`, medium |
+| Ambiguous implementation | `codex` / `gpt-6.2-sol`, medium |
+| Architecture, security, database, or difficult debugging | `codex` / `gpt-6.2-astra`, medium |
 | Explore subagents | `codex` / `gpt-6.1-terra`, xhigh |
 
 Always check the current GPT model:
-- gpt-6-astra: only low, medium, or high.
-- gpt-6.1-sol: low, medium, high, or xhigh.
+- gpt-6.2-astra and gpt-6.2-sol: use medium, high, or xhigh.
 - gpt-6.1-terra: only medium, high, or xhigh. Use it only for Explore subagents and council.
 - gpt-6-luna: only xhigh or max.
 

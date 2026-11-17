@@ -23,7 +23,7 @@ Sync reruns by itself: at each Claude or Codex session start, the `sync` hook co
 
 Each file in `rules/` starts with the `## ` heading of the `APPEND_SYSTEM.md` section it replaces. Sync fails if that heading no longer exists, so a renamed pi section can't silently leave stale native rules.
 
-An agent whose preferred model is on the other provider gets a fallback model taken from the Model Routing table: `claude-sonnet-5-5` in Claude Code, `gpt-6-astra` in Codex. That copy only runs when `delegate_task` is unavailable, outside T3 Code.
+An agent whose preferred model is on the other provider gets a fallback model taken from the Model Routing table: `claude-sonnet-5-5` in Claude Code, `gpt-6.2-astra` in Codex. That copy only runs when `delegate_task` is unavailable, outside T3 Code.
 
 ## Set up on another machine
 

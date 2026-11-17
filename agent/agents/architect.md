@@ -3,7 +3,7 @@ description: Architecture specialist for consequential decisions involving syste
 display_name: Architect
 tools: read, grep, find
 extensions: pi-claude-bridge, pi-openai-fast-mode
-model: openai-codex/gpt-6-astra
+model: openai-codex/gpt-6.2-astra
 thinking: medium
 max_turns: 12
 prompt_mode: replace

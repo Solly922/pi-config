@@ -38,7 +38,7 @@ test('sync writes native rules, agents, and skills without touching files it doe
 
   const agentsMd = readFileSync(join(root, '.codex', 'AGENTS.md'), 'utf8');
   assert.match(agentsMd, /## Model Routing[\s\S]*delegate_task/);
-  assert.match(agentsMd, /## Council\n\nCouncil members, each at xhigh: `claudeAgent`/);
+  assert.match(agentsMd, /## Council\n\nCouncil members: `claudeAgent`/);
   assert.match(agentsMd, /pi-workflow:end -->\n\n {4}indented code\n## CodeGraph\nkeep me\n$/);
   assert.equal(readFileSync(join(root, '.claude', 'CLAUDE.md'), 'utf8').includes('JevAgent` with `agent`'), false);
 
@@ -48,6 +48,9 @@ test('sync writes native rules, agents, and skills without touching files it doe
   }
 
   assert.equal(readFileSync(join(root, '.claude', 'agents', 'architect.md'), 'utf8'), 'mine\n');
+  const drafter = readFileSync(join(root, '.codex', 'agents', 'drafter.toml'), 'utf8');
+  assert.match(drafter, /^model = "gpt-6\.2-astra"\nmodel_reasoning_effort = "xhigh"$/m);
+
   assert.equal(existsSync(join(root, 'outside.md')), false);
   assert.match(first.stderr, /architect\.md exists and pi-workflow does not manage it/);
   assert.equal(readdirSync(join(root, '.claude', 'skills')).includes('removed-skill'), false);

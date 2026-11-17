@@ -2,18 +2,39 @@
   "timeoutMs": 15000,
   "usage": { "cacheSeconds": 60, "timeoutMs": 3000 },
   "notes": [
-    "GPT-6.1 Sol is the default for most coding, review, and debugging: it scores within a few points of Claude Opus 5.5 and GPT-6 Astra at a fraction of the cost.",
+    "GPT-6.2 Sol is the default for most coding, review, and debugging. At the configured default efforts, its Artificial Analysis cost per task is lower than Claude Opus 5.5 and GPT-6.2 Astra.",
     "Claude Opus 5.5 writes the most mergeable code and gives the best reviews of hard cross-file changes. Prefer it when consequences are high, the task is long and unattended, or a cheaper pick already fell short.",
-    "Claude Fable 5.2 scores highest at every thinking level, and at medium it beats Claude Opus 5.5 at high for similar cost. At high it costs about three times as much. Pick it over Opus when the task is among the hardest and the result is worth that cost.",
-    "Use GPT-6 Astra instead of GPT-6.1 Sol only for 3D, vision, computer use, or science and math-heavy reasoning.",
+    "Claude Fable 5.2 at medium beats Claude Opus 5.5 at high for similar cost. At high it costs about three times as much. Pick it over Opus when the task is among the hardest and the result is worth that cost.",
+    "Use GPT-6.2 Astra instead of GPT-6.2 Sol only for 3D, vision, computer use, or science and math-heavy reasoning.",
     "Always use a claude model for any frontend work",
     "Use gpt-6.1-terra only for the Explore agent (read-only code search). Never pick it for any other agent.",
     "Speed matters as much as cost. minutesPerTask is the time Artificial Analysis measured per task at that thinking level, so it reflects both output speed and how many tokens the model writes. When quality is close, prefer the faster option.",
-    "GPT-6.1 Sol runs on OpenAI's priority tier here, so it finishes faster than its measured minutesPerTask.",
-    "Claude models may refuse offensive security, exploit, or reverse-engineering tasks. Route those to GPT-6.1 Sol."
+    "Use GPT-6.2 Sol for defensive security code reviews and remediation."
   ],
 
   "models": [
+    {
+      "id": "openai-codex/gpt-6.2-astra",
+      "tier": "expert",
+      "strengths": ["complex-coding", "scientific-reasoning", "computer-use", "professional-documents"],
+      "weaknesses": ["higher-cost-per-task-than-sol"],
+      "thinking": { "supported": ["medium", "high", "xhigh"], "default": "high" },
+      "routing": {
+        "preferWhen": ["task_requires_complex_implementation", "task_requires_scientific_reasoning", "task_requires_computer_use", "task_requires_professional_documents"],
+        "avoidWhen": ["cheaper_model_is_sufficient"]
+      },
+      "benchmarks": {
+        "artificialAnalysis": {
+          "intelligenceIndex": 60.1, "costPerTask": 2.07, "minutesPerTask": 4.8,
+          "byThinking": {
+            "medium": { "intelligenceIndex": 57.0, "costPerTask": 1.62, "minutesPerTask": 3.7 },
+            "high": { "intelligenceIndex": 60.1, "costPerTask": 2.07, "minutesPerTask": 4.8 },
+            "xhigh": { "intelligenceIndex": 61.6, "costPerTask": 2.52, "minutesPerTask": 5.9 }
+          }
+        }
+      },
+      "usage": { "source": "codex" }
+    },
     {
       "id": "openai-codex/gpt-6-astra",
       "tier": "expert",
@@ -63,7 +84,7 @@
     {
       "id": "claude-bridge/claude-fable-5-2",
       "tier": "expert",
-      "strengths": ["highest-intelligence-index-at-every-thinking-level", "hardest-reasoning-and-implementation", "difficult-debugging", "architecture", "long-agentic-runs", "terminal-and-agentic-coding", "knowledge-work", "strong-at-medium-effort"],
+      "strengths": ["hardest-reasoning-and-implementation", "difficult-debugging", "architecture", "long-agentic-runs", "terminal-and-agentic-coding", "knowledge-work", "strong-at-medium-effort"],
       "weaknesses": ["highest-cost-at-high-effort", "twice-the-token-price-of-opus", "task-time-not-yet-measured", "extra-safety-measures-refuse-more-security-and-dual-use-tasks", "guesses-instead-of-saying-it-does-not-know-a-fact", "overkill-for-bounded-tasks"],
       "thinking": { "supported": ["medium", "high"], "default": "high" },
       "routing": {
@@ -80,6 +101,28 @@
         }
       },
       "usage": { "source": "claude" }
+    },
+    {
+      "id": "openai-codex/gpt-6.2-sol",
+      "tier": "frontier-general",
+      "strengths": ["everyday-coding", "tool-use", "multistep-workflows", "cost-efficient-reasoning"],
+      "weaknesses": ["lower-intelligence-index-than-astra-at-matched-effort"],
+      "thinking": { "supported": ["medium", "high", "xhigh"], "default": "xhigh" },
+      "routing": {
+        "preferWhen": ["task_requires_code", "task_is_well_scoped", "cost_is_high_priority"],
+        "avoidWhen": ["task_requires_frontier_scientific_reasoning"]
+      },
+      "benchmarks": {
+        "artificialAnalysis": {
+          "intelligenceIndex": 55.7, "costPerTask": 0.65, "minutesPerTask": 5.1,
+          "byThinking": {
+            "medium": { "intelligenceIndex": 52.7, "costPerTask": 0.41, "minutesPerTask": 3.1 },
+            "high": { "intelligenceIndex": 54.9, "costPerTask": 0.56, "minutesPerTask": 4.3 },
+            "xhigh": { "intelligenceIndex": 55.7, "costPerTask": 0.65, "minutesPerTask": 5.1 }
+          }
+        }
+      },
+      "usage": { "source": "codex" }
     },
     {
       "id": "openai-codex/gpt-6.1-sol",

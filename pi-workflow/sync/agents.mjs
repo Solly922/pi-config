@@ -13,7 +13,7 @@ const CODEX_AGENTS = join(CODEX_HOME, 'agents');
 const PROVIDERS = { 'claude-bridge': 'claudeAgent', anthropic: 'claudeAgent', 'openai-codex': 'codex', 'openai-codex-fast': 'codex' };
 // An agent whose preferred model is on the other provider runs on these when delegate_task is
 // unavailable. Both come from the Model Routing table: Sonnet for bounded checks, Astra by default.
-const FALLBACK_MODELS = { claudeAgent: 'claude-sonnet-5-5', codex: 'gpt-6-astra' };
+const FALLBACK_MODELS = { claudeAgent: 'claude-sonnet-5-5', codex: 'gpt-6.2-astra' };
 const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
 const CLAUDE_TOOLS = { read: 'Read', grep: 'Grep', find: 'Glob', ls: 'Glob', bash: 'Bash', write: 'Write', edit: 'Edit' };
 
@@ -85,8 +85,15 @@ function modelFor(harness, preferred) {
   if (!preferred) return {};
 
   const model = preferred.provider === harness ? preferred.model : FALLBACK_MODELS[harness];
-  // gpt-6-astra accepts only low, medium, or high (Model Routing).
-  const effort = model === 'gpt-6-astra' && ['xhigh', 'max'].includes(preferred.effort) ? 'high' : preferred.effort;
+  let effort = preferred.effort;
+
+  if (model === 'gpt-6.2-astra' || model === 'gpt-6.2-sol') {
+    if (effort === 'low') effort = 'medium';
+    if (effort === 'max') effort = 'xhigh';
+  } else if (model === 'gpt-6-astra' && ['xhigh', 'max'].includes(effort)) {
+    effort = 'high';
+  }
+
   return { model, effort };
 }
 

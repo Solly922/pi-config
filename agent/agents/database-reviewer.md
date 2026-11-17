@@ -5,7 +5,7 @@ tools: read, grep, find
 disallowed_tools: write, edit
 extensions: pi-claude-bridge, pi-openai-fast-mode
 skills: security-review
-model: openai-codex/gpt-6.1-sol
+model: openai-codex/gpt-6.2-sol
 thinking: high
 max_turns: 16
 prompt_mode: replace

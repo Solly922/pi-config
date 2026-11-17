@@ -5,7 +5,7 @@ tools: read, grep, find
 disallowed_tools: write, edit
 extensions: pi-claude-bridge, pi-openai-fast-mode
 skills: security-review
-model: openai-codex/gpt-6-astra
+model: openai-codex/gpt-6.2-astra
 thinking: medium
 max_turns: 20
 prompt_mode: replace
