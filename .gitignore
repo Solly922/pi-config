@@ -11,3 +11,4 @@ trust.json
 /agent/install/
 /agent/mcp-last-seen-version.json
 /agent/pi-web-access/last-seen-version.json
+__pycache__/
