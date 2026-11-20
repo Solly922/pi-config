@@ -20,6 +20,7 @@ Load the matching skill's `SKILL.md` before acting.
 
 - All code changes require general-guidelines.
 - Frontend design changes require frontend-design as the baseline. For a whole page, an app screen, or a redesign, also load design-taste-frontend; where the two disagree, design-taste-frontend wins. A style skill (gpt-taste, high-end-visual-design, minimalist-ui) runs only when the user asks for its look, one at a time, and replaces design-taste-frontend for that build, because its inspector fails their eyebrows, hairlines, glass, and gradients.
+- 3D assets, scenes, renders, and 3D UI require 3d-design. Also load blender when the work is done in Blender or a .blend, .glb, or .gltf needs checking.
 - find-skills: Discover, compare, or install existing skills. Verify source and quality before recommending or installing.
 - brandkit: Brand-kit images, identity boards, guideline decks, and visual-world presentations.
 - design-taste-frontend: Distinctive landing pages, portfolios, marketing and product sites, and app screens such as dashboards, admin views, and settings. Also use it to redesign, restyle, or review an existing page or app screen while keeping its stack, content, and behavior.
