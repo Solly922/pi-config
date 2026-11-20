@@ -39,6 +39,7 @@ test('sync writes native rules, agents, and skills without touching files it doe
   const agentsMd = readFileSync(join(root, '.codex', 'AGENTS.md'), 'utf8');
   assert.match(agentsMd, /## Model Routing[\s\S]*delegate_task/);
   assert.match(agentsMd, /## Council\n\nCouncil members: `claudeAgent`/);
+  assert.match(agentsMd, /## Collaboration\n\nYour collaborator is on the other provider\. From Claude Code: `codex`/);
   assert.match(agentsMd, /pi-workflow:end -->\n\n {4}indented code\n## CodeGraph\nkeep me\n$/);
   assert.equal(readFileSync(join(root, '.claude', 'CLAUDE.md'), 'utf8').includes('JevAgent` with `agent`'), false);
 

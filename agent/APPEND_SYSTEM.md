@@ -60,6 +60,10 @@ Use these agents only when their trigger applies:
 
 Council members, each at xhigh: `claude-bridge/claude-opus-5-5`, `openai-codex/gpt-6.2-sol`, and `openai-codex/gpt-6.1-terra`.
 
+## Collaboration
+
+Your collaborator is on the other provider. From a Claude model: `openai-codex/gpt-6.2-astra` at high. From a GPT model: `claude-bridge/claude-fable-5-2` at high.
+
 ## Build and Plan Modes
 
 When building, follow the skill and subagent rules above. Consider refactoring when a change to a single file becomes extremely large.
